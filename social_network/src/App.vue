@@ -1,11 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TheHeader from '@/components/layouts/Header/TheHeader.vue'
+import TheContainer from '@/components/layouts/Container/TheContainer.vue'
+</script>
+
 
 <template>
-  <header>
-    <div class="wrapper">
-      <v-btn> Button </v-btn>
-    </div>
-  </header>
+  <the-header />
+  <the-container />
 
   <RouterView />
 </template>
