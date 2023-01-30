@@ -3,7 +3,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <v-btn> Button </v-btn>
     </div>
   </header>
 
