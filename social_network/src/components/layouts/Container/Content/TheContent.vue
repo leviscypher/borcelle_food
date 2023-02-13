@@ -1,17 +1,15 @@
 <template>
   <div class="content">
     <the-menu />
-    <the-new-feed />
-    <the-statust />
+    <post-article />
+    <new-feed />
   </div>
 </template>
 
 <script setup lang="ts">
-import TheMenu from '@/components/layouts/Container/Content/Menu/TheMenu.vue'
-import TheNewFeed from '@/components/layouts/Container/Content/NewFeed/TheNewFeed.vue'
-import TheStatust from '@/components/layouts/Container/Content/Statust/TheStatust.vue'
+import TheMenu from "@/components/layouts/Container/Content/Menu/TheMenu.vue";
+import postArticle from "@/components/layouts/Container/Content/postArticle/post_article.vue";
+import newFeed from "@/components/layouts/Container/Content/newFeed/new_feed.vue";
 </script>
 
-<style>
-
-</style>
+<style></style>

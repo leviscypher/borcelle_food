@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">Menu</div>
+  <div class="post_article">post_article</div>
 </template>
 
 <script lang="ts" setup>
@@ -7,7 +7,7 @@
 </script>
 
 <style scoped>
-.menu {
+.post_article {
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 10px;

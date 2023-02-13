@@ -1,21 +1,20 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import App from "./App.vue";
+import App from "./layouts/default.vue";
 import router from "./router";
-import "./assets/main.css";
 import "./assets/tailwind.css";
+import 'bootstrap';
+//icon
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+library.add(fab, fas, far);
 
-// Vuetify
-import { createVuetify } from "vuetify";
-import "vuetify/styles";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
 const app = createApp(App);
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+app.component("font-awesome-icon", FontAwesomeIcon);
+
 app.use(createPinia());
 app.use(router);
-app.use(vuetify);
 app.mount("#app");
