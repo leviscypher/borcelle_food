@@ -1,0 +1,11 @@
+Users: Bảng này chứa thông tin cơ bản về người dùng, bao gồm tên người dùng, mật khẩu, email, số điện thoại, ảnh đại diện, vv.
+
+Friends: Bảng này chứa thông tin về mối quan hệ giữa các người dùng, bao gồm ID của người dùng và ID của bạn bè của họ.
+
+Posts: Bảng này chứa các bài đăng của người dùng, bao gồm nội dung bài đăng, thời gian đăng và ID của người dùng đã đăng bài.
+
+Comments: Bảng này chứa các bình luận của người dùng về các bài đăng, bao gồm nội dung bình luận, thời gian bình luận và ID của người dùng đã bình luận.
+
+Likes: Bảng này chứa thông tin về việc người dùng thích các bài đăng, bao gồm ID của người dùng và ID của bài đăng đã được thích.
+
+Groups: Bảng này chứa thông tin về các nhóm, bao gồm tên nhóm, mô tả, và ID của người dùng là quản trị viên của nhóm.
