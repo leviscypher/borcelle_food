@@ -1,0 +1,48 @@
+.form-builder-title {
+  font-style: normal;
+  font-size: 17px;
+  font-size: 16px;
+  line-height: 27px;
+}
+.table-formbuilder {
+  height: 76vh;
+  overflow: hidden;
+}
+.fb-icon {
+  &-link {
+    background-color:  transparent;
+    & svg {
+      filter: contrast(0.5);
+    }
+    &:hover {
+      background-color: #28a745;
+    }
+    &:hover svg {
+      filter: sepia(1);
+    }
+  }
+  &-edit {
+    background-color:  transparent;
+    & svg {
+      filter: contrast(0.5);
+    }
+    &:hover {
+      background-color: #3751FF;
+    }
+    &:hover svg {
+      filter: sepia(1);
+    }
+  }
+  &-delete {
+    background-color:  transparent;
+    & svg {
+      filter: contrast(0.5);
+    }
+    &:hover {
+      background-color: #DC3545;
+    }
+    &:hover svg {
+      filter: sepia(1);
+    }
+  }
+}

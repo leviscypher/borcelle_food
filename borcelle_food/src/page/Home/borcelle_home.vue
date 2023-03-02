@@ -1,15 +1,13 @@
+<script lang="ts" setup>
+import Home from "../../components/page/Home/borcelle_home.vue"
+</script>
 <template>
   <div>
-    <h1 class="text-3xl font-bold underline">Hello world!</h1>
+    <Home />
   </div>
 </template>
 
-<script lang="ts" setup>
-
-</script>
 
 <style lang="scss" scoped>
-h1{
-  color: red;
-}
+
 </style>

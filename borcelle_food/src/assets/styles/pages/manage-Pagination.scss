@@ -1,0 +1,42 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  width: 205px;
+  justify-content: space-between;
+  &-page {
+    color: #bfc8d1;
+    font-size: 15px;
+  }
+  &-left,
+  &-right {
+    color: #bfc8d1;
+    width: 53px;
+    margin: 0;
+    font-size: 25px;
+  }
+}
+:deep() {
+  .el-table-column {
+    color: #32373db3;
+    font-weight: 400;
+    font-size: 13px;
+  }
+  .demonstration {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #bfc8d1;
+    display: inline-flex;
+    align-items: center;
+  }
+  .el-input__wrapper {
+    box-shadow: none;
+    width: 84px;
+    flex-grow: unset;
+    font-size: 14px;
+    color: #4b506d;
+  }
+  .el-pagination .el-select .el-input {
+    width: 84px;
+  }
+}

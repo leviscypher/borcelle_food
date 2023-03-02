@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+@import '@vue-flow/core/dist/style.css';
+@import '@vue-flow/core/dist/theme-default.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@/assets/styles/common/components/pagination.scss';
+@import '@/assets/styles/common/components/data-table.scss';
+
+@layer base {
+  html,
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
+.custom-border-node:after {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  width: 70%;
+  height: 70%;
+  border: 1px solid #fff;
+  transform: rotate(45deg);
+  border-radius: 10px;
+  background-color: #3e3e3e;
+  z-index: -1;
+}
+
+.vue-flow__node-default {
+  background: transparent;
+}
+
+.vue-flow__node-default.selectable:hover {
+  box-shadow: none;
+}
+
+// .el-menu--horizontal > .el-sub-menu .el-sub-menu__icon-arrow {
+//   margin-top: 0;
+// }
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  background-color: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidebar-custom {
+  .el-icon,
+  .el-menu-item,
+  .el-sub-menu__title {
+    color: #fff !important;
+  }
+}
+
+.el-aside {
+  background-color: #fcf6ff;
+  width: auto;
+  overflow: unset;
+}
+
+.el-menu-item:hover,
+.el-sub-menu__title:hover {
+  background-color: transparent;
+}
+
+.el-menu-item-group {
+  .el-menu-item {
+    color: #19b99a !important;
+  }
+}
+
+.el-tabs__active-bar {
+  min-height: 0;
+}

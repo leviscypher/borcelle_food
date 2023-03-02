@@ -1,0 +1,81 @@
+.output-wrapper {
+  box-sizing: content-box;
+  padding: 18px 15px;
+  background-color: #f7f7f9;
+  border-radius: 10px;
+}
+
+.separator {
+  border-left: 1px solid black;
+  margin: 0 20px;
+  display: inline-block;
+  transform: rotate(35deg);
+  height: 24px;
+  margin-bottom: -9px;
+}
+
+.operator-button {
+  background-color: rgba(33, 37, 41, 1);
+  color: #fff;
+  width: 44px;
+  font-size: 0.8rem;
+  line-height: 0.8;
+}
+.expression-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.condition-wrapper {
+  margin-top: 20px;
+}
+
+.condition-label {
+  font-weight: 600;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+.condition-button {
+  display: block;
+  margin-top: 10px;
+  margin-right: 0px;
+  margin-left: auto;
+}
+
+.disable {
+  pointer-events: none;
+}
+
+.expression-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-condition,
+.delete-button {
+  background-color: #6c757d;
+  color: white;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-radius: 100%;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.expression:hover .delete-button {
+  visibility: initial;
+}
+
+.delete-condition {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.condition:hover .delete-condition {
+  visibility: initial;
+}

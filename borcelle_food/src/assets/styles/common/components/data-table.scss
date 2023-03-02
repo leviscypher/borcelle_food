@@ -1,0 +1,19 @@
+.data-table-custom {
+  background-color: transparent !important;
+
+  table {
+    border: none !important;
+  }
+
+  table thead tr,
+  table thead tr th {
+    background-color: transparent !important;
+  }
+
+  table tbody tr td {
+    border-bottom: 1px solid #f8e1ff !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+  }
+}
