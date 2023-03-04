@@ -10,7 +10,7 @@ withDefaults(
 </script>
 
 <template>
-  <button class="btnContent">
+  <button class="btnContent" v-bind="$attrs">
     <slot></slot>
   </button>
 </template>

@@ -42,7 +42,7 @@
         </router-link>
       </div>
       <div class="header-user">
-        <base-bottom>Log in</base-bottom>
+        <base-button>Log in</base-button>
       </div>
     </div>
   </div>

@@ -1,0 +1,58 @@
+.detailpage {
+  &-left {
+    &-title {
+      font-weight: 700;
+      font-size: 25px;
+      margin-bottom: 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--dark);
+
+    }
+
+    &-btn {
+      text-align: start;
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--dark);
+      padding: 15px 20px 15px;
+      border-radius: 10px;
+      background: var(--white);
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-shadow: 0px 0px 20px 0px #dddddd8a;
+      transition: linear .3s;
+
+      &:hover {
+        text-decoration: none;
+        color: var(--white);
+        background-color: var(--pale-yellow);
+      }
+    }
+
+    &-tags {
+      &-btn {
+        background-color: var(--light-gray);
+      }
+    }
+
+  }
+
+  &-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 35px;
+    margin-bottom: 15px;
+    color: var(--dark);
+  }
+
+  &-content {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    font-family: 'Poppins';
+    color: var(--dark);
+    font-weight: 400;
+  }
+}

@@ -7,7 +7,6 @@ const props = withDefaults(
     title: '',
   }
 )
-console.log(props);
 
 </script>
 
