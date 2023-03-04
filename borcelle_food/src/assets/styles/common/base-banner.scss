@@ -1,0 +1,41 @@
+.banner {
+  background-image: url(@/assets/banner/page-title.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 230px;
+  padding-bottom: 135px;
+
+  &-title-item {
+    padding-left: 40px;
+    margin-left: 160px;
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: '';
+      width: 10px;
+      height: 100px;
+      left: 0;
+      top: 0;
+      border-radius: 50px;
+      background-color: var(--pale-yellow);
+    }
+
+    &-tilte {
+      font-size: 40px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    &-home{
+      color: var(--white);
+      &:hover{
+        color: var(--pale-yellow);
+        text-decoration: none;
+      }
+    }
+    &-chill-title{
+      color: var(--pale-yellow);
+    }
+  }
+}

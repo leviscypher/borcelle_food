@@ -1,11 +1,12 @@
-<template>
-  <h1>contact</h1>
-</template>
+<script lang="ts" setup>
+import { ref } from "vue";
 
-<script lang="ts">
+const title = ref('Contact')
 
 </script>
-
-<style>
-
-</style>
+<template>
+  <div>
+    <base-banner :title="title" />
+  </div>
+</template>
+<style></style>

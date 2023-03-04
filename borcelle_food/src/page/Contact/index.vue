@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Contact from "../../components/page/Contact/index.vue"
+import Contact from "@/components/page/Contact/index.vue"
 </script>
 <template>
   <div>

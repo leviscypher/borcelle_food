@@ -5,7 +5,7 @@ import TheFooter from "../components/Layouts/Footer/footer.vue";
 </script>
 
 <template>
-  <div class="container">
+  <div class="wapper">
     <div class="header">
       <the-header />
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
-const title = ref('Categories')
+const title = ref('Cart')
 
 </script>
 <template>

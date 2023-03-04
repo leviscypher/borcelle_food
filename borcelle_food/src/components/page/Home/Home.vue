@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import Categories from "@/components/page/Categories/index.vue"
 </script>
 <template>
   <div>
-    <categories />
+    <h1 class="text-3xl font-bold underline bg-orange-600">Home</h1>
   </div>
 </template>
 

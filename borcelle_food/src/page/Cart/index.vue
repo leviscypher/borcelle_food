@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import Categories from "@/components/page/Categories/index.vue"
+import Cart from "@/components/page/Cart/index.vue"
 </script>
 <template>
   <div>
-    <categories />
+    <Cart />
   </div>
 </template>
 

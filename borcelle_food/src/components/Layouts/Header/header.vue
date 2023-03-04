@@ -1,34 +1,53 @@
 <script lang="ts" setup>
-
 </script>
+
 <template>
-  <nav class="px-2 bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-    <div class="container flex flex-wrap items-center justify-between mx-auto">
-
+  <div class="header flex justify-between pl-[150px] pr-[150px] pt-[15px] pb-[15px] items-center">
+    <div class="header-logo">
       <router-link to="/">
-        <img src="@/assets/logo/logo.png" class="h-6 mr-3 sm:h-10" alt="Flowbite Logo" />
+        <img src="@/assets/logo/logo.png" class="header-photo" alt="">
       </router-link>
-
-      <div class="w-full md:block md:w-auto" id="navbar-multi-level">
-        <ul
-          class="flex flex-col p-4 mt-4 border underline rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0">
-          <li>
-            <router-link to="/">Home</router-link>
+    </div>
+    <div class="header-navbar">
+      <nav class="header-navbar-nav">
+        <ul class="header-navbar-menu flex">
+          <li class="header-navbar-chill">
+            <router-link to="/" class="header-navbar-link decoration-none">
+              Home
+            </router-link>
           </li>
-          <li>
-            <router-link to="/categories">categories</router-link>
+          <li class="header-navbar-chill">
+            <router-link to="/categories" class="header-navbar-link decoration-none">
+              Categories
+            </router-link>
           </li>
-          <li>
-            <router-link to="/blog">Blog</router-link>
-
+          <li class="header-navbar-chill">
+            <router-link to="/blog" class="header-navbar-link decoration-none">
+              Blog
+            </router-link>
           </li>
-          <li>
-            <router-link to="/contact">contact</router-link>
+          <li class="header-navbar-chill">
+            <router-link to="/contact" class="header-navbar-link decoration-none">
+              Contact Us
+            </router-link>
           </li>
         </ul>
+      </nav>
+    </div>
+    <div class="header-individual flex gap-[40px] items-center">
+      <div class="header-cart">
+        <router-link to="/cart" class="header-cart-link">
+          <font-awesome-icon icon="fa-solid fa-cart-shopping" />
+          <span class="header-cart-number">1</span>
+        </router-link>
+      </div>
+      <div class="header-user">
+        <base-bottom>Log in</base-bottom>
       </div>
     </div>
-  </nav>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "@/assets/styles/header/header.scss";
+</style>

@@ -1,0 +1,21 @@
+.btnContent {
+  color: var(--dark);
+  border-radius: 50px;
+  padding: 12px 15px 11px 15px;
+  background-color: var(--pale-yellow);
+  font-size: 14px;
+  position: relative;
+  top: 0px;
+  margin-left: 15px;
+  display: inline-block;
+  font-weight: 600;
+  transition: linear .3s;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--white);
+    background-color: var(--dark);
+  }
+}

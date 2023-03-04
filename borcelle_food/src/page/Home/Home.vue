@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import Blog from "@/components/page/Blog/index.vue"
+import Home from "@/components/page/Home/Home.vue"
 </script>
 <template>
   <div>
-    <Blog />
+    <Home />
   </div>
 </template>
 
