@@ -13,14 +13,14 @@ const title = ref('Blog')
       <div class="blog-new-feed">
         <div class="blog-new-feed-item">
           <div class="blog-new-feed-item-img">
-            <router-link to="#" class="w-[100%] block">
+            <router-link to="/detailpage" class="w-[100%] block">
               <img src="@/assets/image/blog1.jpg" class="blog-new-feed-photo w-full" />
             </router-link>
           </div>
           <div class="blog-new-feed-item-content pt-5">
             <div class="blog-new-feed-item-content-title">
               <h3 class="blog-new-feed-title">
-                <router-link to="#" class="blog-new-feed-link blok decoration-none">
+                <router-link to="/detailpage" class="blog-new-feed-link blok decoration-none">
                   Brief About How to Make Pasta
                 </router-link>
               </h3>
@@ -31,7 +31,9 @@ const title = ref('Blog')
               </p>
             </div>
             <div class="blog-btn">
-              <base-button>Read More</base-button>
+                 <router-link to="/detailpage">
+                <base-button>Read More</base-button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -39,14 +41,14 @@ const title = ref('Blog')
       <div class="blog-new-feed">
         <div class="blog-new-feed-item">
           <div class="blog-new-feed-item-img">
-            <router-link to="#" class="w-[100%] block">
+            <router-link to="/detailpage" class="w-[100%] block">
               <img src="@/assets/image/blog1.jpg" class="blog-new-feed-photo w-full" />
             </router-link>
           </div>
           <div class="blog-new-feed-item-content pt-5">
             <div class="blog-new-feed-item-content-title">
               <h3 class="blog-new-feed-title">
-                <router-link to="#" class="blog-new-feed-link blok decoration-none">
+                <router-link to="/detailpage" class="blog-new-feed-link blok decoration-none">
                   Brief About How to Make Pasta
                 </router-link>
               </h3>
@@ -57,7 +59,9 @@ const title = ref('Blog')
               </p>
             </div>
             <div class="blog-btn">
-              <base-button>Read More</base-button>
+               <router-link to="/detailpage">
+                <base-button>Read More</base-button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -65,14 +69,14 @@ const title = ref('Blog')
       <div class="blog-new-feed">
         <div class="blog-new-feed-item">
           <div class="blog-new-feed-item-img">
-            <router-link to="#" class="w-[100%] block">
+            <router-link to="/detailpage" class="w-[100%] block">
               <img src="@/assets/image/blog1.jpg" class="blog-new-feed-photo w-full" />
             </router-link>
           </div>
           <div class="blog-new-feed-item-content pt-5">
             <div class="blog-new-feed-item-content-title">
               <h3 class="blog-new-feed-title">
-                <router-link to="#" class="blog-new-feed-link blok decoration-none">
+                <router-link to="/detailpage" class="blog-new-feed-link blok decoration-none">
                   Brief About How to Make Pasta
                 </router-link>
               </h3>
@@ -83,7 +87,9 @@ const title = ref('Blog')
               </p>
             </div>
             <div class="blog-btn">
-              <base-button>Read More</base-button>
+               <router-link to="/detailpage">
+                <base-button>Read More</base-button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -91,14 +97,14 @@ const title = ref('Blog')
       <div class="blog-new-feed">
         <div class="blog-new-feed-item">
           <div class="blog-new-feed-item-img">
-            <router-link to="#" class="w-[100%] block">
+            <router-link to="/detailpage" class="w-[100%] block">
               <img src="@/assets/image/blog1.jpg" class="blog-new-feed-photo w-full" />
             </router-link>
           </div>
           <div class="blog-new-feed-item-content pt-5">
             <div class="blog-new-feed-item-content-title">
               <h3 class="blog-new-feed-title">
-                <router-link to="#" class="blog-new-feed-link blok decoration-none">
+                <router-link to="/detailpage" class="blog-new-feed-link blok decoration-none">
                   Brief About How to Make Pasta
                 </router-link>
               </h3>
@@ -110,7 +116,9 @@ const title = ref('Blog')
             </div>
             <div class="blog-btn">
               <router-link to="/detailpage">
+                 <router-link to="/detailpage">
                 <base-button>Read More</base-button>
+              </router-link>
               </router-link>
             </div>
           </div>
@@ -119,14 +127,14 @@ const title = ref('Blog')
       <div class="blog-new-feed">
         <div class="blog-new-feed-item">
           <div class="blog-new-feed-item-img">
-            <router-link to="#" class="w-[100%] block">
+            <router-link to="/detailpage" class="w-[100%] block">
               <img src="@/assets/image/blog1.jpg" class="blog-new-feed-photo w-full" />
             </router-link>
           </div>
           <div class="blog-new-feed-item-content pt-5">
             <div class="blog-new-feed-item-content-title">
               <h3 class="blog-new-feed-title">
-                <router-link to="#" class="blog-new-feed-link blok decoration-none">
+                <router-link to="/detailpage" class="blog-new-feed-link blok decoration-none">
                   Brief About How to Make Pasta
                 </router-link>
               </h3>
@@ -137,7 +145,9 @@ const title = ref('Blog')
               </p>
             </div>
             <div class="blog-btn">
-              <base-button>Read More</base-button>
+               <router-link to="/detailpage">
+                <base-button>Read More</base-button>
+              </router-link>
             </div>
           </div>
         </div>

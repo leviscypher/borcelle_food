@@ -1,0 +1,67 @@
+table {
+  border: 1px solid var(--light-gray-with-blue-tint) !important;
+}
+
+table thead tr,
+table thead tr th {
+  background-color: var(--pale-yellow);
+  border: 1px solid var(--light-gray-with-blue-tint) !important;
+  color: var(--white);
+  font-size: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  vertical-align: middle;
+}
+
+table tbody tr td {
+  border-bottom: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-top: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-right: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-left: 1px solid var(--light-gray-with-blue-tint) !important;
+  padding: 0.5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+  vertical-align: middle;
+  font-size: 15px;
+}
+
+.cart {
+  &-delete {
+    color: var(--dark);
+    transition: linear .3s;
+
+    &:hover {
+      color: var(--pale-yellow);
+    }
+  }
+
+  &-total-tilte {
+    color: var(--dark);
+    font-size: 35px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--black);
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  &-total {
+    color: var(--dark);
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+  }
+
+  &-pay {
+    font-family: "Playfair Display", serif;
+    text-transform: capitalize;
+    margin-top: 20px;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 190, 0);
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 15px 60px;
+  }
+}
