@@ -2,18 +2,38 @@
 import { ref } from "vue";
 
 const title = ref('Cart')
+const quantity = ref(1)
+const maxQuantity = 100
 
+const decrement = () => {
+  if (quantity.value > 1) {
+    quantity.value--;
+  }
+}
+const increment = () => {
+  if (quantity.value < maxQuantity) {
+    quantity.value++;
+  }
+}
+const limitQuantity = (event: any) => {
+  if (event.target.value > maxQuantity) {
+    quantity.value = maxQuantity;
+  } else if (event.target.value < 1) {
+    quantity.value = 1;
+  }
+}
 </script>
 <template>
   <base-banner :title="title" />
 
   <div class="cart pt-[100px] pb-[70px] pr-[113px] pl-[113px]">
-    <table class="table text-center cart-table" border="1">
+    <table class="table text-center cart-table">
       <thead class="thead">
         <tr>
           <th class="table-head text-center" scope="col">Images</th>
-          <th class="table-head text-center" scope="col">Items</th>
+          <th class="table-head text-center" scope="col">Name</th>
           <th class="table-head text-center" scope="col">Prices</th>
+          <th class="table-head text-center" scope="col">Số lượng</th>
           <th class="table-head text-center" scope="col">Remove</th>
         </tr>
       </thead>
@@ -24,8 +44,11 @@ const title = ref('Cart')
           </th>
           <td class="">Burger</td>
           <td>$10.00</td>
+          <td class="w-[20%]">
+            <base-quantity></base-quantity>
+          </td>
           <td>
-            <router-link to="#" class="w-full p-[20px] block cart-delete" >
+            <router-link to="#" class="w-full p-[20px] block cart-delete">
               <font-awesome-icon icon="fa-solid fa-circle-xmark" />
             </router-link>
           </td>
@@ -38,7 +61,9 @@ const title = ref('Cart')
         <span>Total:</span>
         <span class="ml-[70px]">$90</span>
       </div>
-      <base-button class="cart-pay">pay</base-button>
+      <router-link to="/payment">
+        <base-button class="cart-pay">pay</base-button>
+      </router-link>
     </div>
   </div>
 </template>

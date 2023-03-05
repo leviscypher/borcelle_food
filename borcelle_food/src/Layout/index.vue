@@ -5,7 +5,7 @@ import TheFooter from "../components/Layouts/Footer/footer.vue";
 </script>
 
 <template>
-  <div class="wapper">
+  <div class="wapper bg-[#F5F5FA]">
     <div class="header">
       <the-header />
     </div>
@@ -17,3 +17,9 @@ import TheFooter from "../components/Layouts/Footer/footer.vue";
     </div>
   </div>
 </template>
+<style lang="scss" scoped>
+.header {
+  background: var(--white);
+  box-shadow: 0px 0px 20px 0px #dddddd8c;
+}
+</style>

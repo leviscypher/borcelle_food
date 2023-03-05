@@ -1,0 +1,35 @@
+.payment {
+  &-title {
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: 30px;
+    font-family: "Playfair Display", serif;
+    color: var(--dark);
+  }
+
+  &-product {
+    background-color: var(--white);
+    color: var(--dark);
+    padding: 15px;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: 10px;
+
+    &-top {
+      border-bottom: 1px solid var(--black);
+    }
+    &-row{
+      vertical-align: middle;
+    }
+  }
+
+  &-pay {
+    background-color: var(--white);
+    padding: 15px;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    text-transform: capitalize;
+    border-radius: 10px;
+  }
+}

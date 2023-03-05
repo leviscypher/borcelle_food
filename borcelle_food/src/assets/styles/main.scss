@@ -11,6 +11,8 @@
   --turbid: #8788988c;
   --light-gray: #f0f0f0;
   --light-gray-with-blue-tint: #dee2e6;
+  --khaki:#fbdb7d;
+  --lavender:#F5F5FA;
   //table
   --bs-table-bg: transparent;
   --bs-table-accent-bg: transparent;
@@ -25,4 +27,31 @@
 body {
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
+}
+table {
+  border: 1px solid var(--light-gray-with-blue-tint) !important;
+}
+
+table thead tr,
+table thead tr th {
+  background-color: var(--pale-yellow);
+  border: 1px solid var(--light-gray-with-blue-tint) !important;
+  color: var(--white);
+  font-size: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  vertical-align: middle;
+}
+
+table tbody tr td {
+  border-bottom: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-top: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-right: 1px solid var(--light-gray-with-blue-tint) !important;
+  border-left: 1px solid var(--light-gray-with-blue-tint) !important;
+  padding: 0.5rem 0.5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+  vertical-align: middle;
+  font-size: 15px;
 }
