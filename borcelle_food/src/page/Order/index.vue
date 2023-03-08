@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import Categories from "@/components/page/Categories/index.vue"
+import Order from "@/components/page/Order/index.vue"
 </script>
 <template>
   <div>
-    <categories />
+    <order />
   </div>
 </template>
 

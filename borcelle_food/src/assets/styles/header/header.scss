@@ -1,4 +1,8 @@
 .header {
+  position: fixed;
+  width: 100%;
+  box-shadow: 0px 0px 20px 0px #dddddd8c;
+  margin-bottom: 60px;
   &-logo {
     width: 80px;
     height: 80px;
@@ -72,10 +76,11 @@
       border: 1px solid var(--white);
     }
 
-    &:hover{
+    &:hover {
       background-color: var(--dark);
     }
-    &:hover .header-cart-link{
+
+    &:hover .header-cart-link {
       color: var(--white);
     }
 

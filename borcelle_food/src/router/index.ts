@@ -10,9 +10,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/categories',
-      name: 'categories',
-      component: () => import('@/page/Categories/index.vue')
+      path: '/order',
+      name: 'order',
+      component: () => import('@/page/Order/index.vue')
     },
     {
       path: '/blog',
