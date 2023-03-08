@@ -1,26 +1,5 @@
-.order {
-    &-icon {
-        padding-top: 20px;
-        filter: grayscale(1);
+.order{
+    &-top{
+        margin-top: 100px !important;
     }
-
-    &-btn {
-        &:hover .order-icon {
-            filter: none;
-        }
-
-        &:hover .order-text {
-            color: var(--bright-orange) !important;
-        }
-    }
-
-    &-text {
-        font-size: 18px;
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-    }
-}
-.active{
-    color: var(--bright-orange);
-    filter: none;
 }

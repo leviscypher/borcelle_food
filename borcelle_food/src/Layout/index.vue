@@ -9,7 +9,7 @@ import TheFooter from "../components/Layouts/Footer/footer.vue";
     <div class="header">
       <the-header />
     </div>
-    <div class="content">
+    <div class="content pt-[62px]">
       <RouterView />
     </div>
     <div class="footer">
