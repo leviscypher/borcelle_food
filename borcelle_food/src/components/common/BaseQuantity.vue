@@ -17,18 +17,19 @@ const increment = () => {
 const limitQuantity = (event: any) => {
   if (event.target.value > maxQuantity) {
     quantity.value = maxQuantity;
+    
   } else if (event.target.value < 1) {
     quantity.value = 1;
   }
 }
 </script>
-<template lang="">
+<template>
 <div class="quantity-number flex items-center justify-center">
   <base-button class="quantity-reduce m-0" @click="decrement">
     <font-awesome-icon icon="fa-solid fa-minus" />
   </base-button>
   <div class="pr-4 pl-4">
-    <input type="number" :value="quantity" :v-model="quantity" @input="limitQuantity" class="quantity-quantity" min="1" max="100">
+    <input type="number" :value="quantity" :v-model="quantity" @input="limitQuantity" class="quantity-bulk" min="1" max="100">
   </div>
   <base-button class="quantity-increase m-0" @click="increment">
     <font-awesome-icon icon="fa-solid fa-plus" />
