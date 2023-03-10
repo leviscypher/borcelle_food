@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
+import CustomerForm from '@/components/common/auth/customer/form.vue'
+
+const isOpen = ref(false)
+
+const changeLoginForm = () => {
+  isOpen.value = !isOpen.value
+}
 </script>
 
 <template>
@@ -61,8 +69,11 @@
         </router-link>
       </div>
       <div class="header-user">
-        <base-button>Log in</base-button>
+        <base-button @click="changeLoginForm">Log in</base-button>
       </div>
+    </div>
+    <div v-if="isOpen">
+      <customer-form @close="changeLoginForm" />
     </div>
   </div>
 </template>

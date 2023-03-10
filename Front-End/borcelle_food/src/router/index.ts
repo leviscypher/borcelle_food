@@ -7,44 +7,62 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/order',
       name: 'order',
-      component: () => import('@/page/Order/index.vue')
+      component: () => import('@/page/Order/index.vue'),
     },
     {
       path: '/blog',
       name: 'blog',
-      component: () => import('@/page/Blog/index.vue')
+      component: () => import('@/page/Blog/index.vue'),
     },
     {
       path: '/contact',
       name: 'contact',
-      component: () => import('@/page/Contact/index.vue')
+      component: () => import('@/page/Contact/index.vue'),
     },
     {
       path: '/cart',
       name: 'cart',
-      component: () => import('@/page/Cart/index.vue')
+      component: () => import('@/page/Cart/index.vue'),
     },
     {
       path: '/payment',
       name: 'payment',
-      component: () => import('@/page/Payment/payment.vue')
+      component: () => import('@/page/Payment/payment.vue'),
     },
     {
       path: '/detailpage',
       name: 'detailpage',
-      component: () => import('@/page/Detailpage/index.vue')
+      component: () => import('@/page/Detailpage/index.vue'),
     },
     {
       path: '/Test',
       name: 'Test',
-      component: () => import('@/page/Test/index.vue')
+      component: () => import('@/page/Test/index.vue'),
     },
-  ]
+    {
+      path: '/customer',
+      name: 'customer',
+      component: () => import('@/page/customer/index.vue'),
+      children: [
+        {
+          path: '/customer',
+          name: 'customer',
+          component: () => import('@/components/page/customer/layout/edit.vue'),
+        },
+
+        {
+          path: '/customer/order',
+          name: 'customer-order',
+          component: () => import('@/components/page/customer/layout/order.vue'),
+        },
+      ],
+    },
+  ],
 })
 
 export default router

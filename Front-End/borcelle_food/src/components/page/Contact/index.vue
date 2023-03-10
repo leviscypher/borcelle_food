@@ -8,11 +8,11 @@ const title = ref('Contact')
     <base-banner :title="title" />
 
     <!-- LOCATION -->
-    <div class="location mx-auto">
+    <div class="location mx-auto my-40">
       <div class="location-list grid gap-4 grid-cols-3">
         <div class="location-item text-center">
           <nav class="location-icon rounded-full mx-auto mb-10">
-            <i class="fa-solid fa-clock"></i>
+            <font-awesome-icon icon="fa-solid fa-clock" />
           </nav>
           <p>9:00 AM to 12:00 AM</p>
           <p>(Saturday to Thursday)</p>
@@ -20,7 +20,7 @@ const title = ref('Contact')
 
         <div class="location-item text-center active">
           <nav class="location-icon rounded-full mx-auto mb-10">
-            <i class="fa-solid fa-location-dot"></i>
+            <font-awesome-icon icon="fa-solid fa-location-dot" />
           </nav>
           <p>Br1. 28/A Street, New York, USA</p>
           <p>Br2. 31/B Street, Washington, USA</p>
@@ -28,7 +28,7 @@ const title = ref('Contact')
 
         <div class="location-item text-center">
           <nav class="location-icon rounded-full mx-auto mb-10">
-            <i class="fa-solid fa-phone-volume"></i>
+            <font-awesome-icon icon="fa-solid fa-phone" />
           </nav>
           <p>
             <a
