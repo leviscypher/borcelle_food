@@ -3,6 +3,8 @@ import HomeView from '../page/Home/Home.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  linkActiveClass: 'active-link',
+  linkExactActiveClass: 'exact-active-link',
   routes: [
     {
       path: '/',
@@ -45,20 +47,35 @@ const router = createRouter({
       component: () => import('@/page/Test/index.vue'),
     },
     {
-      path: '/customer',
+      path: '/customer/edit',
       name: 'customer',
       component: () => import('@/page/customer/index.vue'),
       children: [
         {
-          path: '/customer',
-          name: 'customer',
-          component: () => import('@/components/page/customer/layout/edit.vue'),
+          path: '',
+          name: 'customer-edit',
+          component: () => import('@/components/page/customer/layout/edit/edit.vue'),
         },
 
         {
           path: '/customer/order',
           name: 'customer-order',
-          component: () => import('@/components/page/customer/layout/order.vue'),
+          component: () => import('@/components/page/customer/layout/order/order.vue'),
+        },
+        {
+          path: '/customer/address',
+          name: 'customer-address',
+          component: () => import('@/components/page/customer/layout/address/address.vue'),
+        },
+        {
+          path: '/customer/address/create',
+          name: 'customer-address-create',
+          component: () => import('@/components/page/customer/layout/address/create.vue'),
+        },
+        {
+          path: '/customer/payment',
+          name: 'customer-payment',
+          component: () => import('@/components/page/customer/layout/payment/payment.vue'),
         },
       ],
     },

@@ -10,7 +10,7 @@ const handleClick = () => {
   <form
     id="form-login"
     class="flex justify-center flex-col w-3/4 mx-auto"
-    @submit.prevent="submit"
+    @submit.prevent
   >
     <div class="form-group">
       <input
