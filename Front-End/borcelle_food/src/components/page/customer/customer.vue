@@ -23,7 +23,7 @@ const title = ref('Thông tin tài khoản')
       </div>
 
       <div class="navbar">
-        <ul class="navbar-item">
+        <ul class="navbar-item list-none">
           <li>
             <router-link
               to="/customer/edit"
@@ -61,7 +61,7 @@ const title = ref('Thông tin tài khoản')
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /* .active-link {
   background: #000;
 } */

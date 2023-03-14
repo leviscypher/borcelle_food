@@ -107,4 +107,4 @@ const getValue = (event: Event) => {
     </div>
   </div>
 </template>
-<style lang=""></style>
+<style lang="" scoped></style>

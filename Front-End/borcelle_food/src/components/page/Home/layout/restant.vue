@@ -43,6 +43,6 @@
 <script>
 export default {}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/page/home/restant.scss';
 </style>

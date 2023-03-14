@@ -25,19 +25,18 @@
       text-align: center;
       height: var(--height);
       line-height: var(--height);
-
     }
 
     &-link {
       font-weight: 400;
       font-size: 18px;
       color: var(--dark);
-      font-family: "Poppins", sans-serif;
+      font-family: 'Poppins', sans-serif;
       text-transform: unset;
       width: 100%;
       display: block;
       height: 100%;
-      transition: linear .3s;
+      transition: linear 0.3s;
       text-decoration: none;
 
       &:hover {
@@ -58,7 +57,7 @@
     text-align: center;
     font-size: 16px;
     position: relative;
-    transition: linear .3s;
+    transition: linear 0.3s;
     cursor: pointer;
 
     &-number {
@@ -89,4 +88,8 @@
       color: var(--black);
     }
   }
+}
+
+.active-link.exact-active-link {
+  color: var(--pale-yellow);
 }

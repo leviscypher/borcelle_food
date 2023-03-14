@@ -39,7 +39,7 @@
 <script>
 export default {}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .reservation-form-input {
   font-size: 1.6rem;
 }

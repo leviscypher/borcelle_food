@@ -172,7 +172,7 @@ const gender = ref(null)
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .left {
   border-right: 1px solid rgb(235, 235, 240);
   padding-right: 20px;

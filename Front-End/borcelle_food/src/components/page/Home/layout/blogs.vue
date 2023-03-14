@@ -8,76 +8,88 @@
     <div class="blogs-content grid grid-cols-3 gap-4 mt-20">
       <div class="blogs-content-item">
         <div class="blogs-content-img">
-          <a href="">
+          <router-link to="/detailpage">
             <img
               class="w-full h-[300px] contain"
               src="@/assets/image/blog1.jpg"
               alt=""
             />
-          </a>
+          </router-link>
           <span class="blogs-content-date">01 May 2020</span>
         </div>
-        <a
-          href=""
+        <router-link
+          to="/detailpage"
           class="no-underline text-[var(--dark)]"
         >
           <h3 class="blogs-content-title block text-4xl font-medium my-10 mx-10">Brief About How to Make Pasta</h3>
-        </a>
+        </router-link>
         <p class="blogs-content-description description ml-10 mr-4 mb-40">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
         </p>
-        <button class="blogs-content-btn bf-btn-primary">Read More</button>
+        <router-link
+          to="/detailpage"
+          class="blogs-content-btn bf-btn-primary no-underline"
+          >Read More</router-link
+        >
       </div>
 
       <div class="blogs-content-item">
         <div class="blogs-content-img">
-          <a href="">
+          <router-link to="/detailpage">
             <img
               class="w-full h-[300px] contain"
               src="@/assets/image/blog2.jpg"
               alt=""
             />
-          </a>
+          </router-link>
           <span class="blogs-content-date">01 May 2020</span>
         </div>
-        <a
-          href=""
+        <router-link
+          to="/detailpage"
           class="no-underline text-[var(--dark)]"
         >
           <h3 class="blogs-content-title block text-4xl font-medium my-10 mx-10">Brief About How to Make Pasta</h3>
-        </a>
+        </router-link>
         <p class="blogs-content-description description ml-10 mr-4 mb-40">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
         </p>
-        <button class="blogs-content-btn bf-btn-primary">Read More</button>
+        <router-link
+          to="/detailpage"
+          class="blogs-content-btn bf-btn-primary no-underline"
+          >Read More</router-link
+        >
       </div>
 
       <div class="blogs-content-item">
         <div class="blogs-content-img">
-          <a href="">
+          <router-link to="/detailpage">
             <img
               class="w-full h-[300px] contain"
               src="@/assets/image/blog3.jpg"
               alt=""
             />
-          </a>
+          </router-link>
           <span class="blogs-content-date">01 May 2020</span>
         </div>
-        <a
-          href=""
+        <router-link
+          to="/detailpage"
           class="no-underline text-[var(--dark)]"
         >
           <h3 class="blogs-content-title block text-4xl font-medium my-10 mx-10">Brief About How to Make Pasta</h3>
-        </a>
+        </router-link>
         <p class="blogs-content-description description ml-10 mr-4 mb-40">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
         </p>
-        <button class="blogs-content-btn bf-btn-primary">Read More</button>
+        <router-link
+          to="/detailpage"
+          class="blogs-content-btn bf-btn-primary no-underline"
+          >Read More</router-link
+        >
       </div>
     </div>
     <div class="blogs-more text-center">
       <a
-        class="no-underline font-medium inline-block text-4xl text-[var(--dark)]"
+        class="no-underline font-medium inline-block text-4xl text-[var(--dark)] hover:text-[var(--pale-yellow)]"
         href=""
         >View More Blogs
       </a>
@@ -87,6 +99,6 @@
 <script>
 export default {}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/styles/page/home/blogs.scss';
 </style>

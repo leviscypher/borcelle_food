@@ -79,4 +79,4 @@ import SelectType from './form/selectType.vue'
   </div>
 </template>
 
-<style lang=""></style>
+<style lang="" scoped></style>

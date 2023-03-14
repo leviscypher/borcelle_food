@@ -45,4 +45,4 @@ const getValue = (event: Event) => {
     </div>
   </div>
 </template>
-<style></style>
+<style lang="" scoped></style>
