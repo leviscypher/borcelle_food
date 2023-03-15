@@ -8,7 +8,6 @@ let props = defineProps<{
 const currentTab = (tabNumber: any) => {
   tab.value = tabNumber
 }
-
 </script>
 <template>
   <div

@@ -66,7 +66,7 @@ const modules = [Autoplay, Navigation]
         <swiper-slide>
           <div class="banner-slider-item">
             <img
-              src="@/assets/image/banner-slider2.png"
+              src="@/assets/image/bo/banner-slider2.png"
               alt=""
             />
           </div>
