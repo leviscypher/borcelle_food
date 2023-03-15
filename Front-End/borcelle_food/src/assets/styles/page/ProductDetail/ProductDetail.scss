@@ -1,0 +1,34 @@
+.product-detail {
+    width: 81rem;
+    box-shadow: 0 10px 20px rgb(0 0 0 / 10%);
+    background-color: var(--white);
+    border-radius: 10px;
+
+    &-left {
+        &-top {
+            width: 400px;
+            height: 400px;
+
+            &-photo {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        &-bottom {
+            &-description-img {
+                width: 80px;
+                height: 80px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &-right {
+        &-option-title {
+            border-radius: 6px;
+            font-size: 15px;
+        }
+    }
+}

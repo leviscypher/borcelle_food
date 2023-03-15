@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import BaseQuantity from '@/components/common/BaseQuantity.vue'
 import { ref } from 'vue'
-
 const tab = ref(1)
+let props = defineProps<{
+  data: any
+}>()
 const currentTab = (tabNumber: any) => {
   tab.value = tabNumber
 }
+
 </script>
 <template>
   <div
@@ -126,11 +129,13 @@ const currentTab = (tabNumber: any) => {
           <div class="collections-item w-full grid grid-cols-4 gap-6 mt-20 mb-10">
             <div class="collections-list">
               <div class="collections-list-img">
-                <img
-                  class="w-full cover"
-                  src="@/assets/image/1.jpg"
-                  alt=""
-                />
+                <router-link :to="props.data">
+                  <img
+                    class="w-full cover"
+                    src="@/assets/image/1.jpg"
+                    alt=""
+                  />
+                </router-link>
                 <div class="collection-list--add-cart">
                   <a href=""><font-awesome-icon icon="fa-solid fa-cart-plus" /> Add To card</a>
                 </div>
