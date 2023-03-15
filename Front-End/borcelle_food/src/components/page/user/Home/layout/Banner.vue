@@ -84,7 +84,7 @@ const modules = [Autoplay, Navigation]
       <!-- </div> -->
       <!-- </div> -->
 
-      <div class="banner-slider-navigate">
+      <div class="banner-slider-navigate z-10">
         <div class="banner-silder-navigate-prev">
           <font-awesome-icon icon="fa-solid fa-arrow-left" />
         </div>

@@ -3,17 +3,8 @@
   text-align: center;
 }
 
-.services-list:nth-child(2) {
-  background-color: var(--pale-yellow);
-  color: var(--white);
-}
-
-.services-list:nth-child(2) .active {
-  color: var(--white);
-}
-
 .services-description {
-  max-width: 580px;
+  max-width: 560px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 0;
@@ -21,6 +12,10 @@
 
 .services-list a {
   text-decoration: none;
+}
+
+.services-list {
+  transition: all 0.5s ease-in-out;
 }
 
 .services-list a h3 {
@@ -34,5 +29,17 @@
 
 .services-list:hover a h3,
 .services-list:hover a p {
+  color: var(--white);
+}
+
+.swiper-slide-next .services-list {
+  background-color: var(--pale-yellow);
+}
+
+.swiper-slide-next .services-list a h3 {
+  color: var(--white);
+}
+
+.swiper-slide-next .services-list a p {
   color: var(--white);
 }

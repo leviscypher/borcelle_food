@@ -22,12 +22,68 @@ const title = ref('Thông tin tài khoản')
         </div>
       </div>
 
-      <div class=""></div>
+      <div class="navbar">
+        <ul class="navbar-item list-none">
+          <li>
+            <router-link
+              to="/customer/edit"
+              class="no-underline"
+              ><font-awesome-icon icon="fa-solid fa-user" />Thông Tin Tài Khoản</router-link
+            >
+          </li>
+          <li>
+            <router-link
+              to="/customer/order"
+              class="no-underline"
+              ><font-awesome-icon icon="fa-brands fa-product-hunt" />Quản lý đơn hàng</router-link
+            >
+          </li>
+          <li>
+            <router-link
+              to="/customer/address"
+              class="no-underline"
+              ><font-awesome-icon icon="fa-solid fa-location-dot" />Số địa chỉ</router-link
+            >
+          </li>
+          <li>
+            <router-link
+              to="/customer/payment"
+              class="no-underline"
+              ><font-awesome-icon icon="fa-solid fa-money-bill" />Thông tin thanh toán</router-link
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="col-span-4 bg-[#fff]">
+    <div class="col-span-4">
       <router-view />
     </div>
   </div>
 </template>
 
-<style lang=""></style>
+<style lang="scss" scoped>
+/* .active-link {
+  background: #000;
+} */
+.navbar-item li a {
+  padding: 10px;
+  display: block;
+  margin-bottom: 10px;
+  color: var(--black);
+  border-radius: 10px;
+  transition: all 0.6s ease-in-out;
+}
+
+.navbar-item li a:hover {
+  color: var(--white);
+  background-color: var(--pale-yellow);
+}
+
+.navbar-item li a svg {
+  margin-right: 16px;
+}
+.active-link.exact-active-link {
+  color: var(--white);
+  background-color: var(--pale-yellow);
+}
+</style>

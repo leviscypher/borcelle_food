@@ -13,7 +13,7 @@ import Subcribe from './layout/subcribe.vue'
     <futured />
     <services />
     <restant />
-    <!-- <base-collections /> -->
+    <base-collections />
     <resevation />
     <blogs />
     <subcribe />
