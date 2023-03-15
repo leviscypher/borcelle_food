@@ -90,8 +90,8 @@ const gender = ref(null)
             </nav>
             <div>
               <ul>
-                <li>Số điện thoại</li>
-                <li>0382584001</li>
+                <li class="list-none">Số điện thoại</li>
+                <li class="list-none">0382584001</li>
               </ul>
             </div>
           </div>
@@ -106,8 +106,8 @@ const gender = ref(null)
             </nav>
             <div>
               <ul>
-                <li>Email</li>
-                <li>hoangtu1512002@gmail.com</li>
+                <li class="list-none">Email</li>
+                <li class="list-none">hoangtu1512002@gmail.com</li>
               </ul>
             </div>
           </div>
