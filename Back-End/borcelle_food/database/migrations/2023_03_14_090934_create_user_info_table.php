@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('email')->nullable();
             $table->date('birthday')->nullable();
             $table->string('gender')->default('other');
+            $table->string('avatar');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
