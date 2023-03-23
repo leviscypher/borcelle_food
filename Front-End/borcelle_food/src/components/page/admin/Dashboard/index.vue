@@ -1,189 +1,149 @@
 <script lang="ts" setup>
+
 </script>
 <template>
-  <div class="sidebar close">
-    <div class="logo-details">
-      <i class="bx bxl-c-plus-plus"></i>
-      <span class="logo_name">CodingLab</span>
+  <div class="app-content">
+    <base-title>Bảng điều khiển</base-title>
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="widget-small primary coloured-icon">
+              <i class='icon bx bxs-user-account fa-3x'></i>
+              <div class="info">
+                <h4>Tổng khách hàng</h4>
+                <p><b>56 khách hàng</b></p>
+                <p class="info-tong">Tổng số khách hàng được quản lý.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
+              <div class="info">
+                <h4>Tổng sản phẩm</h4>
+                <p><b>1850 sản phẩm</b></p>
+                <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
+              <div class="info">
+                <h4>Tổng đơn hàng</h4>
+                <p><b>247 đơn hàng</b></p>
+                <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="widget-small danger coloured-icon"><i class='icon bx bxs-error-alt fa-3x'></i>
+              <div class="info">
+                <h4>Sắp hết hàng</h4>
+                <p><b>4 sản phẩm</b></p>
+                <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="tile">
+              <h3 class="tile-title">Tình trạng đơn hàng</h3>
+              <div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ID đơn hàng</th>
+                      <th>Tên khách hàng</th>
+                      <th>Tổng tiền</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>AL3947</td>
+                      <td>Phạm Thị Ngọc</td>
+                      <td>
+                        19.770.000 đ
+                      </td>
+                      <td>Chờ xử lý</td>
+                    </tr>
+                    <tr>
+                      <td>ER3835</td>
+                      <td>Nguyễn Thị Mỹ Yến</td>
+                      <td>
+                        16.770.000 đ
+                      </td>
+                      <td>Đang vận chuyển</td>
+                    </tr>
+                    <tr>
+                      <td>MD0837</td>
+                      <td>Triệu Thanh Phú</td>
+                      <td>
+                        9.400.000 đ
+                      </td>
+                      <td>Đã hoàn thành</td>
+                    </tr>
+                    <tr>
+                      <td>MT9835</td>
+                      <td>Đặng Hoàng Phúc </td>
+                      <td>
+                        40.650.000 đ
+                      </td>
+                      <td>Đã hủy</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="tile">
+              <h3 class="tile-title">Khách hàng mới</h3>
+              <div>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Tên khách hàng</th>
+                      <th>Ngày sinh</th>
+                      <th>Số điện thoại</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#183</td>
+                      <td>Hột vịt muối</td>
+                      <td>21/7/1992</td>
+                      <td><span class="tag tag-success">0921387221</span></td>
+                    </tr>
+                    <tr>
+                      <td>#219</td>
+                      <td>Bánh tráng trộn</td>
+                      <td>30/4/1975</td>
+                      <td><span class="tag tag-warning">0912376352</span></td>
+                    </tr>
+                    <tr>
+                      <td>#627</td>
+                      <td>Cút rang bơ</td>
+                      <td>12/3/1999</td>
+                      <td><span class="tag tag-primary">01287326654</span></td>
+                    </tr>
+                    <tr>
+                      <td>#175</td>
+                      <td>Hủ tiếu nam vang</td>
+                      <td>4/12/20000</td>
+                      <td><span class="tag tag-danger">0912376763</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul class="nav-links">
-      <li>
-        <a href="#">
-          <i class="bx bx-grid-alt"></i>
-          <span class="link_name">Dashboard</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Category</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class="bx bx-collection"></i>
-            <span class="link_name">Category</span>
-          </a>
-          <i class="bx bxs-chevron-down arrow"></i>
-        </div>
-        <ul class="sub-menu">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Category</a
-            >
-          </li>
-          <li><a href="#">HTML & CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
-          <li><a href="#">PHP & MySQL</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class="bx bx-book-alt"></i>
-            <span class="link_name">Posts</span>
-          </a>
-          <i class="bx bxs-chevron-down arrow"></i>
-        </div>
-        <ul class="sub-menu">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Posts</a
-            >
-          </li>
-          <li><a href="#">Web Design</a></li>
-          <li><a href="#">Login Form</a></li>
-          <li><a href="#">Card Design</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-pie-chart-alt-2"></i>
-          <span class="link_name">Analytics</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Analytics</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-line-chart"></i>
-          <span class="link_name">Chart</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Chart</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class="bx bx-plug"></i>
-            <span class="link_name">Plugins</span>
-          </a>
-          <i class="bx bxs-chevron-down arrow"></i>
-        </div>
-        <ul class="sub-menu">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Plugins</a
-            >
-          </li>
-          <li><a href="#">UI Face</a></li>
-          <li><a href="#">Pigments</a></li>
-          <li><a href="#">Box Icons</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-compass"></i>
-          <span class="link_name">Explore</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Explore</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-history"></i>
-          <span class="link_name">History</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >History</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-cog"></i>
-          <span class="link_name">Setting</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li>
-            <a
-              class="link_name"
-              href="#"
-              >Setting</a
-            >
-          </li>
-        </ul>
-      </li>
-      <li>
-        <div class="profile-details">
-          <div class="profile-content">
-            <img
-              src="@/assets/image/profile.jpg"
-              alt="profileImg"
-            />
-          </div>
-          <div class="name-job">
-            <div class="profile_name">Prem Shahi</div>
-            <div class="job">Web Desginer</div>
-          </div>
-          <i class="bx bx-log-out"></i>
-        </div>
-      </li>
-    </ul>
   </div>
-  <section class="home-section">
-    <div class="home-content">
-      <i class="bx bx-menu"></i>
-      <span class="text">Drop Down Sidebar</span>
-    </div>
-  </section>
 </template>
 <style lang="scss" scoped>
-@import '@/assets/styles/admin/dashboard/dashboard.scss';
+@import "@/assets/styles/admin/dashboard/dashboard.scss";
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import Home from '@/components/page/admin/dashboard/index.vue'
+import Dashboard from "@/components/page/admin/Dashboard/index.vue"
 </script>
-<template >
-  <home />
+<template>
+  <Dashboard />
 </template>
+
