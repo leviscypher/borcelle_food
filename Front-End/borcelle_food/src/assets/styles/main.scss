@@ -205,3 +205,10 @@ table tbody tr td {
   background-size: contain;
   border-bottom-right-radius: 80px;
 }
+.btn-function {
+  height: 38px;
+  display: flex !important;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}

@@ -10,11 +10,11 @@
                     <div class="tile-body">
                         <div class="row element-button">
                             <div class="col-sm-2">
-                                <a class="btn btn-delete btn-sm pdf-file" type="button">
+                                <a class="btn btn-delete btn-sm pdf-file btn-function" type="button">
                                     <i class='bx bxs-trash'></i>Xoá</a>
                             </div>
                             <div class="col-sm-2">
-                                <a class="btn btn-delete btn-sm" type="button">
+                                <a class="btn btn-delete btn-sm btn-function" type="button">
                                     <i class='bx bxs-trash'></i> Xóa tất cả </a>
                             </div>
                         </div>

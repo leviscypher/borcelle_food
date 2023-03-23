@@ -8,37 +8,37 @@
             <div class="row element-button">
                 <div class="col-sm-2">
 
-                    <a class="btn btn-add btn-sm" href="form-add-nhan-vien.html" title="Thêm">
+                    <a class="btn btn-add btn-sm btn-function" href="form-add-nhan-vien.html" title="Thêm">
                         <i class='bx bx-plus'></i>
                         Tạo mới</a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"><i
+                    <a class="btn btn-delete btn-sm nhap-tu-file btn-function" type="button" title="Nhập"><i
                             class='bx bx-cloud-upload'></i> Tải
                         từ file</a>
                 </div>
 
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
+                    <a class="btn btn-delete btn-sm print-file btn-function" type="button" title="In" onclick="myApp.printTable()"><i
                             class='bx bx-printer'></i>In dữ liệu</a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn btn-function" type="button" title="Sao chép"><i
                             class='bx bx-copy'></i> Sao chép</a>
                 </div>
 
                 <div class="col-sm-2">
-                    <a class="btn btn-excel btn-sm" href="" title="In">
+                    <a class="btn btn-excel btn-sm btn-function" href="" title="In">
                         <font-awesome-icon icon="fa-solid fa-file-excel" />
                         Xuất Excel
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"><i class='bx bxs-file-pdf'></i>Xuất
+                    <a class="btn btn-delete btn-sm pdf-file btn-function" type="button" title="In"><i class='bx bxs-file-pdf'></i>Xuất
                         PDF</a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm" type="button" title="Xóa">
+                    <a class="btn btn-delete btn-sm btn-function" type="button" title="Xóa">
                         <i class='bx bxs-trash'></i> Xóa tất cả </a>
                 </div>
             </div>
