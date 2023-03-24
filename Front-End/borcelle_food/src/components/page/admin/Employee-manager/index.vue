@@ -12,9 +12,9 @@
                         <div class="row element-button">
                             <div class="col-sm-2">
 
-                                <a class="btn btn-add btn-sm btn-function" href="form-add-nhan-vien.html" title="Thêm">
+                                <router-link class="btn btn-add btn-sm btn-function" to="/admin/employee-management/add-staff" title="Thêm">
                                     <i class='bx bx-plus'></i>
-                                    Tạo mới nhân viên</a>
+                                    Tạo mới nhân viên</router-link>
                             </div>
                             <div class="col-sm-2">
                                 <a class="btn btn-delete btn-sm nhap-tu-file btn-function" type="button" title="Nhập"><i

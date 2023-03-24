@@ -8,9 +8,9 @@
       <div class="row element-button">
         <div class="col-sm-2">
 
-          <a class="btn btn-add btn-sm btn-function" href="form-add-nhan-vien.html" title="Thêm">
+          <router-link class="btn btn-add btn-sm btn-function" to="/admin/employee-management/add-products" title="Thêm">
             <i class='bx bx-plus'></i>
-            Tạo mới sản phẩm</a>
+            Tạo mới sản phẩm</router-link>
         </div>
         <div class="col-sm-2">
           <a class="btn btn-delete btn-sm nhap-tu-file btn-function" type="button" title="Nhập"><i class='bx bx-cloud-upload'></i> Tải

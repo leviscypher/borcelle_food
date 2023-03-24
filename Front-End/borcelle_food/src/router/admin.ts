@@ -66,6 +66,25 @@ export const admin = [
         component: () => import("@/page/admin/Sales-report/index.vue"),
         meta: { layout: 'layoutadmin' },
       },
+      //add
+      {
+        path: '/admin/employee-management/add-staff',
+        name: 'add-staff',
+        component: () => import("@/page/admin/Employee-manager/Add-new-staff.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
+      {
+        path: '/admin/employee-management/add-products',
+        name: 'add-products',
+        component: () => import("@/page/admin/Product-management/Add-new-products.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
+      {
+        path: '/admin/category/add-category',
+        name: 'add-category',
+        component: () => import("@/page/admin/Category/Add-category.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
     ]
-  }
+  },
 ]
