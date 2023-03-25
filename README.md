@@ -1,27 +1,27 @@
-Đang vui lắm lúc lại buồn \\
-Tại sao mãi cuốn trong guồng phù hư \\
-Não phiền đè nặng tâm tư \\
-Chỉ mong giây phút niệm từ để quên! \\
+<p>Đang vui lắm lúc lại buồn </p>
+<p>Tại sao mãi cuốn trong guồng phù hư </p>
+<p>Não phiền đè nặng tâm tư </p>
+<p>Chỉ mong giây phút niệm từ để quên! </p>
 
-Sinh thời cha mẹ đặt tên \\
-Mấy mươi năm lạc, trôi bên chợ đời \\
-Đổi bao nước mắt, nụ cười \\
-Thì ta thử hỏi kiếp người còn chi? \\
+<p>Sinh thời cha mẹ đặt tên </p>
+<p>Mấy mươi năm lạc, trôi bên chợ đời </p>
+<p>Đổi bao nước mắt, nụ cười </p>
+<p>Thì ta thử hỏi kiếp người còn chi? </p>
 
-Gỡ dòng lệ đọng trên mi \\
-Quơ quào hết những sân si để dành \\
-Thử chơi một trận tan tành \\
-Xem ta còn có mạnh lành hay chăng! \\
+<p>Gỡ dòng lệ đọng trên mi </p>
+<p>Quơ quào hết những sân si để dành </p>
+<p>Thử chơi một trận tan tành </p>
+<p>Xem ta còn có mạnh lành hay chăng! </p>
 
-Cuối cùng ngồi lại ăn năn \\
-Một câu niệm Phật còn lăn tăn nhiều \\
-Vì chưng trước đã làm liều \\
-Hỏi rằng phật có dắt dìu kẻ mê \\
+<p>Cuối cùng ngồi lại ăn năn </p>
+<p>Một câu niệm Phật còn lăn tăn nhiều </p>
+<p>Vì chưng trước đã làm liều </p>
+<p>Hỏi rằng phật có dắt dìu kẻ mê </p>
 
-Bây giờ nghe những khen chê \\
-Bình chân như vại chẳng hề bận tâm \\
-Hơn thua cũng mấy mươi năm \\
-Sang hèn cũng ở trong trầm luân thôi \\
+<p>Bây giờ nghe những khen chê </p>
+<p>Bình chân như vại chẳng hề bận tâm </p>
+<p>Hơn thua cũng mấy mươi năm </p>
+<p>Sang hèn cũng ở trong trầm luân thôi </p>
 
-Đời ta mọi chuyện đã rồi \\
-Cố đi cho hết kiếp người dở dang! \\
+<p>Đời ta mọi chuyện đã rồi </p>
+<p>Cố đi cho hết kiếp người dở dang! </p>
