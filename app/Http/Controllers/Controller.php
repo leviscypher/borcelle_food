@@ -14,22 +14,20 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function uploadImageDrive($avatar)
+    public function uploadImageDrive($image)
     {
-        if ($avatar == "") {
-            return null;
+        if ($image) {
+            $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
+            Storage::disk('google')->put($imageName, file_get_contents($image));
+            $url = Storage::disk('google')->path($imageName);
+            return $url;
         }
-
-        $imageName = Str::random(32) . '.' . $avatar->getClientOriginalExtension();
-        Storage::disk('google')->put($imageName, file_get_contents($avatar));
-        $url = Storage::disk('google')->path($imageName);
-        return $url;
     }
 
-    public function deleteImageDrive($avatar)
+    public function deleteImageDrive($image)
     {
-        if ($avatar) {
-            Storage::disk('google')->delete($avatar);
+        if ($image) {
+            Storage::disk('google')->delete($image);
         }
     }
 }

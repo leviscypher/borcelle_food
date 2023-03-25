@@ -24,7 +24,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:user,username,' . $this->id,
+            'username' => 'required|unique:users,username,' . $this->id,
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
         ];

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('username')->uniqid();
             $table->string('password');
             $table->integer('role')->default('0')->comment('0 - custome, 1 - admin');
+            $table->integer('isActive')->default('0')->comment('0 - in Active, 1 - Active ');
             $table->rememberToken();
             $table->timestamps();
         });

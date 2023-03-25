@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -22,10 +23,11 @@ class UserController extends Controller
     {
         User::create([
             'username' => $request->username,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'role' => $request->role ? $request->role : 0
         ]);
 
-        return response()->json(['message' => 'đăng kí tài khoản thành công!'], 201);
+        return response()->json(['message' => 'thêm thành công.'], 201);
     }
 
     public function edit($id)
@@ -34,8 +36,16 @@ class UserController extends Controller
         return response()->json($user_edit, 200);
     }
 
-    public function update(UserRequest $request)
+    public function update(UserRequest $request, $id)
     {
+        $user_update = User::find($id);
+        DB::table('users')->where('id', $id)->update([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'role' => $request->role ? $request->role : $user_update->role
+        ]);
+
+        return response()->json(['message' => 'cập nhật thành công'], 200);
     }
 
     public function delete($id)
