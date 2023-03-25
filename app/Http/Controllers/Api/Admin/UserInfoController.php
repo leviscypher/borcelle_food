@@ -7,6 +7,7 @@ use App\Http\Requests\UserInfoRequest;
 use App\Http\Requests\UserInfoUpdateRequest;
 
 use App\Models\Admin\UserInfo;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -49,20 +50,27 @@ class UserInfoController extends Controller
             'avatar' => $pathImage,
             'user_id' => $id
         ]);
-        return response()->json(['user-info' => $user_info, 'message' => 'thêm thông tin tài khoản thành công!'], 201);
+        return response()->json(['message' => 'thêm thông tin tài khoản thành công!'], 201);
     }
 
     public function edit($id)
     {
         $user_info_edit = UserInfo::find($id);
+
+
+        if (!$user_info_edit) {
+            return response()->json(['message' => 'thông tin người dùng không tồn tại'], 404);
+        }
+
         if ($user_info_edit->avatar) {
             $user_info_edit->avatar = Storage::disk('google')->url($user_info_edit->avatar);
         }
-        return $user_info_edit;
+        return response()->json($user_info_edit, 200);
     }
 
-    public function update(UserInfoUpdateRequest $request, $id)
+    public function update(UserInfoRequest $request, $id)
     {
+
         $user_info_update = UserInfo::find($id);
 
         if ($request->avatar === "" || $request->avatar === null) {
@@ -71,26 +79,32 @@ class UserInfoController extends Controller
 
         $pathImage = $this->uploadImageDrive($request->avatar);
         $this->deleteImageDrive($user_info_update->avatar);
-        $this->handleUpdate($user_info_update, $request, $pathImage);
+        $this->handleUpdate($user_info_update, $request, $pathImage, $id);
         return response()->json(['message' => 'cập nhật thành công!'], 200);
     }
 
-    private function handleUpdate($repo, $request, $pathImage)
+    private function handleUpdate($repo, $request, $pathImage, $id)
     {
-        $repo->fullname = $request->fullname;
-        $repo->nickname = $request->nickname;
-        $repo->phone = $request->phone;
-        $repo->email = $request->email;
-        $repo->birthday = $request->birthday ? $request->birthday : $repo->birthday;
-        $repo->gender = $request->gender ? $request->gender : $repo->gender;
-        $repo->avatar = $pathImage ? $pathImage : $request->avatar;
-        $repo->user_id = $repo->user_id;
-        $repo->save();
+        DB::table('user_info')->where('id', $id)->update([
+            'fullname' => $request->fullname,
+            'nickname' => $request->nickname,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'birthday' => $request->birthday ? $request->birthday : $repo->birthday,
+            'gender' => $request->gender ? $request->gender : $repo->gender,
+            'avatar' => $pathImage ? $pathImage : $request->avatar,
+            'user_id' => $repo->user_id
+        ]);
     }
 
     public function delete($id)
     {
         $user_info_delete = UserInfo::find($id);
+
+        if (!$user_info_delete) {
+            return response()->json(['message' => 'thông tin người dùng không tồn tại'], 404);
+        }
+
         $this->deleteImageDrive($user_info_delete->avatar);
         $user_info_delete->delete();
         return response()->json(['message' => 'xóa thành công!'], 200);

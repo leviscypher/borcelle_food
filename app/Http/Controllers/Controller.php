@@ -19,6 +19,7 @@ class Controller extends BaseController
         if ($avatar == "") {
             return null;
         }
+
         $imageName = Str::random(32) . '.' . $avatar->getClientOriginalExtension();
         Storage::disk('google')->put($imageName, file_get_contents($avatar));
         $url = Storage::disk('google')->path($imageName);
@@ -30,7 +31,5 @@ class Controller extends BaseController
         if ($avatar) {
             Storage::disk('google')->delete($avatar);
         }
-
-        
     }
 }

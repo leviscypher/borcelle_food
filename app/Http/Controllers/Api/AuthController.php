@@ -19,8 +19,9 @@ class AuthController extends Controller
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             $user = User::where('username', $request->username)->first();
             if ($user->role > 0) {
-                $user->remember_token = $user->createToken('token')->plainTextToken;
-                return response()->json(['user' => $user, 'message' => 'đăng nhập thành công!'], 200);
+                $token = $user->createToken('token')->plainTextToken;
+                $cookie = cookie('token', $token, 60 * 12);
+                return response()->json(['token' => $token, 'message' => 'đăng nhập thành công!'], 200)->withCookie($cookie);
             } else {
                 return response()->json(['errors' => 'bạn không có quyền truy cập!'], 403);
             }
