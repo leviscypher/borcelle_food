@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInfoRequest;
-use App\Http\Requests\UserInfoUpdateRequest;
 
 use App\Models\Admin\UserInfo;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +49,7 @@ class UserInfoController extends Controller
             'avatar' => $pathImage,
             'user_id' => $id
         ]);
-        return response()->json(['message' => 'thêm thông tin tài khoản thành công!'], 201);
+        return response()->json(['message' => 'thêm thông tin tài khoản thành công.'], 201);
     }
 
     public function edit($id)
@@ -59,7 +58,7 @@ class UserInfoController extends Controller
 
 
         if (!$user_info_edit) {
-            return response()->json(['message' => 'thông tin người dùng không tồn tại'], 404);
+            return response()->json(['message' => 'thông tin người dùng không tồn tại.'], 404);
         }
 
         if ($user_info_edit->avatar) {
@@ -80,7 +79,7 @@ class UserInfoController extends Controller
         $pathImage = $this->uploadImageDrive($request->avatar);
         $this->deleteImageDrive($user_info_update->avatar);
         $this->handleUpdate($user_info_update, $request, $pathImage, $id);
-        return response()->json(['message' => 'cập nhật thành công!'], 200);
+        return response()->json(['message' => 'cập nhật thành công.'], 200);
     }
 
     private function handleUpdate($repo, $request, $pathImage, $id)
@@ -102,11 +101,11 @@ class UserInfoController extends Controller
         $user_info_delete = UserInfo::find($id);
 
         if (!$user_info_delete) {
-            return response()->json(['message' => 'thông tin người dùng không tồn tại'], 404);
+            return response()->json(['message' => 'thông tin người dùng không tồn tại.'], 404);
         }
 
         $this->deleteImageDrive($user_info_delete->avatar);
         $user_info_delete->delete();
-        return response()->json(['message' => 'xóa thành công!'], 200);
+        return response()->json(['message' => 'xóa thành công.'], 200);
     }
 }

@@ -47,10 +47,10 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password)
         ]);
-        return response()->json(['user' => $user, 'message' => 'đăng kí tài khoản thành công!'], 201);
+        return response()->json(['message' => 'đăng kí tài khoản thành công!'], 201);
     }
 
-    public function userInfo(Request $request)
+    public function userLogin()
     {
         return response()->json(Auth::user(), 200);
     }
