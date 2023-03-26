@@ -13,21 +13,7 @@
             <div class="col-md-12">
                 <div class="tile">
                     <h3 class="tile-title">Tạo mới sản phẩm</h3>
-                    <div class="tile-body">
-                        <div class="row element-button">
-                            <div class="col-sm-2">
-                                <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                        class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                            </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                        class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                            </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                        class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                            </div>
-                        </div>
+                    <div class="tile-body pt-10">
                         <form class="row">
                             <div class="form-group col-md-3">
                                 <label class="control-label">Mã sản phẩm </label>

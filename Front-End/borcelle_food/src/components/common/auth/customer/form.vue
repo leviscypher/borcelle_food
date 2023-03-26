@@ -23,7 +23,7 @@ const handleCloseForm = () => {
 
 <template>
   <div class="overlay w-full h-full fixed left-0 bottom-0 top-0 right-0 z-[100] flex items-center">
-    <div class="wrapper w-[800px] h-[445px] z-[9999] mx-auto opacity-1 rounded-[30px] grid grid-cols-3 relative">
+    <div class="wrapper w-[800px] z-[9999] mx-auto opacity-1 rounded-[30px] grid grid-cols-3 relative">
       <div class="col-span-2 rounded-l-[30px] bg-[#fff]">
         <h1 class="w-3/4 mx-auto mb-20 mt-10">{{ form === 'login' ? 'Đăng nhập' : 'Đăng kí' }}</h1>
 

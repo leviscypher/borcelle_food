@@ -7,10 +7,11 @@
         <div class="tile-body">
             <div class="row element-button">
                 <div class="col-sm-2">
-
-                    <a class="btn btn-add btn-sm btn-function" href="form-add-nhan-vien.html" title="Thêm">
+                    <router-link to="/admin/category/add-internal" class="btn btn-add btn-sm btn-function"
+                        href="form-add-nhan-vien.html" title="Thêm">
                         <i class='bx bx-plus'></i>
-                        Tạo mới</a>
+                        Tạo mới
+                    </router-link>
                 </div>
                 <div class="col-sm-2">
                     <a class="btn btn-delete btn-sm nhap-tu-file btn-function" type="button" title="Nhập"><i
@@ -19,12 +20,12 @@
                 </div>
 
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm print-file btn-function" type="button" title="In" onclick="myApp.printTable()"><i
-                            class='bx bx-printer'></i>In dữ liệu</a>
+                    <a class="btn btn-delete btn-sm print-file btn-function" type="button" title="In"
+                        onclick="myApp.printTable()"><i class='bx bx-printer'></i>In dữ liệu</a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn btn-function" type="button" title="Sao chép"><i
-                            class='bx bx-copy'></i> Sao chép</a>
+                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn btn-function" type="button"
+                        title="Sao chép"><i class='bx bx-copy'></i> Sao chép</a>
                 </div>
 
                 <div class="col-sm-2">
@@ -34,7 +35,8 @@
                     </a>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-delete btn-sm pdf-file btn-function" type="button" title="In"><i class='bx bxs-file-pdf'></i>Xuất
+                    <a class="btn btn-delete btn-sm pdf-file btn-function" type="button" title="In"><i
+                            class='bx bxs-file-pdf'></i>Xuất
                         PDF</a>
                 </div>
                 <div class="col-sm-2">

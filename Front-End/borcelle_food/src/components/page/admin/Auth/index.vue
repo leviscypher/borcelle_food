@@ -23,7 +23,7 @@ const toDashboard = () => {
                 </div>
                 <form class="login100-form validate-form" @submit.prevent>
                     <span class="login100-form-title">
-                        <b>ĐĂNG NHẬP HỆ THỐNG POS</b>
+                        <b>Đăng nhập hệ thông Borcelle Food</b>
                     </span>
                         <div class="wrap-input100 validate-input">
                             <input class="input100 outline-none" type="text" placeholder="Tài khoản quản trị"

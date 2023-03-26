@@ -85,6 +85,12 @@ export const admin = [
         component: () => import("@/page/admin/Category/Add-category.vue"),
         meta: { layout: 'layoutadmin' },
       },
+      {
+        path: '/admin/category/add-internal',
+        name: 'add-internal',
+        component: () => import("@/page/admin/Internal-management/Add-internal.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
     ]
   },
 ]
