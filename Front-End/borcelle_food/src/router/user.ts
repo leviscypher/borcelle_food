@@ -94,4 +94,10 @@ export const user = [
       },
     ],
   },
+  {
+    path: '/test',
+    name: 'test',
+    meta: { layout: 'layoutuser' },
+    component: () => import('@/test/index.vue'),
+  },
 ]

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, computed } from 'vue'
-import { useUserStore } from '@/stores/users'
+import { useUserStore } from '@/stores/test'
 const store = useUserStore()
 const getUsers = computed(() => {
   return store.getUsers
