@@ -74,23 +74,7 @@ const logout = async () => {
       </div>
       <div class="header-user">
         <div v-if="userData">
-          <el-dropdown>
-            <span class="el-dropdown-link">
               {{ userData }}
-              <el-icon class="el-icon--right">
-                <arrow-down />
-              </el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>Thông tin tài khoản</el-dropdown-item>
-                <el-dropdown-item>Đơn hàng</el-dropdown-item>
-                <el-dropdown-item>
-                  <div @click="logout">Đăng xuất</div>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
         </div>
         <base-button v-else @click="changeLoginForm">Đăng nhập</base-button>
       </div>
@@ -104,14 +88,4 @@ const logout = async () => {
 <style lang="scss" scoped>
 @import '@/assets/styles/header/header.scss';
 
-.example-showcase .el-dropdown+.el-dropdown {
-  margin-left: 15px;
-}
-
-.example-showcase .el-dropdown-link {
-  cursor: pointer;
-  color: var(--el-color-primary);
-  display: flex;
-  align-items: center;
-}
 </style>
