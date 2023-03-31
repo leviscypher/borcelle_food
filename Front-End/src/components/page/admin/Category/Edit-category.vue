@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated, computed, reactive } from "vue";
+import { ref, onMounted, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useAdminStore } from "@/stores/admin";
 
@@ -8,18 +8,20 @@ const useAdmin = useAdminStore();
 const nameCategory = reactive({
   name: "",
 });
-const dataUpdate = ref("");
-const id = route.params.id;
+
+const getEditCategorys = computed(() => {
+  return useAdmin.getEditCategorys;
+});
 
 onMounted(() => {
+  const id = route.params.id;
   if (id) {
     useAdmin.fetchEdit(id);
-    nameCategory.name = useAdmin.getEditCategorys.name;
   }
 });
+
 const updateCategory = (id: any) => {
   useAdmin.fetchUpdate(id, nameCategory);
-  dataUpdate.value = useAdmin.getUpdateCategorys;
 };
 </script>
 <template>
@@ -38,12 +40,14 @@ const updateCategory = (id: any) => {
             <form class="row">
               <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
-                <input
-                  class="form-control"
-                  v-model="nameCategory.name"
-                  type="text"
-                  required
-                />
+                {{ getEditCategorys.name }}
+                  <input
+                    class="form-control"
+                    v-model="nameCategory.name"
+                    :v-model="getEditCategorys.name"
+                    type="text"
+                    required
+                  />
               </div>
             </form>
           </div>

@@ -5,7 +5,8 @@
   margin-bottom: 60px;
   z-index: 99;
   height: 86px;
-    background: var(--white);
+  background: var(--white);
+
   &-logo {
     width: 80px;
     height: 80px;
@@ -89,6 +90,53 @@
     &-link {
       color: var(--black);
     }
+  }
+
+  &-user {
+    width: 20rem;
+    text-align: center;
+  }
+
+  &-nav__item {
+    &:hover .header-nav__submenu {
+      bottom: -130px;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &-nav__link {
+    padding: 15px 25px;
+    cursor: pointer;
+  }
+
+  &-nav__submenu {
+    bottom: -140px;
+    width: 100%;
+    background: #fff;
+    opacity: 0;
+    border-radius: 8px;
+    visibility: hidden;
+    transition: linear .3s;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border: 1px solid var(--light-gray-white);
+  }
+
+  &-nav__chii__item {
+    transition: linear .3s;
+
+    &:hover {
+      background-color: #9f9f9f29;
+    }
+  }
+
+  &__link {
+    text-align: center;
+    width: 100%;
+    display: block;
+    padding: 10px 7px;
+    text-decoration: none;
+    color: var(--black);
   }
 }
 

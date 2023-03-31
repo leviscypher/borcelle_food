@@ -1,4 +1,34 @@
 <script lang="ts" setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import constants from "@/constants";
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const userData = ref("");
+
+onMounted(async () => {
+  if (localStorage.getItem("token")) {
+    const data = await axios.get(
+      "http://127.0.0.1:8000/api/user-login",
+      constants.routeApis.TOKEN
+    );
+    userData.value = data.data.username;
+  }
+});
+
+const logout = async () => {
+  try {
+    await axios
+      .get("http://127.0.0.1:8000/api/logout", constants.routeApis.TOKEN_LOGOUT)
+      .then((res) => {
+        localStorage.removeItem("token");
+        router.push("/admin")
+      });
+  } catch (error) {
+    alert(error);
+  }
+};
 </script>
 <template>
     <div class="sidebar close">
@@ -75,10 +105,10 @@
                         <img src="@/assets/image/profile.jpg" alt="profileImg" />
                     </div>
                     <div class="name-job">
-                        <div class="profile_name">Prem Shahi</div>
+                        <div class="profile_name">{{ userData }}</div>
                         <div class="job">Web Desginer</div>
                     </div>
-                    <i class="bx bx-log-out"></i>
+                    <i class="bx bx-log-out" @click="logout"></i>
                 </div>
             </li>
         </ul>

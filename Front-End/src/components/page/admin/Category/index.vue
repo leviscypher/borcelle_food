@@ -1,25 +1,24 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive } from "vue";
 import { useAdminStore } from "@/stores/admin";
+
 const category = useAdminStore();
+
 const idCategory = reactive({ id: "" });
+onMounted(() => {
+  category.fetchCategory();
+});
 
 const getCategory = computed(() => {
   return category.getCategory;
 });
-onMounted(() => {
-  category.fetchCategory();
-});
-const isOpen = ref(false);
-const isModalVisible = computed(() => {
-  return isOpen.value;
-});
-const onToggle = (id: any) => {
-  isOpen.value = !isOpen.value;
+
+const getId = (id: any) => {
   idCategory.id = id;
 };
-const deleteCategory = () => {
-  category.fetchDelete(idCategory);
+
+const deleteCategory = (id: any) => {
+  category.fetchDelete(id);
 };
 </script>
 <template>
@@ -113,18 +112,15 @@ const deleteCategory = () => {
                   <td>{{ category.id }}</td>
                   <td>{{ category.name }}</td>
                   <td class="table-td-center flex justify-center">
-                    <!-- <base-button @click="onToggle(category.id)"
-                                            class="btn btn-primary btn-sm trash mr-[4px]" type="button" title="Xóa">
-                                            <i class='bx bxs-trash'></i>
-                                        </base-button> -->
-                    <!-- <button
+                    <base-button
                       type="button"
                       class="btn btn-primary btn-sm trash mr-[4px]"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
+                      @click="getId(category.id)"
                     >
                       <i class="bx bxs-trash"></i>
-                    </button> -->
+                    </base-button>
                     <router-link
                       :to="`/admin/category/eidt-category/${category.id}`"
                       type="button"
@@ -140,20 +136,59 @@ const deleteCategory = () => {
         </div>
       </div>
     </div>
+
+    <div
+      class="modal"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title text-black" id="exampleModalLabel">
+              Bạn có muốn xoá không
+            </h2>
+            <button
+              type="button"
+              class="btn-close p-0 m-0"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <i class="bx bxs-trash"></i>
+            </div>
+            <p class="text-center body">
+              Bạn có chắn chắn muốn xoá danh mục này không không ?
+            </p>
+          </div>
+          <div class="modal-footer gap-[10px]">
+            <base-button
+              type="button"
+              class="btn-footer m-0 bg-[#0b0320] text-white"
+              data-bs-dismiss="modal"
+            >
+              Huỷ
+            </base-button>
+
+            <base-button
+              type="button"
+              class="btn-footer bg-red-600 text-white"
+              data-bs-dismiss="modal"
+              @click="deleteCategory(idCategory.id)"
+              >Xoá</base-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
- 
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import "@/assets/styles/admin/admin.scss";
-
-th {
-  font-size: 14px !important;
-  background-color: #eeeeee;
-  color: #000;
-}
-
-td {
-  vertical-align: middle !important;
-}
+@import "@/assets/styles/admin/Category/category.scss";
 </style>

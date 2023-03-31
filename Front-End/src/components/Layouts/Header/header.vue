@@ -1,35 +1,37 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import CustomerForm from '@/components/common/auth/customer/form.vue'
-import axios from "axios"
-import constants from '@/constants'
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ref, onMounted } from "vue";
+import CustomerForm from "@/components/common/auth/customer/form.vue";
+import axios from "axios";
+import constants from "@/constants";
 
-const isOpen = ref(false)
-const userData = ref('')
+const isOpen = ref(false);
+const userData = ref("");
 
 const changeLoginForm = () => {
-  isOpen.value = !isOpen.value
-}
+  isOpen.value = !isOpen.value;
+};
 
 onMounted(async () => {
   if (localStorage.getItem("token")) {
-    const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKEN)
-    userData.value = data.data.username
+    const data = await axios.get(
+      "http://127.0.0.1:8000/api/user-login",
+      constants.routeApis.TOKEN
+    );
+    userData.value = data.data.username;
   }
-})
+});
 
 const logout = async () => {
   try {
-    await axios.get('http://127.0.0.1:8000/api/logout', constants.routeApis.TOKEN_LOGOUT).then((res) => {
-      localStorage.removeItem('token')
-    });
+    await axios
+      .get("http://127.0.0.1:8000/api/logout", constants.routeApis.TOKEN_LOGOUT)
+      .then((res) => {
+        localStorage.removeItem("token");
+      });
+  } catch (error) {
+    alert(error);
   }
-  catch (error) {
-    alert(error)
-  }
-}
-
+};
 </script>
 
 <template>
@@ -74,7 +76,26 @@ const logout = async () => {
       </div>
       <div class="header-user">
         <div v-if="userData">
-              {{ userData }}
+          <nav class="header-nav p-0">
+            <ul class="header-nav__list list-none p-0">
+              <li class="header-nav__item relative p-0">
+                <div class="header-nav__link">
+                  <font-awesome-icon :icon="['far', 'user']" /> {{ userData }}
+                </div>
+                <ul class="header-nav__submenu list-none absolute p-0">
+                  <li class="header-nav__chii__item">
+                    <router-link to="/contact" class="header__link">Trang cá nhân</router-link>
+                  </li>
+                  <li class="header-nav__chii__item">
+                    <router-link to="/contact" class="header__link">Thông tin đơn hàng</router-link>
+                  </li>
+                  <li class="header-nav__chii__item">
+                    <div @click="logout" class="header__link">Đăng xuất</div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
         </div>
         <base-button v-else @click="changeLoginForm">Đăng nhập</base-button>
       </div>
@@ -86,6 +107,16 @@ const logout = async () => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/header/header.scss';
+@import "@/assets/styles/header/header.scss";
 
+.example-showcase .el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
+}
 </style>

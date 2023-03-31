@@ -7,7 +7,6 @@ export const useAdminStore = defineStore("admin", {
     state: () => ({
         categorys: [],
         editCategorys: [],
-        updateCategorys: [],
     }),
     getters: {
         getCategory(state) {
@@ -15,10 +14,7 @@ export const useAdminStore = defineStore("admin", {
         },
         getEditCategorys(state) {
             return state.editCategorys
-        },
-        getUpdateCategorys(state) {
-            return state.updateCategorys
-        },
+        }
     },
     actions: {
         async fetchCategory() {
@@ -40,8 +36,11 @@ export const useAdminStore = defineStore("admin", {
         },
         async fetchEdit(id: any) {
             try {
+
                 await axios.get(`http://127.0.0.1:8000/api/admin/categories/edit/${id}`, constants.routeApis.TOKEN)
-                    .then((res) => this.editCategorys = res.data)
+                    .then((res) => {
+                        this.editCategorys = res.data
+                    })
             }
             catch (error) {
                 return;
@@ -49,16 +48,19 @@ export const useAdminStore = defineStore("admin", {
         },
         async fetchUpdate(id: any, data: any) {
             try {
-                const dataUpdate = await axios.post(`http://127.0.0.1:8000/api/admin/categories/update/${id}`, data, constants.routeApis.TOKEN)
-                this.updateCategorys = dataUpdate.data.message;
+                await axios.post(`http://127.0.0.1:8000/api/admin/categories/update/${id}`, data, constants.routeApis.TOKEN)
             }
             catch (error) {
-                return false;
+                return;
             }
         },
         async fetchDelete(id: any) {
             try {
-                await axios.get(`http://127.0.0.1:8000/api/admin/categories/update/${id}`, constants.routeApis.TOKEN)
+                await axios.post(`http://127.0.0.1:8000/api/admin/categories/delete/${id}`, constants.routeApis.TOKEN_LOGOUT)
+                // .then(response => {
+                //     this.categorys.splice(this.categorys.indexOf(id), 1);
+                // });
+
             }
             catch (error) {
                 return;

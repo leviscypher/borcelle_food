@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import LayoutAdmin from './admin.vue'
-import LayoutUser from './user.vue'
+import { useRoute } from "vue-router";
+import LayoutAdmin from "./admin.vue";
+import LayoutUser from "./user.vue";
 
-const route = useRoute()
+const route = useRoute();
 </script>
 
 <template>
