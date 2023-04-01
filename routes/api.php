@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\UserInfoController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
+use App\Http\Controllers\Api\Admin\ProductsController;
 
 use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 
@@ -29,7 +30,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-login', [AuthController::class, 'userLogin']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout']);
 });
 
 
@@ -51,7 +52,7 @@ Route::prefix('admin')->group(function () {
         // THÊM SỬA XÓA THÔNG TIN TÀI KHOẢN.
         Route::prefix('/user-info')->group(function () {
             Route::get('/all', [UserInfoController::class, 'index']);
-            Route::post('/create/{user_id}', [UserInfoController::class, 'create']);
+            // Route::post('/create/{user_id}', [UserInfoController::class, 'create']);
             Route::get('/edit/{user_id}', [UserInfoController::class, 'edit']);
             Route::post('/update/{user_id}', [UserInfoController::class, 'update']);
             Route::delete('/delete/{id}', [UserInfoController::class, 'delete']);
@@ -64,6 +65,15 @@ Route::prefix('admin')->group(function () {
             Route::get('/edit/{id}', [CategoriesController::class, 'edit']);
             Route::post('/update/{id}', [CategoriesController::class, 'update']);
             Route::delete('/delete/{id}', [CategoriesController::class, 'delete']);
+        });
+
+        // THÊM SỬA XÓA SẢN PHẨM.
+        Route::prefix('/product')->group(function () {
+            Route::get('/all', [ProductsController::class, 'index']);
+            Route::post('/create', [ProductsController::class, 'create']);
+            Route::get('/edit/{id}', [ProductsController::class, 'edit']);
+            Route::post('/update/{id}', [ProductsController::class, 'update']);
+            Route::delete('/delete/{id}', [ProductsController::class, 'delete']);
         });
     });
 });

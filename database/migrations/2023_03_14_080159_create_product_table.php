@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('name', 255);
             $table->decimal('price', 10, 2);
             $table->string('quantity', 255);
-            $table->string('image_path', 500);
+            $table->string('image_path');
             $table->string('description');
-            $table->string('image_child_path');
             $table->unsignedBigInteger('categories_id');
             $table->foreign('categories_id')->references('id')->on('categories');
             $table->timestamps();

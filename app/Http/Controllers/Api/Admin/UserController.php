@@ -21,37 +21,60 @@ class UserController extends Controller
 
     public function create(UserRequest $request)
     {
-        User::create([
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => $request->role ? $request->role : 0
-        ]);
-
-        return response()->json(['message' => 'thêm thành công.'], 201);
+        try {
+            User::create([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => $request->role ? $request->role : 0
+            ]);
+            return response()->json(['message' => $this->addSuccess], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function edit($id)
     {
-        $user_edit = User::find($id);
-        return response()->json($user_edit, 200);
+        try {
+            $user_edit = User::find($id);
+            if (!$user_edit) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+            return response()->json($user_edit, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function update(UserRequest $request, $id)
     {
-        $user_update = User::find($id);
-        DB::table('users')->where('id', $id)->update([
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role' => $request->role ? $request->role : $user_update->role
-        ]);
-
-        return response()->json(['message' => 'cập nhật thành công'], 200);
+        try {
+            $user_update = User::find($id);
+            if (!$user_update) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+            DB::table('users')->where('id', $id)->update([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => $request->role ? $request->role : $user_update->role
+            ]);
+            return response()->json(['message' => $this->updateSuccess], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function delete($id)
     {
-        $user_delete = User::find($id);
-        $user_delete->delete();
-        return response()->json(['message' => 'xóa thành công.'], 200);
+        try {
+            $user_delete = User::find($id);
+            if (!$user_delete) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+            $user_delete->delete();
+            return response()->json(['message' => $this->deleteSuccess], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 }

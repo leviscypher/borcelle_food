@@ -36,36 +36,42 @@ class UserInfoController extends Controller
 
     public function create(UserInfoRequest $request, $user_id)
     {
-        if (!$request->avatar) {
-            $pathImage = null;
-        }
-        $pathImage = $this->uploadImageDrive($request->avatar);
-        UserInfo::create([
-            'fullname' => $request->fullname,
-            'nickname' => $request->nickname,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'birthday' => $request->birthday,
-            'gender' => $request->gender ? $request->gender : 'other',
-            'avatar' => $pathImage,
-            'user_id' => $user_id
-        ]);
+        try {
+            if (!$request->avatar) {
+                $pathImage = null;
+            }
+            $pathImage = $this->uploadImageDrive($request->avatar);
+            UserInfo::create([
+                'fullname' => $request->fullname,
+                'nickname' => $request->nickname,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'birthday' => $request->birthday,
+                'gender' => $request->gender ? $request->gender : 'other',
+                'avatar' => $pathImage,
+                'user_id' => $user_id
+            ]);
 
-        return response()->json(['message' => 'thêm thành công.'], 201);
+            return response()->json(['message' => $this->addSuccess], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function edit($id)
     {
-        $user_info_edit = UserInfo::where('user_id', $id)->first();
-
-        if (!$user_info_edit) {
-            return response()->json($user_info_edit, 404);
+        try {
+            $user_info_edit = UserInfo::where('user_id', $id)->first();
+            if (!$user_info_edit) {
+                return response()->json($user_info_edit, 404);
+            }
+            if ($user_info_edit->avatar) {
+                $user_info_edit->avatar = Storage::disk('google')->url($user_info_edit->avatar);
+            }
+            return response()->json($user_info_edit, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
-
-        if ($user_info_edit->avatar) {
-            $user_info_edit->avatar = Storage::disk('google')->url($user_info_edit->avatar);
-        }
-        return response()->json($user_info_edit, 200);
     }
 
     public function update(UserInfoRequest $request, $user_id)
@@ -78,31 +84,35 @@ class UserInfoController extends Controller
                 DB::table('users')->where('id', $user_id)->update([
                     'isActive' => 1
                 ]);
-                return response()->json(['message' => 'cập nhật thành công.'], 201);
+                return response()->json(['message' => $this->updateSuccess], 201);
             } else {
                 $this->handleUpdate($user_info_update, $request, $user_id);
-                return response()->json(['message' => 'cập nhật thành công.'], 200);
+                return response()->json(['message' => $this->updateSuccess], 200);
             }
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'đã có lỗi xảy ra.'], 404);
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
     }
 
     public function delete($id)
     {
-        $user_info_delete = UserInfo::find($id);
+        try {
+            $user_info_delete = UserInfo::find($id);
 
-        if (!$user_info_delete) {
-            return response()->json(['message' => 'thông tin người dùng không tồn tại.'], 404);
+            if (!$user_info_delete) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+
+            DB::table('users')->where('id', $user_info_delete->user_id)->update([
+                'isActive' => 0
+            ]);
+
+            $this->deleteImageDrive($user_info_delete->avatar);
+            $user_info_delete->delete();
+            return response()->json(['message' => $this->deleteSuccess], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
-
-        DB::table('users')->where('id', $user_info_delete->user_id)->update([
-            'isActive' => 0
-        ]);
-
-        $this->deleteImageDrive($user_info_delete->avatar);
-        $user_info_delete->delete();
-        return response()->json(['message' => 'xóa thành công.'], 200);
     }
 
     private function handleCreate($request, $user_id)

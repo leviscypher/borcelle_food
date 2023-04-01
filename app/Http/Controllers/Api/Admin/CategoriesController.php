@@ -18,39 +18,53 @@ class CategoriesController extends Controller
 
     public function create(CategoriesRequest $request)
     {
-        Categories::create([
-            'name' => $request->name
-        ]);
+        try {
+            Categories::create([
+                'name' => $request->name
+            ]);
 
-        return response()->json(['message' => 'thêm thành công.'], 201);
+            return response()->json(['message' => $this->addSuccess], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function edit($id)
     {
-        $category_edit = Categories::find($id);
-
-        if (!$category_edit) {
-            return response()->json(['message' => 'danh mục này không tồn tại.'], 404);
+        try {
+            $category_edit = Categories::find($id);
+            if (!$category_edit) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+            return response()->json($category_edit, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
-
-        return response()->json($category_edit, 200);
     }
 
     public function update(CategoriesRequest $request, $id)
     {
-        DB::table('categories')->where('id', $id)->update(['name' => $request->name]);
-        return response()->json(['message' => 'cập nhật thành công.'], 200);
+        try {
+            DB::table('categories')->where('id', $id)->update(['name' => $request->name]);
+            return response()->json(['message' => $this->updateSuccess], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
+        }
     }
 
     public function delete($id)
     {
-        $category_delete = Categories::find($id);
+        try {
+            $category_delete = Categories::find($id);
 
-        if (!$category_delete) {
-            return response()->json(['message' => 'không có danh mục cần xóa.'], 404);
+            if (!$category_delete) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+
+            $category_delete->delete();
+            return response()->json(['message' => $this->deleteSuccess], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
-
-        $category_delete->delete();
-        return response()->json(['message' => 'xóa thành công.'], 200);
     }
 }

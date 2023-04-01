@@ -14,13 +14,29 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $addSuccess = 'thêm thành công.';
+    public $updateSuccess = "cập nhật thành công.";
+    public $deleteSuccess = "xóa thành công.";
+    public $anUnspecifiedError = "đã có lỗi xảy ra vui lòng thử lại sau.";
+    public $doesNotExist = "nội dung này không tồn tại.";
+
     public function uploadImageDrive($image)
     {
         if ($image) {
-            $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-            Storage::disk('google')->put($imageName, file_get_contents($image));
-            $url = Storage::disk('google')->path($imageName);
-            return $url;
+            if (is_array($image)) {
+                $url = [];
+                foreach ($image as $name) {
+                    $imageName = Str::random(32) . '.' . $name->getClientOriginalExtension();;
+                    Storage::disk('google')->put($imageName, file_get_contents($name));
+                    $url[] = Storage::disk('google')->path($imageName);
+                }
+                return $url;
+            } else {
+                $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
+                Storage::disk('google')->put($imageName, file_get_contents($image));
+                $url = Storage::disk('google')->path($imageName);
+                return $url;
+            }
         }
     }
 
