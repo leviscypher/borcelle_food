@@ -19,7 +19,7 @@ class AuthController extends Controller
         try {
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $user = User::where('username', $request->username)->first();
-                if ($user->role > 0) {
+                if ($user->role_id === 1) {
                     $token = $user->createToken('token')->plainTextToken;
                     $cookie = cookie('token', $token, 60 * 12);
                     return response()->json(['token' => $token, 'message' => 'đăng nhập thành công!'], 200)->withCookie($cookie);

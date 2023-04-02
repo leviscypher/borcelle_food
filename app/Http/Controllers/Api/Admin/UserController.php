@@ -25,7 +25,8 @@ class UserController extends Controller
             User::create([
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
-                'role' => $request->role ? $request->role : 0
+                'role_id' => $request->role_id,
+                'position_id' => $request->position_id
             ]);
             return response()->json(['message' => $this->addSuccess], 201);
         } catch (\Throwable $th) {
@@ -56,7 +57,8 @@ class UserController extends Controller
             DB::table('users')->where('id', $id)->update([
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
-                'role' => $request->role ? $request->role : $user_update->role
+                'role_id' => $request->role_id ? $request->role_id : $user_update->role_id,
+                'position_id' => $request->position_id ? $request->position_id : $user_update->position_id,
             ]);
             return response()->json(['message' => $this->updateSuccess], 200);
         } catch (\Throwable $th) {
