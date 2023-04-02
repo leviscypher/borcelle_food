@@ -81,9 +81,6 @@ class UserInfoController extends Controller
 
             if (!$user_info_update) {
                 $this->handleCreate($request, $user_id);
-                DB::table('users')->where('id', $user_id)->update([
-                    'isActive' => 1
-                ]);
                 return response()->json(['message' => $this->updateSuccess], 201);
             } else {
                 $this->handleUpdate($user_info_update, $request, $user_id);
@@ -102,10 +99,6 @@ class UserInfoController extends Controller
             if (!$user_info_delete) {
                 return response()->json(['message' => $this->doesNotExist], 404);
             }
-
-            DB::table('users')->where('id', $user_info_delete->user_id)->update([
-                'isActive' => 0
-            ]);
 
             $this->deleteImageDrive($user_info_delete->avatar);
             $user_info_delete->delete();
