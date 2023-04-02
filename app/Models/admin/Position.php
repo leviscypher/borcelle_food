@@ -9,7 +9,7 @@ class Position extends Model
 {
     use HasFactory;
 
-    protected $table = 'positon';
+    protected $table = 'position';
 
     protected $fillable = ['name'];
 }
