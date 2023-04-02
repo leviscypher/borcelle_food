@@ -18,7 +18,7 @@ class IsAdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->role_id > 0) {
+            if (Auth::user()->role_id === 1) {
                 return $next($request);
             } else {
                 return response()->json(['message' => 'bạn không có quyền truy cập'], 403);

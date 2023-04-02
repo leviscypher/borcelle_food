@@ -23,9 +23,6 @@ return new class extends Migration
 
         DB::table('roles')->insert([
             ['name' => 'admin'],
-            ['name' => 'manager'],
-            ['name' => 'supplier'],
-            ['name' => 'salesperson'],
             ['name' => 'customer'],
         ]);
     }
