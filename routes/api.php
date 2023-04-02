@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Admin\UserInfoController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\ProductsController;
 use App\Http\Controllers\Api\Admin\PositionController;
+use App\Http\Controllers\Api\Admin\RolesController;
 
 use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 
@@ -82,8 +83,9 @@ Route::prefix('admin')->group(function () {
             Route::get('/all', [PositionController::class, 'index']);
             Route::post('/create', [PositionController::class, 'create']);
             Route::delete('/delete/{id}', [PositionController::class, 'delete']);
-
         });
+
+        Route::get('role/all', [RolesController::class, 'index']);
     });
 });
 
