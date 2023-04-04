@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInfoRequest;
 
 use App\Models\Admin\UserInfo;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +17,7 @@ class UserInfoController extends Controller
     {
         $user_info = UserInfo::all();
         $datas = [];
+
         foreach ($user_info as $item) {
             $data = [
                 'id' => $item->id,
@@ -27,6 +29,7 @@ class UserInfoController extends Controller
                 'gender' => $item->gender ? $item->gender : 'other',
                 'avatar' => $item->avatar ? Storage::disk('google')->url($item->avatar) : null,
                 'user_id' => $item->user_id,
+                'user' =>  User::find($item->user_id)
             ];
             $datas[] = $data;
         }
