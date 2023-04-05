@@ -15,7 +15,7 @@ class UserInfoController extends Controller
 
     public function index()
     {
-        $user_info = UserInfo::all();
+        $user_info = UserInfo::paginate($this->itemsPerPage);
         $datas = [];
 
         foreach ($user_info as $item) {
@@ -33,8 +33,8 @@ class UserInfoController extends Controller
             ];
             $datas[] = $data;
         }
-
-        return response()->json(['datas' => $datas]);
+        $pagination = $this->getPagination($datas, $user_info);
+        return response()->json($pagination, 200);
     }
 
     public function edit($id)

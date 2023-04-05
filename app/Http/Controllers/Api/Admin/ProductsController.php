@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::all();
+        $product = Product::paginate($this->itemsPerPage);
         $datas = [];
-        foreach ($product as $list) {
+        foreach ($product->items() as $list) {
             $image_path = json_decode($list->image_path);
             $image_url = [];
             foreach ($image_path as $item) {
@@ -36,7 +36,8 @@ class ProductsController extends Controller
             ];
             $datas[] = $data;
         }
-        return response()->json(['data' => $datas], 200);
+        $pagination = $this->getPagination($datas, $product);
+        return response()->json($pagination, 200);
     }
 
 

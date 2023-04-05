@@ -14,11 +14,30 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $itemsPerPage = 15;
     public $addSuccess = 'thêm thành công.';
     public $updateSuccess = "cập nhật thành công.";
     public $deleteSuccess = "xóa thành công.";
     public $anUnspecifiedError = "đã có lỗi xảy ra vui lòng thử lại sau.";
     public $doesNotExist = "nội dung này không tồn tại.";
+
+    public function getPagination($datas = [], $item)
+    {
+        return  [
+            'data' => $datas,
+            'current_page' => $item->currentPage(),
+            'per_page' => $item->perPage(),
+            'total' => $item->total(),
+            'last_page' => $item->lastPage(),
+            'from' => $item->firstItem(),
+            'to' => $item->lastItem(),
+            'path' => $item->url($item->currentPage()),
+            'first_page_url' => $item->url(1),
+            'last_page_url' => $item->url($item->lastPage()),
+            'next_page_url' => $item->nextPageUrl(),
+            'prev_page_url' => $item->previousPageUrl(),
+        ];
+    }
 
     public function uploadImageDrive($image)
     {
