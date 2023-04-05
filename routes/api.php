@@ -54,7 +54,6 @@ Route::prefix('admin')->group(function () {
         // THÊM SỬA XÓA THÔNG TIN TÀI KHOẢN.
         Route::prefix('/user-info')->group(function () {
             Route::get('/all', [UserInfoController::class, 'index']);
-            // Route::post('/create/{user_id}', [UserInfoController::class, 'create']);
             Route::get('/edit/{user_id}', [UserInfoController::class, 'edit']);
             Route::post('/update/{user_id}', [UserInfoController::class, 'update']);
             Route::delete('/delete/{id}', [UserInfoController::class, 'delete']);

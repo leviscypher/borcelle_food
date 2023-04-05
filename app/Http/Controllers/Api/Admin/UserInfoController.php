@@ -37,30 +37,6 @@ class UserInfoController extends Controller
         return response()->json(['datas' => $datas]);
     }
 
-    // public function create(UserInfoRequest $request, $user_id)
-    // {
-    //     try {
-    //         if (!$request->avatar) {
-    //             $pathImage = null;
-    //         }
-    //         $pathImage = $this->uploadImageDrive($request->avatar);
-    //         UserInfo::create([
-    //             'fullname' => $request->fullname,
-    //             'nickname' => $request->nickname,
-    //             'phone' => $request->phone,
-    //             'email' => $request->email,
-    //             'birthday' => $request->birthday,
-    //             'gender' => $request->gender ? $request->gender : 'other',
-    //             'avatar' => $pathImage,
-    //             'user_id' => $user_id
-    //         ]);
-
-    //         return response()->json(['message' => $this->addSuccess], 201);
-    //     } catch (\Throwable $th) {
-    //         return response()->json(['message' => $this->anUnspecifiedError], 404);
-    //     }
-    // }
-
     public function edit($id)
     {
         try {
