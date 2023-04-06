@@ -52,6 +52,7 @@ class ProductsController extends Controller
                 'image_path' => json_encode($image_path),
                 'description' => $request->description,
                 'quantity' => $request->quantity,
+                'status' => $request->status,
                 'categories_id' => $request->categories_id
             ]);
             return response()->json(['message' => $this->addSuccess], 201);
@@ -109,6 +110,7 @@ class ProductsController extends Controller
                 'quantity' => $request->quantity,
                 'description' => $request->description,
                 'image_path' => json_encode($image_path_new),
+                'status' => $request->status ? $request->status : $product_update->status,
                 'categories_id' => $request->categories_id ? $request->categories_id : $product_update->categories_id
             ]);
 
