@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('fullname', 255);
             $table->string('nickname', 255)->nullable();
             $table->string('phone');
-            $table->string('email');
+            // $table->string('email');
             $table->string('birthday');
             $table->string('gender');
             $table->string('avatar')->nullable();

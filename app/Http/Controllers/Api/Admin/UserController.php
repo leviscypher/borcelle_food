@@ -25,6 +25,7 @@ class UserController extends Controller
             User::create([
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
+                'email' => $request->email,
                 'role_id' => $request->role_id,
                 'position_id' => $request->position_id
             ]);
@@ -57,6 +58,7 @@ class UserController extends Controller
             DB::table('users')->where('id', $id)->update([
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
+                'email' => $request->email,
                 'role_id' => $request->role_id ? $request->role_id : $user_update->role_id,
                 'position_id' => $request->position_id ? $request->position_id : $user_update->position_id,
             ]);

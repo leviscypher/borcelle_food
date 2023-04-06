@@ -26,9 +26,10 @@ use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 */
 
 
-// AUTH API - ĐĂNG NHẬP TRANG WEB - DÀNH CHO NGƯỜI DÙNG.
+// AUTH API - DÀNH CHO NGƯỜI DÙNG.
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/reset-password', [AuthController::class, 'passwordReset']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-login', [AuthController::class, 'userLogin']);

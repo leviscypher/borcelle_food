@@ -12,6 +12,6 @@ class UserInfo extends Model
     protected $table = 'user_info';
 
     protected $fillable = [
-        'fullname', 'nickname', 'phone', 'email', 'birthday', 'avatar', 'gender', 'user_id'
+        'fullname', 'nickname', 'phone', 'birthday', 'avatar', 'gender', 'user_id'
     ];
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('password');
+            $table->string('email')->unique();
             $table->integer('isActive')->default('0');
             $table->unsignedBigInteger('role_id')->default(2)->comment('1 - admin; 2 - customer');
             $table->unsignedBigInteger('position_id')->default(2);

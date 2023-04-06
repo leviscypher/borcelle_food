@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\PasswordResetRequest;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,7 +56,8 @@ class AuthController extends Controller
         try {
             User::create([
                 'username' => $request->username,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                'email' => $request->email
             ]);
             return response()->json(['message' => 'đăng kí tài khoản thành công!'], 201);
         } catch (\Throwable $th) {
@@ -77,7 +80,7 @@ class AuthController extends Controller
         }
     }
 
-    public function resetPassword()
+    public function passwordReset(PasswordResetRequest $request)
     {
         return 'reset password';
     }

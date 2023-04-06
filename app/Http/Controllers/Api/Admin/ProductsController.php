@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Product;
+use App\Models\Admin\Categories;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,8 @@ class ProductsController extends Controller
                 'quantity' => $list->quantity,
                 'description' => $list->description,
                 'image_path' => $image_url,
-                'categories_id' => $list->categories_id
+                'categories_id' => $list->categories_id,
+                'category_name' => Categories::select('name')->where('id', $list->categories_id)->first()
             ];
             $datas[] = $data;
         }

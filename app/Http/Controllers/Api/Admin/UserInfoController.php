@@ -24,12 +24,12 @@ class UserInfoController extends Controller
                 'fullname' => $item->fullname,
                 'nickname' => $item->nickname,
                 'phone' => $item->phone,
-                'email' => $item->email,
+                'email' => User::select('email')->where('id', $item->user_id)->first(),
                 'birthday' => $item->birthday,
                 'gender' => $item->gender ? $item->gender : 'other',
                 'avatar' => $item->avatar ? Storage::disk('google')->url($item->avatar) : null,
                 'user_id' => $item->user_id,
-                'user' =>  User::find($item->user_id)
+                'user_name' =>  User::select('username')->where('id', $item->user_id)->first()
             ];
             $datas[] = $data;
         }
@@ -98,12 +98,16 @@ class UserInfoController extends Controller
         if (!$request->avatar) {
             $pathImage = null;
         }
+
+        if ($request->email) {
+            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
+        }
+
         $pathImage = $this->uploadImageDrive($request->avatar);
         UserInfo::create([
             'fullname' => $request->fullname,
             'nickname' => $request->nickname,
             'phone' => $request->phone,
-            'email' => $request->email,
             'birthday' => $request->birthday,
             'gender' => $request->gender ? $request->gender : 'other',
             'avatar' => $pathImage,
@@ -113,6 +117,10 @@ class UserInfoController extends Controller
 
     private function handleUpdate($repository, $request, $user_id)
     {
+        if ($request->email) {
+            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
+        }
+
         if ($request->avatar) {
             $pathImage = $this->uploadImageDrive($request->avatar);
             $this->deleteImageDrive($repository->avatar);
@@ -124,7 +132,6 @@ class UserInfoController extends Controller
             'fullname' => $request->fullname,
             'nickname' => $request->nickname,
             'phone' => $request->phone,
-            'email' => $request->email,
             'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
             'gender' => $request->gender ? $request->gender : $repository->gender,
             'avatar' => $pathImage,

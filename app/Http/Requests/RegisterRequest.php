@@ -26,6 +26,7 @@ class RegisterRequest extends FormRequest
         return [
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed',
+            'email' => 'required|unique:users,email|email',
             'password_confirmation' => 'required',
         ];
     }
@@ -43,6 +44,9 @@ class RegisterRequest extends FormRequest
             'password.required' => 'nhập mật khẩu',
             'password.confirmed' => 'nhập lại mật khẩu không đúng',
             'password_confirmation.required' => 'vui lòng nhập lại mật khẩu!',
+            'email.required' => 'nhập email của bạn',
+            'email.unique' => 'email này đã tồn tại',
+            'email.email' => 'email không hợp lệ'
         ];
     }
 }

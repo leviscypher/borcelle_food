@@ -27,6 +27,9 @@ class UserRequest extends FormRequest
             'username' => 'required|unique:users,username,' . $this->id,
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
+            'email' => 'required|email|unique:users,email,' . $this->id,
+            'role_id' => 'required|numeric',
+            'position_id' => 'required|numeric'
         ];
     }
 
@@ -38,6 +41,13 @@ class UserRequest extends FormRequest
             'password.required' => 'nhập mật khẩu',
             'password.confirmed' => 'nhập lại mật khẩu không đúng',
             'password_confirmation.required' => 'vui lòng nhập lại mật khẩu!',
+            'email.required' => 'nhập email',
+            'email.unique' => 'email này đã tồn tại',
+            'email.email' => 'email không đúng',
+            'role_id.required' => 'vui lòng chọn vai trò cho tài khoản',
+            'role_id.numeric' => 'vui lòng chọn đúng vai trò đã cho',
+            'position_id.required' => 'vui lòng chọn chức vụ cho tài khoản',
+            'position_id.numeric' => 'vui lòng chọn đúng chức vụ đã cho',
         ];
     }
 }
