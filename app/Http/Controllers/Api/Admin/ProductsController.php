@@ -46,7 +46,6 @@ class ProductsController extends Controller
         try {
             $images = $request->file('image_path');
             $image_path = $this->uploadImageDrive($images);
-
             Product::create([
                 'name' => $request->name,
                 'price' => $request->price,

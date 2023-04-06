@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('quantity', 255);
             $table->string('image_path');
+            $table->integer('status')->default('1')->comment('0 - hết hàng; 1 - còn hàng');
             $table->string('description');
             $table->unsignedBigInteger('categories_id');
             $table->foreign('categories_id')->references('id')->on('categories');
