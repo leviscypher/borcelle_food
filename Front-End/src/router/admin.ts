@@ -85,6 +85,7 @@ export const admin = [
         component: () => import("@/page/admin/Product-management/Add-new-products.vue"),
         meta: { layout: 'layoutadmin' },
       },
+      // category
       {
         path: '/admin/category/add-category',
         name: 'add-category',
@@ -98,13 +99,32 @@ export const admin = [
         meta: { layout: 'layoutadmin' },
       },
 
-
-      // {
-      //   path: '/admin/category/add-internal',
-      //   name: 'add-internal',
-      //   component: () => import("@/page/admin/Internal-management/Add-internal.vue"),
-      //   meta: { layout: 'layoutadmin' },
-      // },
+      // user
+      {
+        path: '/admin/account-management/add-account',
+        name: 'add-account',
+        component: () => import("@/page/admin/Account-management/Add-account.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
+      {
+        path: '/admin/account-management/edit-account/:id',
+        name: 'edit-account',
+        component: () => import("@/page/admin/Account-management/Edit-account.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
+      // product
+      {
+        path: '/admin/product-management/add-products',
+        name: 'add-product',
+        component: () => import("@/page/admin/Product-management/Add-new-products.vue"),
+        meta: { layout: 'layoutadmin' },
+      },
+      {
+        path: '/admin/product-management/edit-products/:id',
+        name: 'edit-products',
+        component: () => import("@/page/admin/Product-management/Edit-new-products"),
+        meta: { layout: 'layoutadmin' },
+      },
     ]
   },
 ]

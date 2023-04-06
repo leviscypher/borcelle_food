@@ -5,6 +5,7 @@ $color_2: white;
     display: block;
     background: #14142B;
     border: 1px solid #fff;
+    font-size: 15px;
     color: $color_1;
     width: 150px;
     text-align: center;
@@ -13,9 +14,6 @@ $color_2: white;
     padding: 5px 0px;
     border-radius: 5px;
     font-weight: 500;
-    align-items: center;
-    justify-content: center;
-
     &:hover {
         text-decoration: none;
         color: $color_2;

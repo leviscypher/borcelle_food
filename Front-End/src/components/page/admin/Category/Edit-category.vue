@@ -40,11 +40,9 @@ const updateCategory = (id: any) => {
             <form class="row">
               <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
-                {{ getEditCategorys.name }}
                   <input
                     class="form-control"
                     v-model="nameCategory.name"
-                    :v-model="getEditCategorys.name"
                     type="text"
                     required
                   />

@@ -35,7 +35,7 @@ const login = (e: any) => {
 <style lang="scss">
 [type=text]:focus:focus,
 [type=password]:focus {
-    border: 1px solid #ccc;
+    border: 1px solid #ccc !important;
     box-shadow: none;
 }
 

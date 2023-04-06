@@ -19,6 +19,7 @@ const getId = (id: any) => {
 
 const deleteCategory = (id: any) => {
   category.fetchDelete(id);
+  category.fetchCategory();
 };
 </script>
 <template>
@@ -138,7 +139,7 @@ const deleteCategory = (id: any) => {
     </div>
 
     <div
-      class="modal"
+      class="modal modals"
       id="exampleModal"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
@@ -166,13 +167,13 @@ const deleteCategory = (id: any) => {
             </p>
           </div>
           <div class="modal-footer gap-[10px]">
+
             <base-button
               type="button"
               class="btn-footer m-0 bg-[#0b0320] text-white"
               data-bs-dismiss="modal"
+              >Huỷ</base-button
             >
-              Huỷ
-            </base-button>
 
             <base-button
               type="button"

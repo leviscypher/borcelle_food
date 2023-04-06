@@ -17,8 +17,6 @@ const dataAuth = reactive({
 const togglePassword = () => {
     showPassword.value = !showPassword.value;
 }
-const toDashboard = () => {
-}
 const login = async (e: any) => {
     e.preventDefault()
 

@@ -99,13 +99,14 @@
 
   &-nav__item {
     &:hover .header-nav__submenu {
-      bottom: -130px;
+      bottom: -124px;
       opacity: 1;
       visibility: visible;
     }
   }
 
   &-nav__link {
+    font-size: 17px;
     padding: 15px 25px;
     cursor: pointer;
   }
@@ -133,10 +134,12 @@
   &__link {
     text-align: center;
     width: 100%;
+    font-size: 14px;
     display: block;
     padding: 10px 7px;
     text-decoration: none;
     color: var(--black);
+    cursor: pointer;
   }
 }
 
