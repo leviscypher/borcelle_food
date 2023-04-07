@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed } from "vue";
+import { reactive, ref,onMounted,computed } from "vue";
+import { useRoute } from "vue-router";
 import { useProduct, useAdminStore } from "@/stores/admin";
+
 const product = useProduct();
 const category = useAdminStore();
+const route = useRoute();
 
 const products = reactive({
   name: "",
@@ -16,14 +19,25 @@ const products = reactive({
 
 const images = ref([]);
 
+
+const getEditAccounts = computed(() => {
+  return product.getEditAccounts;
+});
+
+const getProduct = computed(() => {
+   return product.getEditproducts;
+});
+
 onMounted(() => {
-  category.fetchCategory();
+  const id = route.params.id;
+  if (id) {
+    product.fetchEdit(id);
+    category.fetchCategory()
+  }
 });
-
-const getCategory = computed(() => {
-  return category.getCategory;
-});
-
+// const updateCategory = (id: any) => {
+//   product.fetchUpdate(id, products);
+// };
 const onFileChange = (e: any) => {
   images.value = [];
   products.image_path = [];
@@ -46,10 +60,6 @@ const removeImage = (index: any) => {
   products.image_path.splice(index, 1);
   images.value.splice(index, 1);
 };
-
-const addProducts = () => {
-  product.fetchAdd(products);
-};
 </script>
 <template>
   <main class="app-content">
@@ -64,6 +74,9 @@ const addProducts = () => {
         <div class="tile">
           <h3 class="tile-title">Tạo mới sản phẩm</h3>
           <div class="tile-body pt-10">
+             <div v-for="item in getProduct" :key="item.id">
+                {{ item }}
+             </div>
             <form class="row">
               <div class="form-group col-md-3">
                 <label class="control-label">Tên sản phẩm</label>
@@ -71,11 +84,7 @@ const addProducts = () => {
               </div>
               <div class="form-group col-md-3">
                 <label for="exampleSelect1" class="control-label">Tình trạng</label>
-                <select
-                  class="form-control"
-                  id="exampleSelect1"
-                  v-model="products.status"
-                >
+                <select class="form-control" id="exampleSelect1" v-model="products.status">
                   <option value="">-- Chọn tình trạng --</option>
                   <option value="1">Còn hàng</option>
                   <option value="0">Hết hàng</option>
@@ -85,11 +94,7 @@ const addProducts = () => {
                 <label for="exampleSelect1" class="control-label">Danh mục</label>
                 <select class="form-control" v-model="products.categories_id">
                   <option disabled value="">Chọn vài trò</option>
-                  <option
-                    v-for="category in getCategory"
-                    :key="category.id"
-                    :value="category.id"
-                  >
+                  <option v-for="category in getEditAccounts" :key="category.id" :value="category.id">
                     {{ category.name }}
                   </option>
                 </select>
@@ -104,10 +109,29 @@ const addProducts = () => {
               </div>
               <div class="form-group col-md-12">
                 <label class="control-label">Ảnh sản phẩm</label>
+                <div id="myfileupload">
+                  <input
+                    type="file"
+                    id="uploadfile"
+                    name="ImageUpload"
+                    onchange="readURL(this);"
+                  />
+                </div>
+                <div id="thumbbox">
+                  <img
+                    height="450"
+                    width="400"
+                    alt="Thumb image"
+                    id="thumbimage"
+                    style="display: none"
+                  />
+                  <a class="removeimg" href="javascript:"></a>
+                </div>
+
                 <div id="boxchoice">
-                  <div v-if="images.length > 0" class="flex gap-5">
+                  <div v-if="products.image_path.length > 0" class="flex gap-5">
                     <div
-                      v-for="(image, index) in images"
+                      v-for="(image, index) in products.image_path"
                       :key="index"
                       class="relative"
                     >
@@ -133,18 +157,11 @@ const addProducts = () => {
               </div>
               <div class="form-group col-md-12">
                 <label class="control-label">Mô tả sản phẩm</label>
-                <textarea
-                  class="form-control"
-                  name="mota"
-                  id="mota"
-                  v-model="products.description"
-                ></textarea>
+                <textarea class="form-control" name="mota" id="mota" v-model="products.description"></textarea>
               </div>
             </form>
           </div>
-          <base-button class="btn btn-save" type="button" @click="addProducts"
-            >Lưu lại</base-button
-          >
+          <base-button class="btn btn-save" type="button" @click="addProducts">Lưu lại</base-button>
           <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
         </div>
       </div>

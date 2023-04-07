@@ -1,28 +1,28 @@
 <script lang="ts" setup>
-import { ref, onMounted, computed, reactive } from "vue";
-import { useRoute } from "vue-router";
-import { useAdminStore } from "@/stores/admin";
+import { onMounted, computed, reactive } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAdminStore } from '@/stores/admin'
 
-const route = useRoute();
-const useAdmin = useAdminStore();
+const route = useRoute()
+const useAdmin = useAdminStore()
 const nameCategory = reactive({
-  name: "",
-});
+  name: '',
+})
 
 const getEditCategorys = computed(() => {
-  return useAdmin.getEditCategorys;
-});
+  return useAdmin.getEditCategorys
+})
 
 onMounted(() => {
-  const id = route.params.id;
+  const id = route.params.id
   if (id) {
-    useAdmin.fetchEdit(id);
+    useAdmin.fetchEdit(id)
   }
-});
+})
 
 const updateCategory = (id: any) => {
-  useAdmin.fetchUpdate(id, nameCategory);
-};
+  useAdmin.fetchUpdate(id, nameCategory)
+}
 </script>
 <template>
   <main class="app-content mt-0 pt-0">
@@ -40,12 +40,12 @@ const updateCategory = (id: any) => {
             <form class="row">
               <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
-                  <input
-                    class="form-control"
-                    v-model="nameCategory.name"
-                    type="text"
-                    required
-                  />
+                <input
+                  class="form-control"
+                  v-model="nameCategory.name"
+                  type="text"
+                  required
+                />
               </div>
             </form>
           </div>
@@ -54,9 +54,14 @@ const updateCategory = (id: any) => {
               class="btn btn-save"
               type="button"
               @click="updateCategory(getEditCategorys.id)"
-              >Lưu lại</base-button
             >
-            <router-link class="btn btn-cancel" to="/admin/category">Hủy bỏ</router-link>
+              Lưu lại
+            </base-button>
+            <router-link
+              class="btn btn-cancel"
+              to="/admin/category"
+              >Hủy bỏ</router-link
+            >
           </div>
         </div>
       </div>
@@ -64,11 +69,11 @@ const updateCategory = (id: any) => {
   </main>
 </template>
 <style lang="scss" scoped>
-@import "@/assets/styles/admin/admin.scss";
-@import "@/assets/styles/admin/add/add.scss";
+@import '@/assets/styles/admin/admin.scss';
+@import '@/assets/styles/admin/add/add.scss';
 
-[type="text"]:focus:focus,
-[type="password"]:focus {
+[type='text']:focus:focus,
+[type='password']:focus {
   border: 1px solid var(--black);
 }
 </style>

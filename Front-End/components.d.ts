@@ -40,6 +40,7 @@ declare module '@vue/runtime-core' {
     Edit: typeof import('./src/components/page/user/customer/layout/edit/edit.vue')['default']
     EditAccount: typeof import('./src/components/page/admin/Account-management/Edit-account.vue')['default']
     EditCategory: typeof import('./src/components/page/admin/Category/Edit-category.vue')['default']
+    EditNewProducts: typeof import('./src/components/page/admin/Product-management/Edit-new-products.vue')['default']
     EditNewStaff: typeof import('./src/components/page/admin/Employee-manager/Edit-new-staff.vue')['default']
     EmployeeManager: typeof import('./src/components/page/admin/Employee-manager/index.vue')['default']
     Footer: typeof import('./src/components/Layouts/Footer/footer.vue')['default']

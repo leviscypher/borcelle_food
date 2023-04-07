@@ -122,7 +122,7 @@ export const admin = [
       {
         path: '/admin/product-management/edit-products/:id',
         name: 'edit-products',
-        component: () => import("@/page/admin/Product-management/Edit-new-products"),
+        component: () => import("@/page/admin/Product-management/Edit-new-products.vue"),
         meta: { layout: 'layoutadmin' },
       },
     ]

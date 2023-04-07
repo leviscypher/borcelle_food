@@ -24,7 +24,7 @@ onMounted(async () => {
 const logout = async () => {
   try {
     await axios
-      .post("http://127.0.0.1:8000/api/logout", constants.routeApis.TOKEN_LOGOUT)
+      .post("http://127.0.0.1:8000/api/logout",{}, constants.routeApis.TOKEN_LOGOUT)
       .then((res) => {
         localStorage.removeItem("token");
       });

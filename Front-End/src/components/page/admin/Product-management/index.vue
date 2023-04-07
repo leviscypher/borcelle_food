@@ -102,10 +102,10 @@ const deleteProduct = (id: any) => {
             <td>{{ product.name }}</td>
             <td>
               <img
-                src="https://www.drhaile.vn/uploads/images/hoanganh/HA/VFADAV.jpg"
-                alt=""
-                width="100px;"
+                :src="product.image_path[0]"
+                width="100"
               />
+             
             </td>
             <td>{{ product.quantity }}</td>
             <td><span class="badge bg-success">Còn hàng</span></td>
@@ -121,9 +121,9 @@ const deleteProduct = (id: any) => {
               >
                 <i class="bx bxs-trash"></i>
               </base-button>
-              <button class="btn btn-primary btn-sm edit" type="button" title="Sửa">
+              <router-link :to="`/admin/product-management/edit-products/${product.id}`" class="btn btn-primary btn-sm edit" type="button" title="Sửa">
                 <i class="bx bxs-edit"></i>
-              </button>
+              </router-link>
             </td>
           </tr>
         </tbody>
