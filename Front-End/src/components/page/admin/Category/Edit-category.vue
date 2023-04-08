@@ -13,13 +13,15 @@ const getEditCategorys = computed(() => {
   return useAdmin.getEditCategorys
 })
 
-onMounted(() => {
-  const id = route.params.id
-  if (id) {
-    useAdmin.fetchEdit(id)
-  }
+onMounted(async () => {
+   const id = route.params.id
+   if (id) {
+      await useAdmin.fetchEdit(id)
+      if (getEditCategorys.value) {
+         nameCategory.name = getEditCategorys.value.name
+      }
+   }
 })
-
 const updateCategory = (id: any) => {
   useAdmin.fetchUpdate(id, nameCategory)
 }
@@ -60,8 +62,7 @@ const updateCategory = (id: any) => {
             <router-link
               class="btn btn-cancel"
               to="/admin/category"
-              >Hủy bỏ</router-link
-            >
+            >Hủy bỏ</router-link>
           </div>
         </div>
       </div>
