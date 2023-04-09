@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('password_reset', function (Blueprint $table) {
             $table->id();
-            $table->string('token', 60)->unique();
+            $table->string('token')->unique();
             $table->unsignedBigInteger('user_id');
             $table->timestamp('expires_at');
             $table->timestamps();
