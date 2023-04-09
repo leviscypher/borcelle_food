@@ -59,6 +59,8 @@ class UserInfoController extends Controller
             $user_info_update = UserInfo::where('user_id', $user_id)->first();
 
             if (!$user_info_update) {
+
+                return $user_info_update;
                 $this->handleCreate($request, $user_id);
                 DB::table('users')->where('id', $user_id)->update([
                     'isActive' => 1

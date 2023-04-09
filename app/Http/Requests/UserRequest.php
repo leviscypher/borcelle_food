@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
     {
         return [
             'username' => 'required|unique:users,username,' . $this->id,
-            'password' => 'required|confirmed',
+            'password' => 'required',
             'password_confirmation' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id,
             'role_id' => 'required|numeric',
@@ -39,7 +39,6 @@ class UserRequest extends FormRequest
             'username.required' => 'nhập tên tài khoản',
             'username.unique' => 'tài khoản đã tồn tại',
             'password.required' => 'nhập mật khẩu',
-            'password.confirmed' => 'nhập lại mật khẩu không đúng',
             'password_confirmation.required' => 'vui lòng nhập lại mật khẩu!',
             'email.required' => 'nhập email',
             'email.unique' => 'email này đã tồn tại',

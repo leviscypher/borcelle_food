@@ -11,5 +11,20 @@ class PasswordReset extends Model
 
     protected $table = 'password_reset';
 
-    protected $fillable = ['email', 'token'];
+    protected $fillable = [
+        'user_id',
+        'token',
+        'expires_at',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function isExpired()
+    {
+        return now()->gt($this->expires_at);
+    }
 }

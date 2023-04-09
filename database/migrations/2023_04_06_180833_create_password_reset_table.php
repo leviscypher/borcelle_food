@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,9 +15,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('password_reset', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
+            $table->id();
+            $table->string('token', 60)->unique();
+            $table->unsignedBigInteger('user_id');
+            $table->timestamp('expires_at');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

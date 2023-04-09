@@ -29,7 +29,10 @@ use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 // AUTH API - DÀNH CHO NGƯỜI DÙNG.
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/reset-password', [AuthController::class, 'passwordReset']);
+// 
+Route::post('/check-email', [AuthController::class, 'checkEmail']);
+Route::post('/check-token', [AuthController::class, 'checkToken']);
+Route::post('/change-password', [AuthController::class, 'changePassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-login', [AuthController::class, 'userLogin']);

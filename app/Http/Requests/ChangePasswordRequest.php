@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PasswordResetRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,23 +16,19 @@ class PasswordResetRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
-            'email' => 'required|email'
+            'password' => 'required',
+            'password_confirmation' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'email.required' => 'nhập email đã dùng đăng kí tài khoản',
-            'email.email' => 'email không đúng định dạng'
+            'password.required' => 'nhập mật khẩu mới.',
+            'password_confirmation.required' => 'nhập lại mật khẩu không chính xác',
         ];
     }
 }
