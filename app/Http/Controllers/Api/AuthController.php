@@ -121,6 +121,7 @@ class AuthController extends Controller
             DB::table('users')->where('id', $user->id)->update([
                 'password' => Hash::make($request->password),
             ]);
+            session()->forget('id');
             return response()->json(['message' => $this->updateSuccess], 200,);
         } else {
             return response()->json(['message' => $this->anUnspecifiedError], 401);
