@@ -42,12 +42,21 @@ class UserInfoController extends Controller
         try {
             $user_info_edit = UserInfo::where('user_id', $id)->first();
             if (!$user_info_edit) {
-                return response()->json($user_info_edit, 404);
+                return response()->json(['message' => $this->doesNotExist], 404);
             }
-            if ($user_info_edit->avatar) {
-                $user_info_edit->avatar = Storage::disk('google')->url($user_info_edit->avatar);
-            }
-            return response()->json($user_info_edit, 200);
+            $item = [
+                'id' => $user_info_edit->id,
+                'fullname' => $user_info_edit->fullname,
+                'nickname' => $user_info_edit->nickname,
+                'phone' => $user_info_edit->phone,
+                'email' => User::select('email')->where('id', $user_info_edit->user_id)->first(),
+                'birthday' => $user_info_edit->birthday,
+                'gender' => $user_info_edit->gender ? $user_info_edit->gender : 'other',
+                'avatar' => $user_info_edit->avatar ? Storage::disk('google')->url($user_info_edit->avatar) : null,
+                'user_id' => $user_info_edit->user_id,
+                'user_name' =>  User::select('username')->where('id', $user_info_edit->user_id)->first()
+            ];
+            return response()->json($item, 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
@@ -59,8 +68,6 @@ class UserInfoController extends Controller
             $user_info_update = UserInfo::where('user_id', $user_id)->first();
 
             if (!$user_info_update) {
-
-                return $user_info_update;
                 $this->handleCreate($request, $user_id);
                 DB::table('users')->where('id', $user_id)->update([
                     'isActive' => 1

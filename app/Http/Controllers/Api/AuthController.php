@@ -30,7 +30,7 @@ class AuthController extends Controller
                 $user = User::where('username', $request->username)->first();
                 if ($user->role_id === 1) {
                     $token = $user->createToken('token')->plainTextToken;
-                    $cookie = cookie('token', $token, 60 * 12);
+                    $cookie = cookie('token', $token, 604800);
                     return response()->json(['token' => $token, 'message' => 'đăng nhập thành công!'], 200)->withCookie($cookie);
                 } else {
                     return response()->json(['errors' => 'bạn không có quyền truy cập!'], 403);
@@ -48,8 +48,7 @@ class AuthController extends Controller
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $user = User::where('username', $request->username)->first();
                 $token = $user->createToken('token')->plainTextToken;
-                $cookie = cookie('token', $token, 60 * 144);
-
+                $cookie = cookie('token', $token, 604800);
                 return response()->json(['token' => $token, 'message' => 'đăng nhập thành công!'], 200)->withCookie($cookie);
             }
             return response()->json(['errors' => 'sai tên đăng nhập hoặc mật khẩu!'], 401);
@@ -94,7 +93,7 @@ class AuthController extends Controller
         if ($user) {
             PasswordReset::where('created_at', '<', Carbon::now()->subSeconds(60))->delete();
             $createToken = $this->addToken($user->id);
-            // $this->handleSendEmail($createToken, $user->email);
+            $this->handleSendEmail($createToken, $user->email);
             return response()->json(['message' =>  'chúng tôi đã gửi mã xác minh đến email của bạn.'], 200);
         } else {
             return response()->json(['message' => 'email này không tồn tại'], 404);
@@ -105,7 +104,7 @@ class AuthController extends Controller
     {
         $token = PasswordReset::Where('token', $request->token)->first();
         if ($token && $token->expires_at > Carbon::now()) {
-            session()->put('id', $token->user_id);
+            session()->put('user_id_password_reset', $token->user_id);
             return response()->json(true, 200);
         } else {
             return response()->json(['message' => 'mã xác minh đã hết thời hạn sử dụng.'], 401);
@@ -114,14 +113,14 @@ class AuthController extends Controller
 
     public function changePassword(changePasswordRequest $request)
     {
-        $user_id = session()->get('id');
+        $user_id = session()->get('user_id_password_reset');
         $user = User::where('id', $user_id)->first();
 
         if ($user) {
             DB::table('users')->where('id', $user->id)->update([
                 'password' => Hash::make($request->password),
             ]);
-            session()->forget('id');
+            session()->forget('user_id_password_reset');
             return response()->json(['message' => $this->updateSuccess], 200,);
         } else {
             return response()->json(['message' => $this->anUnspecifiedError], 401);
@@ -143,7 +142,7 @@ class AuthController extends Controller
 
     private function handleSendEmail($token, $email)
     {
-        $title = 'Yêu Cầu Lấy Lại Mật Khẩu';
+        $title = 'Yêu Cầu Lấy Lại Mật Khẩu.';
         $description = 'mã xác minh lấy lại mật khẩu của bạn là: ' . $token . ' không cung cấp mã này cho bất kì ai.';
         Mail::raw($description, function (Message $message) use ($email, $title) {
             $message->to($email);

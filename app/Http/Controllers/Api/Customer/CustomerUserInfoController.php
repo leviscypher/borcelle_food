@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 use App\Models\Admin\UserInfo;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserInfoRequest;
@@ -13,18 +14,29 @@ use App\Http\Requests\UserInfoRequest;
 
 class CustomerUserInfoController extends Controller
 {
-    public function edit($user_id)
+    public function edit($id)
     {
-        $user_info_edit = UserInfo::where('user_id', $user_id)->first();
-
-        if (!$user_info_edit) {
-            return response()->json($user_info_edit, 404);
+        try {
+            $user_info_edit = UserInfo::where('user_id', $id)->first();
+            if (!$user_info_edit) {
+                return response()->json(['message' => $this->doesNotExist], 404);
+            }
+            $item = [
+                'id' => $user_info_edit->id,
+                'fullname' => $user_info_edit->fullname,
+                'nickname' => $user_info_edit->nickname,
+                'phone' => $user_info_edit->phone,
+                'email' => User::select('email')->where('id', $user_info_edit->user_id)->first(),
+                'birthday' => $user_info_edit->birthday,
+                'gender' => $user_info_edit->gender ? $user_info_edit->gender : 'other',
+                'avatar' => $user_info_edit->avatar ? Storage::disk('google')->url($user_info_edit->avatar) : null,
+                'user_id' => $user_info_edit->user_id,
+                'user_name' =>  User::select('username')->where('id', $user_info_edit->user_id)->first()
+            ];
+            return response()->json($item, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
-
-        if ($user_info_edit->avatar) {
-            $user_info_edit->avatar = Storage::disk('google')->url($user_info_edit->avatar);
-        }
-        return response()->json($user_info_edit, 200);
     }
 
     public function update(UserInfoRequest $request, $user_id)
@@ -37,13 +49,13 @@ class CustomerUserInfoController extends Controller
                 DB::table('users')->where('id', $user_id)->update([
                     'isActive' => 1
                 ]);
-                return response()->json(['message' => 'cập nhật thành công.'], 201);
+                return response()->json(['message' => $this->updateSuccess], 201);
             } else {
                 $this->handleUpdate($user_info_update, $request, $user_id);
-                return response()->json(['message' => 'cập nhật thành công.'], 200);
+                return response()->json(['message' => $this->updateSuccess], 200);
             }
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'đã có lỗi xảy ra.'], 404);
+            return response()->json(['message' => $this->anUnspecifiedError], 404);
         }
     }
 
@@ -52,12 +64,16 @@ class CustomerUserInfoController extends Controller
         if (!$request->avatar) {
             $pathImage = null;
         }
+
+        if ($request->email) {
+            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
+        }
+
         $pathImage = $this->uploadImageDrive($request->avatar);
         UserInfo::create([
             'fullname' => $request->fullname,
             'nickname' => $request->nickname,
             'phone' => $request->phone,
-            'email' => $request->email,
             'birthday' => $request->birthday,
             'gender' => $request->gender ? $request->gender : 'other',
             'avatar' => $pathImage,
@@ -67,6 +83,10 @@ class CustomerUserInfoController extends Controller
 
     private function handleUpdate($repository, $request, $user_id)
     {
+        if ($request->email) {
+            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
+        }
+
         if ($request->avatar) {
             $pathImage = $this->uploadImageDrive($request->avatar);
             $this->deleteImageDrive($repository->avatar);
@@ -78,7 +98,6 @@ class CustomerUserInfoController extends Controller
             'fullname' => $request->fullname,
             'nickname' => $request->nickname,
             'phone' => $request->phone,
-            'email' => $request->email,
             'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
             'gender' => $request->gender ? $request->gender : $repository->gender,
             'avatar' => $pathImage,

@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\Admin\PositionController;
 use App\Http\Controllers\Api\Admin\RolesController;
 
 use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
+use App\Http\Controllers\Api\Customer\AddressController;
+
 
 
 /*
@@ -45,7 +47,6 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AuthController::class, 'adminLogin']);
 
     Route::middleware(['isAdmin', 'auth:sanctum'])->group(function () {
-
         // THÊM SỬA XÓA TÀI KHOẢN.
         Route::prefix('/user')->group(function () {
             Route::get('/all', [UserController::class, 'index']);
@@ -96,9 +97,21 @@ Route::prefix('admin')->group(function () {
 // CUSTOMER API
 
 // THÊM SỬA THÔNG TIN TÀI KHOẢN CỦA NGƯỜI DÙNG - KHÔNG CÓ QUYỀN XÓA.
-Route::prefix('customer')->middleware('auth:sanctum')->group(function () {
-    Route::get('/edit/{user_id}', [CustomerUserInfoController::class, 'edit']);
-    Route::post('/update/{user_id}', [CustomerUserInfoController::class, 'update']);
+Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
+    Route::prefix('user-info')->group(function () {
+        Route::get('/edit/{user_id}', [CustomerUserInfoController::class, 'edit']);
+        Route::post('/update/{user_id}', [CustomerUserInfoController::class, 'update']);
+    });
+
+    Route::prefix('address')->group(function () {
+        Route::post('/create/{user_id}', [AddressController::class, 'create']);
+        Route::get('/edit/{id}', [AddressController::class, 'edit']);
+        Route::post('/update/{id}', [AddressController::class, 'update']);
+        Route::get('/get-city', [AddressController::class, 'getCity']);
+        Route::get('/get-district/{city_id}', [AddressController::class, 'getDistricts']);
+        Route::get('/get-ward/{district_id}', [AddressController::class, 'getWards']);
+        Route::delete('/delete/{id}', [AddressController::class, 'delete']);
+    });
 });
 
 Route::middleware('isActive')->group(function () {

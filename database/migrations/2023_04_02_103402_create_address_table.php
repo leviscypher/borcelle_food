@@ -18,14 +18,17 @@ return new class extends Migration
             $table->string('fullname');
             $table->string('company')->nullable();
             $table->string('phone');
-            $table->string('city');
-            $table->string('district');
-            $table->string('ward');
             $table->string('address');
-            $table->integer('address_type')->default('0');
-            $table->integer('isActive')->default('0');
-            $table->unsignedBigInteger('user_id');
+            $table->integer('address_type')->default('0')->comment('0 - nhà riêng, 1 - công ty, văn phòng');
+            $table->integer('isActive')->default('0')->comment('0 - không sử dụng, 1 - đang sử dụng, người dùng có thể thay đổi tùy ý');
+            $table->unsignedBigInteger('user_id')->comment('địa chỉ thuộc tài khoản nào');
+            $table->unsignedInteger('city_id');
+            $table->unsignedInteger('district_id');
+            $table->unsignedInteger('ward_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('city_id')->references('id')->on('city');
+            $table->foreign('district_id')->references('id')->on('district');
+            $table->foreign('ward_id')->references('id')->on('ward');
             $table->timestamps();
         });
     }
