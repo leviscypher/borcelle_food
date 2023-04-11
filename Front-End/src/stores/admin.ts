@@ -207,15 +207,15 @@ export const useProduct = defineStore('product', {
       try {
         await axios.get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKEN)
            .then((res) => {
-          this.editproducts = res.data
-        })
+          this.editproducts = res.data.data
+           })
       } catch (error) {
         return
       }
     },
-    async fetchUpdate(id: any, data: any) {
+    async fetchUpdate(id: any, product: any) {
       try {
-        await axios.post(`http://127.0.0.1:8000/api/admin/product/update/${id}`, data, constants.routeApis.TOKEN)
+        await axios.post(`http://127.0.0.1:8000/api/admin/product/update/${id}`, product, constants.routeApis.TOKEN)
       } catch (error) {
         return
       }

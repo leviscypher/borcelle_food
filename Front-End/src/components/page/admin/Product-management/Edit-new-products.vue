@@ -19,24 +19,31 @@ const products = reactive({
 
 const images = ref([])
 
-// const getEditAccounts = computed(() => {
-//   return product.getEditAccounts
-// })
+onMounted(async () => {
+  const id = route.params.id
+  if (id) {
+    await product.fetchEdit(id)
+    await category.fetchCategory()
+    if (getProduct.value) {
+      products.name = getProduct.value.name
+      products.price = getProduct.value.price
+      products.quantity = getProduct.value.quantity
+      products.description = getProduct.value.description
+      products.categories_id = getProduct.value.categories_id
+      products.image_path = getProduct.value.image_path
+      images.value = getProduct.value.image_path
+    }
+  }
+})
 
+const getCategory = computed(() => {
+  return category.getCategory
+})
 const getProduct = computed(() => {
   return product.getEditproducts
 })
 
-onMounted(() => {
-  const id = route.params.id
-  if (id) {
-    product.fetchEdit(id)
-    category.fetchCategory()
-  }
-})
-const updateCategory = (id: any) => {
-  product.fetchUpdate(id, products)
-}
+
 const onFileChange = (e: any) => {
   images.value = []
   products.image_path = []
@@ -59,6 +66,10 @@ const removeImage = (index: any) => {
   products.image_path.splice(index, 1)
   images.value.splice(index, 1)
 }
+
+const updateCategory = (id: any) => {
+   product.fetchUpdate(id, products)
+}
 </script>
 <template>
   <main class="app-content">
@@ -73,12 +84,6 @@ const removeImage = (index: any) => {
         <div class="tile">
           <h3 class="tile-title">Tạo mới sản phẩm</h3>
           <div class="tile-body pt-10">
-            <div
-              v-for="product in getProduct"
-              :key="item.id"
-            >
-              {{ product }}
-            </div>
             <form class="row">
               <div class="form-group col-md-3">
                 <label class="control-label">Tên sản phẩm</label>
@@ -92,13 +97,15 @@ const removeImage = (index: any) => {
                 <label
                   for="exampleSelect1"
                   class="control-label"
-                >Tình trạng</label>
+                >
+                  Tình trạng
+                </label>
                 <select
                   class="form-control"
                   id="exampleSelect1"
                   v-model="products.status"
                 >
-                  <option value="">-- Chọn tình trạng --</option>
+                  <option value="" disabled>Chọn tình trạng</option>
                   <option value="1">Còn hàng</option>
                   <option value="0">Hết hàng</option>
                 </select>
@@ -107,7 +114,8 @@ const removeImage = (index: any) => {
                 <label
                   for="exampleSelect1"
                   class="control-label"
-                >Danh mục</label>
+                  >Danh mục</label
+                >
                 <select
                   class="form-control"
                   v-model="products.categories_id"
@@ -119,7 +127,7 @@ const removeImage = (index: any) => {
                     Chọn vài trò
                   </option>
                   <option
-                    v-for="category in getEditAccounts"
+                    v-for="category in getCategory"
                     :key="category.id"
                     :value="category.id"
                   >
@@ -178,7 +186,8 @@ const removeImage = (index: any) => {
                   <label
                     for="choicefile"
                     class="Choicefile"
-                  >Chọn ảnh</label>
+                    >Chọn ảnh</label
+                  >
                 </div>
               </div>
               <div class="form-group col-md-12">
@@ -195,12 +204,13 @@ const removeImage = (index: any) => {
           <base-button
             class="btn btn-save"
             type="button"
-            @click="updateCategory"
-          >Lưu lại</base-button>
-          <a
+            @click="updateCategory(getProduct.id)"
+            >Lưu lại</base-button
+          >
+          <router-link
             class="btn btn-cancel"
-            href="table-data-product.html"
-          >Hủy bỏ</a>
+            to="/admin/product-management"
+            >Hủy bỏ</router-link>
         </div>
       </div>
     </div>

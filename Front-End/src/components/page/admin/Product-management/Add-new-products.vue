@@ -145,7 +145,10 @@ const addProducts = () => {
           <base-button class="btn btn-save" type="button" @click="addProducts"
             >Lưu lại</base-button
           >
-          <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
+           <router-link
+                class="btn btn-cancel"
+                to="/admin/product-management"
+           >Hủy bỏ</router-link>
         </div>
       </div>
     </div>

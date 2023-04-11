@@ -1,48 +1,51 @@
+<script src="../../../../router/admin.ts"></script>
 <script lang="ts" setup>
-import { reactive, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useAccountManagement, usePosition, useRole } from "@/stores/admin";
+import { reactive, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAccountManagement, usePosition, useRole } from '@/stores/admin'
 
 const accounts = reactive({
-  username: "",
-  password: "",
-  password_confirmation: "",
-  role_id: "",
-  position_id: "",
-});
+  username: '',
+  password: '',
+  password_confirmation: '',
+  role_id: '',
+  position_id: '',
+})
 
-const useAccounts = useAccountManagement();
-const usePositions = usePosition();
-const useRoles = useRole();
+const useAccounts = useAccountManagement()
+const usePositions = usePosition()
+const useRoles = useRole()
 
-const route = useRoute();
+const route = useRoute()
 
 const getEditAccounts = computed(() => {
-  return useAccounts.getEditAccounts;
-});
+  return useAccounts.getEditAccounts
+})
 
 const getPosition = computed(() => {
-  return usePositions.getPosition;
-});
+  return usePositions.getPosition
+})
 
 const getRole = computed(() => {
-  return useRoles.getRole;
-});
+  return useRoles.getRole
+})
 
-onMounted(() => {
-  const id = route.params.id;
+onMounted(async () => {
+  const id = route.params.id
   if (id) {
-    useAccounts.fetchEdit(id);
-    usePositions.fetchPosition();
-    useRoles.fetchRoles();
-    accounts.position_id = getEditAccounts.value.position_id;
-    accounts.role_id = getEditAccounts.value.role_id;
+    await useAccounts.fetchEdit(id)
+    await usePositions.fetchPosition()
+    await useRoles.fetchRoles()
+    if (getEditAccounts.value) {
+      accounts.username = getEditAccounts.value.username
+      accounts.position_id = getEditAccounts.value.position_id
+      accounts.role_id = getEditAccounts.value.role_id
+    }
   }
-});
-
+})
 const updateCategory = (id: any) => {
-  useAccounts.fetchUpdate(id, accounts);
-};
+  useAccounts.fetchUpdate(id, accounts)
+}
 </script>
 <template>
   <main class="app-content mt-0 pt-0">
@@ -68,36 +71,38 @@ const updateCategory = (id: any) => {
                 />
               </div>
               <div class="form-group col-md-4">
-                <label class="control-label">Mật khẩu</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.password"
-                  type="password"
-                  required
-                />
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Nhập lại mật khẩu</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.password_confirmation"
-                  type="password"
-                  required
-                />
-              </div>
-              <div class="form-group col-md-4">
                 <label class="control-label">Vài trò</label> <br />
-                <select class="form-select" v-model="accounts.role_id">
-                  <option disabled value="">Chọn vài trò</option>
-                  <option v-for="role in getRole" :key="role.id" :value="role.id">
+                <select
+                  class="form-control"
+                  v-model="accounts.role_id"
+                >
+                  <option
+                    disabled
+                    value=""
+                  >
+                    Chọn vài trò
+                  </option>
+                  <option
+                    v-for="role in getRole"
+                    :key="role.id"
+                    :value="role.id"
+                  >
                     {{ role.name }}
                   </option>
                 </select>
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Chức vụ</label> <br />
-                <select class="form-select" v-model="accounts.position_id">
-                  <option disabled value="">Chọn chức vụ</option>
+                <select
+                  class="form-control"
+                  v-model="accounts.position_id"
+                >
+                  <option
+                    disabled
+                    value=""
+                  >
+                    Chọn chức vụ
+                  </option>
                   <option
                     v-for="position in getPosition"
                     :value="position.id"
@@ -117,7 +122,11 @@ const updateCategory = (id: any) => {
             >
               Lưu lại
             </button>
-            <router-link class="btn btn-cancel" to="/admin/category">Hủy bỏ</router-link>
+            <router-link
+              class="btn btn-cancel"
+              to="/admin/account-management"
+              >Hủy bỏ</router-link
+            >
           </div>
         </div>
       </div>
@@ -125,6 +134,6 @@ const updateCategory = (id: any) => {
   </main>
 </template>
 <style lang="scss" scoped>
-@import "@/assets/styles/admin/admin.scss";
-@import "@/assets/styles/admin/add/add.scss";
+@import '@/assets/styles/admin/admin.scss';
+@import '@/assets/styles/admin/add/add.scss';
 </style>
