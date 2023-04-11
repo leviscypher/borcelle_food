@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $product = Product::paginate($this->itemsPerPage);
         $datas = [];
