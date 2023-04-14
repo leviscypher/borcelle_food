@@ -91,7 +91,7 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::get('role/all', [RolesController::class, 'index']);
-        Route::get('status-product/all', [ProductStatusController::class, 'index']);
+        Route::get('product-status/all', [ProductStatusController::class, 'index']);
     });
 });
 

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['0', '1', '2', '3', '4', '5', '6']);
+            $table->unsignedBigInteger('status_id')->default('3');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('status_id')->references('id')->on('order_status');
             $table->timestamps();
         });
     }

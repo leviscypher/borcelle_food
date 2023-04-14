@@ -21,34 +21,21 @@ class AddressController extends Controller
         return response()->json($address, 200);
     }
 
-    public function setDefaultAdress($id)
-    {
-        try {
-            $addressSetDefault = Address::find($id);
-            $addressDefault = Address::where('isActive', 1)->first();
-            if ($addressSetDefault->id === $addressDefault->id) {
-                DB::table('address')->where('id', $id)->update(['isActive' => 1]);
-            } else {
-                DB::table('address')->where('id', $id)->update(['isActive' => 1]);
-                DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
-                return 1;
-            }
-        } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
-        }
-    }
-
     public function create(AddressRequest $request, $user_id)
     {
         try {
             $addressDefault = Address::where('isActive', 1)->first();
+            if ($addressDefault && $request->isActive == 1) {
+                DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
+            }
+
             Address::create([
                 'fullname' => $request->fullname,
                 'company' => $request->company,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'address_type' => $request->address_type ? $request->address_type : 0,
-                'isActive' => $request->isActive == 1 ? DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]) : 0,
+                'isActive' => $request->isActive,
                 'user_id' => $user_id,
                 'city_id' => $request->city_id,
                 'district_id' => $request->district_id,
@@ -82,13 +69,16 @@ class AddressController extends Controller
             if (!$address_update) {
                 return response()->json(['message' => $this->doesNotExist], 404);
             }
+            if ($addressDefault && $request->isActive == 1) {
+                DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
+            }
             DB::table('address')->where('id', $id)->update([
                 'fullname' => $request->fullname,
                 'company' => $request->company,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'address_type' => $request->address_type ? $request->address_type : $address_update->address_type,
-                'isActive' => $request->isActive == 1 ? $this->setDefaultAdress($id) : $address_update->isActive,
+                'isActive' => $request->isActive ? $request->isActive : $address_update->isActive,
                 'user_id' => $address_update->user_id,
                 'city_id' => $request->city_id,
                 'district_id' => $request->district_id,
@@ -126,7 +116,6 @@ class AddressController extends Controller
 
     public function getDistricts($city_id)
     {
-
         try {
             $data = DB::table('district')->where('city_id', $city_id)->get();
             return response()->json($data, 200);
