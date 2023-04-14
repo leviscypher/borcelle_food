@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Admin\CategoriesController;
 use App\Http\Controllers\Api\Admin\ProductsController;
 use App\Http\Controllers\Api\Admin\PositionController;
 use App\Http\Controllers\Api\Admin\RolesController;
+use App\Http\Controllers\Api\Admin\ProductStatusController;
 
 use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 use App\Http\Controllers\Api\Customer\AddressController;
@@ -90,6 +91,7 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::get('role/all', [RolesController::class, 'index']);
+        Route::get('status-product/all', [ProductStatusController::class, 'index']);
     });
 });
 
