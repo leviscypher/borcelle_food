@@ -28,12 +28,6 @@ const updateCategory = (id: any) => {
 </script>
 <template>
   <main class="app-content mt-0 pt-0">
-    <div class="app-title">
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item">Danh sách danh mục</li>
-        <li class="breadcrumb-item"><a href="#">Thêm danh mục</a></li>
-      </ul>
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">

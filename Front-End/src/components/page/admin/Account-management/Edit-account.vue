@@ -1,4 +1,3 @@
-<script src="../../../../router/admin.ts"></script>
 <script lang="ts" setup>
 import { reactive, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -49,12 +48,6 @@ const updateCategory = (id: any) => {
 </script>
 <template>
   <main class="app-content mt-0 pt-0">
-    <div class="app-title">
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item">Danh sách danh tài khoản</li>
-        <li class="breadcrumb-item"><a href="#">Thêm tài khoản</a></li>
-      </ul>
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">

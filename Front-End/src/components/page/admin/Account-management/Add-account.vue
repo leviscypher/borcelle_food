@@ -32,12 +32,6 @@ const addAccount = () => {
 </script>
 <template>
   <main class="app-content mt-0 pt-0">
-    <div class="app-title">
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item">Danh sách danh tài khoản</li>
-        <li class="breadcrumb-item"><a href="#">Thêm tài khoản</a></li>
-      </ul>
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -73,7 +67,7 @@ const addAccount = () => {
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Vài trò</label> <br />
-                <select class="form-select" v-model="accounts.role_id">
+                <select class="form-control" v-model="accounts.role_id">
                   <option disabled value="">Chọn vài trò</option>
                   <option v-for="role in getRole" :key="role.id" :value="role.id">
                     {{ role.name }}
@@ -82,7 +76,7 @@ const addAccount = () => {
               </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Chức vụ</label> <br />
-                <select class="form-select" v-model="accounts.position_id">
+                <select class="form-control" v-model="accounts.position_id">
                   <option disabled value="">Chọn chức vụ</option>
                   <option
                     v-for="position in getPosition"

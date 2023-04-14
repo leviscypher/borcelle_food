@@ -138,14 +138,14 @@ export const usePosition = defineStore('position', {
     },
     async fetchAdd(accounts: any) {
       try {
-        await axios.post('http://127.0.0.1:8000/api/admin/user/create', accounts, constants.routeApis.TOKEN_LOGOUT)
+        await axios.post('http://127.0.0.1:8000/api/admin/position/create', accounts, constants.routeApis.TOKEN_LOGOUT)
       } catch (error) {
         return
       }
     },
     async fetchDelete(id: any) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/admin/user/delete/${id}`, constants.routeApis.TOKEN)
+        await axios.delete(`http://127.0.0.1:8000/api/admin/position/delete/${id}`, constants.routeApis.TOKEN)
       } catch (error) {
         return
       }
@@ -215,7 +215,9 @@ export const useProduct = defineStore('product', {
     },
     async fetchUpdate(id: any, product: any) {
       try {
-        await axios.post(`http://127.0.0.1:8000/api/admin/product/update/${id}`, product, constants.routeApis.TOKEN)
+        console.log(product);
+        
+        await axios.post(`http://127.0.0.1:8000/api/admin/product/update/${id}`, product, constants.routeApis.TOKEN_LOGOUT)
       } catch (error) {
         return
       }

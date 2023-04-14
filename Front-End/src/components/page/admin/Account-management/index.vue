@@ -18,6 +18,9 @@ const deleteCategory = (id: any) => {
   account.fetchDelete(id);
   account.fetchAccounts();
 };
+
+console.log(getAccount);
+
 </script>
 <template>
   <base-title>Quản lý tài khoản</base-title>
@@ -99,8 +102,7 @@ const deleteCategory = (id: any) => {
                   </th>
                   <th width="100" class="text-center">ID</th>
                   <th width="150" class="text-center">Tên tài khoản</th>
-                  <th width="150" class="text-center">Mật khẩu</th>
-                  <th width="150" class="text-center">Trạng Thái</th>
+                  <th width="150" class="text-center">Email</th>
                   <th width="100" class="text-center">Tính năng</th>
                 </tr>
               </thead>
@@ -111,8 +113,7 @@ const deleteCategory = (id: any) => {
                   </td>
                   <td>{{ account.id }}</td>
                   <td>{{ account.username }}</td>
-                  <td>{{ account.isActive }}</td>
-                  <td>Hiện</td>
+                  <td>{{ account.email }}</td>
                   <td class="table-td-center flex justify-center">
                     <base-button
                       type="button"

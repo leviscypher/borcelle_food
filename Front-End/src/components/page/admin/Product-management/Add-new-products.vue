@@ -53,12 +53,6 @@ const addProducts = () => {
 </script>
 <template>
   <main class="app-content">
-    <div class="app-title">
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item">Danh sách sản phẩm</li>
-        <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
-      </ul>
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">

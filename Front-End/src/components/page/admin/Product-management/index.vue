@@ -1,12 +1,18 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive } from "vue";
-import { useProduct } from "@/stores/admin";
+import { useProduct, useAdminStore } from "@/stores/admin";
 
 const products = useProduct();
+const category = useAdminStore();
 
 const idCategory = reactive({ id: "" });
 onMounted(() => {
   products.fetchProduct();
+  category.fetchCategory();
+});
+
+const getCategory = computed(() => {
+  return category.getCategory;
 });
 
 const getProduct = computed(() => {
@@ -21,6 +27,7 @@ const deleteProduct = (id: any) => {
   products.fetchDelete(id);
   products.fetchProduct();
 };
+
 </script>
 <template>
   <base-title>Quản lý sản phẩm</base-title>
@@ -101,16 +108,12 @@ const deleteProduct = (id: any) => {
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>
-              <img
-                :src="product.image_path[0]"
-                width="100"
-              />
-             
+              <img :src="product.image_path[0]" width="100" />
             </td>
             <td>{{ product.quantity }}</td>
             <td><span class="badge bg-success">Còn hàng</span></td>
             <td>{{ product.price }}</td>
-            <td>{{ product.categories_id }}</td>
+            <td>{{ product.category_name.name }}</td>
             <td>
               <base-button
                 type="button"
@@ -121,7 +124,12 @@ const deleteProduct = (id: any) => {
               >
                 <i class="bx bxs-trash"></i>
               </base-button>
-              <router-link :to="`/admin/product-management/edit-products/${product.id}`" class="btn btn-primary btn-sm edit" type="button" title="Sửa">
+              <router-link
+                :to="`/admin/product-management/edit-products/${product.id}`"
+                class="btn btn-primary btn-sm edit"
+                type="button"
+                title="Sửa"
+              >
                 <i class="bx bxs-edit"></i>
               </router-link>
             </td>
