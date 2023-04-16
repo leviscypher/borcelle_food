@@ -34,7 +34,7 @@ class ProductsController extends Controller
                 'description' => $list->description,
                 'image_path' => $image_url,
                 'categories_id' => $list->categories_id,
-                'category_name' => Categories::select('name')->where('id', $list->categories_id)->first()
+                'category_name' => $list->categories->name
             ];
             $datas[] = $data;
         }
@@ -54,13 +54,12 @@ class ProductsController extends Controller
                 'image_path' => json_encode($image_path),
                 'description' => $request->description,
                 'quantity' => $request->quantity,
-                // 'status' => $request->status,
                 'product_status_id' => $request->product_status_id,
                 'categories_id' => $request->categories_id
             ]);
-            return response()->json(['message' => $this->addSuccess], 201);
+            return response()->json($this->message($this->addSuccess), 201);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -69,7 +68,7 @@ class ProductsController extends Controller
         try {
             $product_edit = Product::find($id);
             if (!$product_edit) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             $image_path = json_decode($product_edit->image_path);
             $image_url = [];
@@ -90,7 +89,7 @@ class ProductsController extends Controller
 
             return response()->json(['data' => $data], 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -99,7 +98,7 @@ class ProductsController extends Controller
         try {
             $product_update = Product::find($id);
             if (!$product_update) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
 
             $images = $request->file('image_path');
@@ -119,7 +118,7 @@ class ProductsController extends Controller
 
             return response()->json(['message' => $this->updateSuccess], 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -129,14 +128,14 @@ class ProductsController extends Controller
             $product_delete = Product::find($id);
 
             if (!$product_delete) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             $image_path = json_decode($product_delete->image_path);
             $this->deleteImageDrive($image_path);
             $product_delete->delete();
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            return response()->json($this->message($this->deleteSuccess), 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 }

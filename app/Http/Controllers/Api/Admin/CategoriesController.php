@@ -23,9 +23,9 @@ class CategoriesController extends Controller
                 'name' => $request->name
             ]);
 
-            return response()->json(['message' => $this->addSuccess], 201);
+            return response()->json($this->message($this->addSuccess), 201);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -34,11 +34,11 @@ class CategoriesController extends Controller
         try {
             $category_edit = Categories::find($id);
             if (!$category_edit) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             return response()->json($category_edit, 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -48,7 +48,7 @@ class CategoriesController extends Controller
             DB::table('categories')->where('id', $id)->update(['name' => $request->name]);
             return response()->json(['message' => $this->updateSuccess], 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -58,13 +58,13 @@ class CategoriesController extends Controller
             $category_delete = Categories::find($id);
 
             if (!$category_delete) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
 
             $category_delete->delete();
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            return response()->json($this->message($this->deleteSuccess), 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 }

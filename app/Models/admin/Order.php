@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\customer;
+namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,5 +11,5 @@ class Order extends Model
 
     protected $table = 'order';
 
-    protected $fillable = ['status', 'user_id', 'address_id'];
+    protected $fillable = ['status_id'];
 }

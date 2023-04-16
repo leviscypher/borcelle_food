@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserInfoRequest;
+use App\Http\Requests\AdminUserInfoRequest;
 
 use App\Models\Admin\UserInfo;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,12 +23,12 @@ class UserInfoController extends Controller
                 'fullname' => $item->fullname,
                 'nickname' => $item->nickname,
                 'phone' => $item->phone,
-                'email' => User::select('email')->where('id', $item->user_id)->first(),
+                'email' => $item->user->email,
                 'birthday' => $item->birthday,
                 'gender' => $item->gender ? $item->gender : 'other',
                 'avatar' => $item->avatar ? Storage::disk('google')->url($item->avatar) : null,
                 'user_id' => $item->user_id,
-                'user_name' =>  User::select('username')->where('id', $item->user_id)->first()
+                'user_name' =>  $item->user->username
             ];
             $datas[] = $data;
         }
@@ -42,27 +41,27 @@ class UserInfoController extends Controller
         try {
             $user_info_edit = UserInfo::where('user_id', $id)->first();
             if (!$user_info_edit) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             $item = [
                 'id' => $user_info_edit->id,
                 'fullname' => $user_info_edit->fullname,
                 'nickname' => $user_info_edit->nickname,
                 'phone' => $user_info_edit->phone,
-                'email' => User::select('email')->where('id', $user_info_edit->user_id)->first(),
+                'email' => $user_info_edit->user->email,
                 'birthday' => $user_info_edit->birthday,
                 'gender' => $user_info_edit->gender ? $user_info_edit->gender : 'other',
                 'avatar' => $user_info_edit->avatar ? Storage::disk('google')->url($user_info_edit->avatar) : null,
                 'user_id' => $user_info_edit->user_id,
-                'user_name' =>  User::select('username')->where('id', $user_info_edit->user_id)->first()
+                'user_name' =>  $user_info_edit->user->username
             ];
             return response()->json($item, 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
-    public function update(UserInfoRequest $request, $user_id)
+    public function update(AdminUserInfoRequest $request, $user_id)
     {
         try {
             $user_info_update = UserInfo::where('user_id', $user_id)->first();
@@ -72,13 +71,13 @@ class UserInfoController extends Controller
                 DB::table('users')->where('id', $user_id)->update([
                     'isActive' => 1
                 ]);
-                return response()->json(['message' => $this->updateSuccess], 201);
+                return response()->json($this->message($this->updateSuccess), 201);
             } else {
                 $this->handleUpdate($user_info_update, $request, $user_id);
-                return response()->json(['message' => $this->updateSuccess], 200);
+                return response()->json($this->message($this->updateSuccess), 200);
             }
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -88,7 +87,7 @@ class UserInfoController extends Controller
             $user_info_delete = UserInfo::find($id);
 
             if (!$user_info_delete) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
 
             $this->deleteImageDrive($user_info_delete->avatar);
@@ -98,7 +97,7 @@ class UserInfoController extends Controller
             ]);
             return response()->json(['message' => $this->deleteSuccess], 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -120,6 +119,7 @@ class UserInfoController extends Controller
             'birthday' => $request->birthday,
             'gender' => $request->gender ? $request->gender : 'other',
             'avatar' => $pathImage,
+            'permanent_address' => $request->permanent_address,
             'user_id' => $user_id
         ]);
     }
@@ -144,6 +144,7 @@ class UserInfoController extends Controller
             'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
             'gender' => $request->gender ? $request->gender : $repository->gender,
             'avatar' => $pathImage,
+            'permanent_address' => $request->permanent_address,
             'user_id' => $user_id
         ]);
     }

@@ -23,9 +23,9 @@ class PositionController extends Controller
                 'name' => $request->name
             ]);
 
-            return response()->json(['message' => $this->addSuccess], 201);
+            return response()->json($this->message($this->addSuccess), 201);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -43,7 +43,7 @@ class PositionController extends Controller
 
             return response()->json(['message' => $this->deleteSuccess], 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 }

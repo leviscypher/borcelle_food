@@ -65,4 +65,9 @@ class Controller extends BaseController
             Storage::disk('google')->delete($image);
         }
     }
+
+    public function message($message)
+    {
+        return ['message' => $message];
+    }
 }

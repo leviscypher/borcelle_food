@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('birthday');
             $table->string('gender');
             $table->string('avatar')->nullable();
+            $table->string('permanent_address')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

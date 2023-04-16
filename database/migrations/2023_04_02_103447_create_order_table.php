@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('status_id')->default('3');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('address_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('order_status');
+            $table->foreign('address_id')->references('id')->on('address');
             $table->timestamps();
         });
     }

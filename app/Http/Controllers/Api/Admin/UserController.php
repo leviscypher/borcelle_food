@@ -29,9 +29,9 @@ class UserController extends Controller
                 'role_id' => $request->role_id,
                 'position_id' => $request->position_id
             ]);
-            return response()->json(['message' => $this->addSuccess], 201);
+            return response()->json($this->message($this->addSuccess), 201);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -40,11 +40,11 @@ class UserController extends Controller
         try {
             $user_edit = User::find($id);
             if (!$user_edit) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             return response()->json($user_edit, 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
         try {
             $user_update = User::find($id);
             if (!$user_update) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             DB::table('users')->where('id', $id)->update([
                 'username' => $request->username,
@@ -62,9 +62,9 @@ class UserController extends Controller
                 'role_id' => $request->role_id ? $request->role_id : $user_update->role_id,
                 'position_id' => $request->position_id ? $request->position_id : $user_update->position_id,
             ]);
-            return response()->json(['message' => $this->updateSuccess], 200);
+            return response()->json($this->message($this->updateSuccess), 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 
@@ -73,12 +73,12 @@ class UserController extends Controller
         try {
             $user_delete = User::find($id);
             if (!$user_delete) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+                return response()->json($this->message($this->doesNotExist), 404);
             }
             $user_delete->delete();
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            return response()->json($this->message($this->deleteSuccess), 200);
         } catch (\Throwable $th) {
-            return response()->json(['message' => $this->anUnspecifiedError], 404);
+            return response()->json($this->message($this->anUnspecifiedError), 404);
         }
     }
 }

@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create('order_status', function (Blueprint $table) {
             $table->id();
             $table->string('status');
-            $table->timestamps();
         });
 
         DB::table('order_status')->insert([
