@@ -27,6 +27,7 @@ const logout = async () => {
       .post("http://127.0.0.1:8000/api/logout",{}, constants.routeApis.TOKEN_LOGOUT)
       .then((res) => {
         localStorage.removeItem("token");
+        userData.value = "";
       });
   } catch (error) {
     alert(error);

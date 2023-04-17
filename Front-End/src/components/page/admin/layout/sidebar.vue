@@ -8,7 +8,7 @@ const router = useRouter()
 const userData = ref("");
 
 onMounted(async () => {
-  if (localStorage.getItem("token")) {
+  if (localStorage.getItem("token-admin")) {
     const data = await axios.get(
       "http://127.0.0.1:8000/api/user-login",
       constants.routeApis.TOKEN
@@ -22,7 +22,8 @@ const logout = async () => {
     await axios
       .get("http://127.0.0.1:8000/api/logout", constants.routeApis.TOKEN_LOGOUT)
       .then((res) => {
-        localStorage.removeItem("token");
+        userData.value = '';
+        localStorage.removeItem("token-admin");
         router.push("/admin")
       });
   } catch (error) {
