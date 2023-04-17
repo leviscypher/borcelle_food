@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('order_detail', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total', 10, 2);
+            $table->decimal('total', 10, 0);
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 10, 0);
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
             $table->foreign('order_id')->references('id')->on('order');

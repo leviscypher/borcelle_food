@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Position extends Model
+class ProductStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'position';
-
-    protected $fillable = ['name'];
+    protected $table = "product_status";
 }

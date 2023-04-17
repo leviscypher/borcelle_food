@@ -99,6 +99,7 @@ Route::prefix('admin')->group(function () {
         // ORDER
         Route::prefix('order')->group(function () {
             Route::get('all', [OrderController::class, 'index']);
+            Route::get('order_detail/{order_id}', [OrderController::class, 'order_detail']);
             Route::post('update-status/{order_id}', [OrderController::class, 'updateStatus']);
         });
     });
@@ -115,7 +116,9 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
     });
 
     Route::prefix('address')->group(function () {
-        Route::post('create/{user_id}', [AddressController::class, 'create']);
+        Route::get('create/{user_id}', [AddressController::class, 'create']);
+        // thêm địa chỉ.
+        Route::post('store/{user_id}', [AddressController::class, 'store']);
         Route::get('edit/{id}', [AddressController::class, 'edit']);
         Route::post('update/{id}', [AddressController::class, 'update']);
         Route::get('get-city', [AddressController::class, 'getCity']);

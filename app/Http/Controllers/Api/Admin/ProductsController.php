@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Product;
-use App\Models\Admin\Categories;
+use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +33,9 @@ class ProductsController extends Controller
                 'description' => $list->description,
                 'image_path' => $image_url,
                 'categories_id' => $list->categories_id,
-                'category_name' => $list->categories->name
+                'category_name' => $list->categories->name,
+                'status_name' => $list->product_status->status,
+                'status_id' => $list->product_status_id,
             ];
             $datas[] = $data;
         }
@@ -48,6 +49,7 @@ class ProductsController extends Controller
         try {
             $images = $request->file('image_path');
             $image_path = $this->uploadImageDrive($images);
+
             Product::create([
                 'name' => $request->name,
                 'price' => $request->price,

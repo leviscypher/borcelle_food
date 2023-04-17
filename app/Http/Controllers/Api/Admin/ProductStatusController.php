@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\ProductStatus;
+use App\Models\ProductStatus;
 use Illuminate\Http\Request;
 
 class ProductStatusController extends Controller

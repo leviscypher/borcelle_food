@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\customer\Address;
-use App\Models\Admin\UserInfo;
+use App\Models\User;
 use App\Http\Requests\AddressRequest;
 
 
@@ -21,10 +21,23 @@ class AddressController extends Controller
         return response()->json($address, 200);
     }
 
-    public function create(AddressRequest $request, $user_id)
+    public function create($user_id)
+    {
+        $user = User::find($user_id);
+        $data = [
+            'name' => $user->user_info[0]->fullname,
+            'phone' => $user->user_info[0]->phone,
+        ];
+        return response()->json($data, 200);
+    }
+
+    public function store(AddressRequest $request, $user_id)
     {
         try {
-            $addressDefault = Address::where('isActive', 1)->first();
+            $addressByUser = Address::where('id', $user_id)->get();
+            $addressDefault = Address::where('isActive', 1)->where('user_id', $user_id)->first();
+
+
             if ($addressDefault && $request->isActive == 1) {
                 DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
             }
@@ -34,9 +47,9 @@ class AddressController extends Controller
                     'fullname' => $request->fullname,
                     'company' => $request->company,
                     'phone' => $request->phone,
-                    'address' => $request->address,
+                    'delivery_address' => $request->delivery_address,
                     'address_type' => $request->address_type ? $request->address_type : 0,
-                    'isActive' => $request->isActive,
+                    'isActive' => $request->isActive ? $request->isActive : 0,
                     'user_id' => $user_id,
                     'city_id' => $request->city_id,
                     'district_id' => $request->district_id,

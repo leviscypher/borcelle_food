@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('fullname');
             $table->string('company')->nullable();
             $table->string('phone');
-            $table->string('address');
+            $table->string('delivery_address');
             $table->integer('address_type')->default('0')->comment('0 - nhà riêng, 1 - công ty, văn phòng');
             $table->integer('isActive')->default('0')->comment('0 - không sử dụng, 1 - đang sử dụng, người dùng có thể thay đổi tùy ý');
             $table->unsignedBigInteger('user_id')->comment('địa chỉ thuộc tài khoản nào');

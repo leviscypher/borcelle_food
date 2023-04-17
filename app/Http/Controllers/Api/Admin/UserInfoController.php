@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserInfoRequest;
 
-use App\Models\Admin\UserInfo;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

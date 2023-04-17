@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\PositionRequest;
-use App\Models\Admin\Position;
+use App\Models\Position;
 
 
 class PositionController extends Controller

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Roles;
+use App\Models\Roles;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller

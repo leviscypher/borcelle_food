@@ -26,9 +26,8 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|unique:product,name,' . $this->id,
             'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
+            'quantity' => 'required|numeric|min:1',
             'image_path' => 'required|array',
-            // 'image_path.*' => 'mimes:png,jpg,jpeg,gif,svg|max:2048',
             'description' => 'required',
             'categories_id' => 'required'
         ];
@@ -44,10 +43,9 @@ class ProductRequest extends FormRequest
             'price.numeric' => "giá tiền phải là số",
             'quantity.required' => "không để trống",
             'quantity.numeric' => "giá tiền phải là số",
+            'quantity.min' => 'số lượng sản phẩm phải lớn hơn 1',
             'image_path.required' => "không để trống",
             'image_path.array' => "trường này phải là định dạng mảng",
-            // 'image_path.*.mimes' => "ảnh phải đúng định dang (png, jpg, jpeg, gif, svg)",
-            // 'image_path.max' => "ảnh không được vượt quá 2048kb",
             'description.required' => 'không để trống',
             'categories_id.required' => 'vui lòng chọn danh mục sản phẩm'
         ];

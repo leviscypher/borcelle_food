@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +22,16 @@ class Product extends Model
      */
     public function categories(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Admin\Categories', 'categories_id', 'id');
+        return $this->belongsTo('App\Models\Categories', 'categories_id', 'id');
+    }
+
+    /**
+     * Get the user that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product_status(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\ProductStatus', 'product_status_id', 'id');
     }
 }

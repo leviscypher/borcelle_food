@@ -26,7 +26,7 @@ class AddressRequest extends FormRequest
         return [
             'fullname' => 'required',
             'phone' => ['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/'],
-            'address' => 'required',
+            'delivery_address' => 'required',
             'city_id' => 'required',
             'district_id' => 'required',
             'ward_id' => 'required'
@@ -39,7 +39,7 @@ class AddressRequest extends FormRequest
             'fullname.required' => 'nhập họ tên người nhận.',
             'phone.required' => 'số điện thoại người nhận.',
             'phone.regex' => 'số điện thoại không chính xác.',
-            'address.required' => 'địa chỉ người nhận.',
+            'delivery_address.required' => 'thêm địa chỉ nhận hàng.',
             'city.required' => 'chọn thành phố.',
             'district.required' => 'chọn quận, huyện.',
             'ward.required' => 'chọn xã, phường'
