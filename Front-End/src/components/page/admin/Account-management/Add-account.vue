@@ -100,6 +100,7 @@ const addAccount = () => {
     </div>
   </main>
 </template>
+
 <style lang="scss" scoped>
 @import "@/assets/styles/admin/admin.scss";
 @import "@/assets/styles/admin/add/add.scss";

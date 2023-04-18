@@ -1,26 +1,30 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive } from "vue";
-import { useAdminStore } from "@/stores/admin";
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useAdminStore } from '@/stores/admin'
 
-const category = useAdminStore();
+const category = useAdminStore()
 
-const idCategory = reactive({ id: "" });
-onMounted(() => {
-  category.fetchCategory();
-});
+const idCategory = reactive({ id: '' })
+const isLoading = ref(true)
+
+onMounted(async () => {
+  await Promise.all([category.fetchCategory()])
+  isLoading.value = false
+})
 
 const getCategory = computed(() => {
-  return category.getCategory;
-});
+  return category.getCategory
+})
 
 const getId = (id: any) => {
-  idCategory.id = id;
-};
+  idCategory.id = id
+}
 
-const deleteCategory = (id: any) => {
-  category.fetchDelete(id);
-  category.fetchCategory();
-};
+const deleteCategory = async (id: any) => {
+  isLoading.value = true
+  await Promise.all([category.fetchDelete(id), category.fetchCategory()])
+  isLoading.value = false
+}
 </script>
 <template>
   <base-title>Danh mục sản phẩm</base-title>
@@ -69,7 +73,11 @@ const deleteCategory = (id: any) => {
               </div>
 
               <div class="col-sm-2">
-                <a class="btn btn-excel btn-sm btn-function" href="" title="In">
+                <a
+                  class="btn btn-excel btn-sm btn-function"
+                  href=""
+                  title="In"
+                >
                   <font-awesome-icon icon="fa-solid fa-file-excel" />
                   Xuất Excel
                 </a>
@@ -83,7 +91,11 @@ const deleteCategory = (id: any) => {
                 >
               </div>
               <div class="col-sm-2">
-                <a class="btn btn-delete btn-sm btn-function" type="button" title="Xóa">
+                <a
+                  class="btn btn-delete btn-sm btn-function"
+                  type="button"
+                  title="Xóa"
+                >
                   <i class="bx bxs-trash"></i> Xóa tất cả
                 </a>
               </div>
@@ -97,18 +109,50 @@ const deleteCategory = (id: any) => {
             >
               <thead>
                 <tr>
-                  <th width="10" class="text-center">
-                    <input type="checkbox" id="all" />
+                  <th
+                    width="10"
+                    class="text-center"
+                  >
+                    <input
+                      type="checkbox"
+                      id="all"
+                    />
                   </th>
-                  <th width="100" class="text-center">ID</th>
-                  <th width="150" class="text-center">Tên danh</th>
-                  <th width="100" class="text-center">Tính năng</th>
+                  <th
+                    width="100"
+                    class="text-center"
+                  >
+                    ID
+                  </th>
+                  <th
+                    width="150"
+                    class="text-center"
+                  >
+                    Tên danh
+                  </th>
+                  <th
+                    width="100"
+                    class="text-center"
+                  >
+                    Tính năng
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="category in getCategory" :key="category.id">
-                  <td width="10" class="text-center">
-                    <input type="checkbox" class="checbox" name="check1" value="1" />
+              <tbody v-if="!isLoading">
+                <tr
+                  v-for="category in getCategory"
+                  :key="category.id"
+                >
+                  <td
+                    width="10"
+                    class="text-center"
+                  >
+                    <input
+                      type="checkbox"
+                      class="checbox"
+                      name="check1"
+                      value="1"
+                    />
                   </td>
                   <td>{{ category.id }}</td>
                   <td>{{ category.name }}</td>
@@ -133,6 +177,12 @@ const deleteCategory = (id: any) => {
                 </tr>
               </tbody>
             </table>
+            <div
+              class="text-center"
+              v-if="isLoading"
+            >
+              <base-load></base-load>
+            </div>
           </div>
         </div>
       </div>
@@ -148,7 +198,10 @@ const deleteCategory = (id: any) => {
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title text-black" id="exampleModalLabel">
+            <h2
+              class="modal-title text-black"
+              id="exampleModalLabel"
+            >
               Bạn có muốn xoá không
             </h2>
             <button
@@ -162,12 +215,9 @@ const deleteCategory = (id: any) => {
             <div class="text-center">
               <i class="bx bxs-trash"></i>
             </div>
-            <p class="text-center body">
-              Bạn có chắn chắn muốn xoá danh mục này không không ?
-            </p>
+            <p class="text-center body">Bạn có chắn chắn muốn xoá danh mục này không không ?</p>
           </div>
           <div class="modal-footer gap-[10px]">
-
             <base-button
               type="button"
               class="btn-footer m-0 bg-[#0b0320] text-white"
@@ -190,6 +240,6 @@ const deleteCategory = (id: any) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/admin/admin.scss";
-@import "@/assets/styles/admin/Category/category.scss";
+@import '@/assets/styles/admin/admin.scss';
+@import '@/assets/styles/admin/Category/category.scss';
 </style>

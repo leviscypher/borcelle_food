@@ -1,26 +1,25 @@
 <script lang="ts" setup>
-import { ref,reactive, computed, onMounted } from "vue";
-import { useAccountManagement } from "@/stores/admin";
-const account = useAccountManagement();
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useAccountManagement } from '@/stores/admin'
+const account = useAccountManagement()
 
-const idAccount = reactive({ id: "" });
-
-onMounted(() => {
-  account.fetchAccounts();
-});
+const idAccount = reactive({ id: '' })
+const isLoading = ref(true)
+onMounted(async () => {
+  await Promise.all([account.fetchAccounts()])
+  isLoading.value = false
+})
 const getAccount = computed(() => {
-  return account.getAccounts;
-});
+  return account.getAccounts
+})
 const getId = (id: any) => {
-  idAccount.id = id;
-};
-const deleteCategory = (id: any) => {
-  account.fetchDelete(id);
-  account.fetchAccounts();
-};
-
-console.log(getAccount);
-
+  idAccount.id = id
+}
+const deleteCategory = async (id: any) => {
+  isLoading.value = true
+  await Promise.all([account.fetchDelete(id), account.fetchAccounts()])
+  isLoading.value = false
+}
 </script>
 <template>
   <base-title>Quản lý tài khoản</base-title>
@@ -69,7 +68,11 @@ console.log(getAccount);
               </div>
 
               <div class="col-sm-2">
-                <a class="btn btn-excel btn-sm btn-function" href="" title="In">
+                <a
+                  class="btn btn-excel btn-sm btn-function"
+                  href=""
+                  title="In"
+                >
                   <font-awesome-icon icon="fa-solid fa-file-excel" />
                   Xuất Excel
                 </a>
@@ -83,7 +86,11 @@ console.log(getAccount);
                 >
               </div>
               <div class="col-sm-2">
-                <a class="btn btn-delete btn-sm btn-function" type="button" title="Xóa">
+                <a
+                  class="btn btn-delete btn-sm btn-function"
+                  type="button"
+                  title="Xóa"
+                >
                   <i class="bx bxs-trash"></i> Xóa tất cả
                 </a>
               </div>
@@ -97,19 +104,57 @@ console.log(getAccount);
             >
               <thead>
                 <tr>
-                  <th width="10" class="text-center">
-                    <input type="checkbox" id="all" />
+                  <th
+                    width="10"
+                    class="text-center"
+                  >
+                    <input
+                      type="checkbox"
+                      id="all"
+                    />
                   </th>
-                  <th width="100" class="text-center">ID</th>
-                  <th width="150" class="text-center">Tên tài khoản</th>
-                  <th width="150" class="text-center">Email</th>
-                  <th width="100" class="text-center">Tính năng</th>
+                  <th
+                    width="100"
+                    class="text-center"
+                  >
+                    ID
+                  </th>
+                  <th
+                    width="150"
+                    class="text-center"
+                  >
+                    Tên tài khoản
+                  </th>
+                  <th
+                    width="150"
+                    class="text-center"
+                  >
+                    Email
+                  </th>
+                  <th
+                    width="100"
+                    class="text-center"
+                  >
+                    Tính năng
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="account in getAccount" :key="account.id">
-                  <td width="10" class="text-center">
-                    <input type="checkbox" class="checbox" name="check1" value="1" />
+              <tbody  v-if="!isLoading">
+                <tr
+               
+                v-for="account in getAccount"
+                  :key="account.id"
+                >
+                  <td
+                    width="10"
+                    class="text-center"
+                  >
+                    <input
+                      type="checkbox"
+                      class="checbox"
+                      name="check1"
+                      value="1"
+                    />
                   </td>
                   <td>{{ account.id }}</td>
                   <td>{{ account.username }}</td>
@@ -136,10 +181,17 @@ console.log(getAccount);
                 </tr>
               </tbody>
             </table>
+            <div
+              class="text-center"
+              v-if="isLoading"
+            >
+              <base-load></base-load>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
     <div
       class="modal modals"
       id="exampleModal"
@@ -150,7 +202,10 @@ console.log(getAccount);
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title text-black" id="exampleModalLabel">
+            <h2
+              class="modal-title text-black"
+              id="exampleModalLabel"
+            >
               Bạn có muốn xoá không
             </h2>
             <button
@@ -164,12 +219,9 @@ console.log(getAccount);
             <div class="text-center">
               <i class="bx bxs-trash"></i>
             </div>
-            <p class="text-center body">
-              Bạn có chắn chắn muốn xoá danh mục này không không ?
-            </p>
+            <p class="text-center body">Bạn có chắn chắn muốn xoá danh mục này không không ?</p>
           </div>
           <div class="modal-footer gap-[10px]">
-
             <base-button
               type="button"
               class="btn-footer m-0 bg-[#0b0320] text-white"
@@ -192,7 +244,7 @@ console.log(getAccount);
 </template>
 
 <style scoped>
-@import "@/assets/styles/admin/admin.scss";
+@import '@/assets/styles/admin/admin.scss';
 
 th {
   font-size: 14px !important;

@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     BaseBanner: typeof import('./src/components/common/BaseBanner.vue')['default']
     BaseButton: typeof import('./src/components/common/BaseButton.vue')['default']
     BaseCollections: typeof import('./src/components/common/BaseCollections.vue')['default']
+    BaseLoad: typeof import('./src/components/common/BaseLoad.vue')['default']
     BaseQuantity: typeof import('./src/components/common/BaseQuantity.vue')['default']
     BaseRadio: typeof import('./src/components/common/BaseRadio.vue')['default']
     BaseTitle: typeof import('./src/components/common/BaseTitle.vue')['default']

@@ -37,8 +37,9 @@ export const useAuthStore = defineStore("auth", {
             try {
                 await axios.post('http://127.0.0.1:8000/api/login', dataLogin)
                     .then((res) => {
-                        this.token = res.data.token
+                        this.tokenAdmin = res.data.token
                         localStorage.setItem('token-admin', this.tokenAdmin)
+                        
                     })
                     .catch((error) => {
                         // this.error = error.response.status

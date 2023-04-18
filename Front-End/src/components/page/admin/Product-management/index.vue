@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useProduct, useAdminStore } from "@/stores/admin";
 
+const isLoading = ref(true);
 const products = useProduct();
 const category = useAdminStore();
 
 const idCategory = reactive({ id: "" });
-onMounted(() => {
-  products.fetchProduct();
-  category.fetchCategory();
+
+onMounted(async () => {
+  await Promise.all([products.fetchProduct(), category.fetchCategory()]);
+  isLoading.value = false;
 });
 
 const getCategory = computed(() => {
@@ -23,15 +25,15 @@ const getId = (id: any) => {
   idCategory.id = id;
 };
 
-const deleteProduct = (id: any) => {
-  products.fetchDelete(id);
-  products.fetchProduct();
+const deleteProduct = async (id: any) => {
+  isLoading.value = true;
+  await Promise.all([products.fetchDelete(id), products.fetchProduct()]);
+  isLoading.value = false;
 };
-
 </script>
 <template>
   <base-title>Quản lý sản phẩm</base-title>
-  <div class="tile">
+  <div class="tile" >
     <div class="tile-body">
       <div class="row element-button">
         <div class="col-sm-2">
@@ -102,7 +104,7 @@ const deleteProduct = (id: any) => {
             <th>Chức năng</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="!isLoading">
           <tr v-for="product in getProduct" :key="product.id">
             <td width="10"><input type="checkbox" name="check1" value="1" /></td>
             <td>{{ product.id }}</td>
@@ -136,9 +138,11 @@ const deleteProduct = (id: any) => {
           </tr>
         </tbody>
       </table>
+      <div class="text-center" v-if="isLoading">
+        <base-load></base-load>
+      </div>
     </div>
   </div>
-
   <div
     class="modal modals"
     id="exampleModal"

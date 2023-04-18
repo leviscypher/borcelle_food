@@ -11,8 +11,8 @@ onMounted(async () => {
   if (localStorage.getItem("token-admin")) {
     const data = await axios.get(
       "http://127.0.0.1:8000/api/user-login",
-      constants.routeApis.TOKEN
-    );
+      constants.routeApis.TOKENADMIN
+    );    
     userData.value = data.data.username;
   }
 });
