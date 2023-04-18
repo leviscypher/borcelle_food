@@ -24,7 +24,8 @@ class CategoriesRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:categories'
+            'name' => 'required|unique:categories,name,' . $this->id,
+            'image' => 'required|mimes:png,jpg,jpeg,gif,svg|max:2048',
         ];
     }
 
@@ -33,6 +34,9 @@ class CategoriesRequest extends FormRequest
         return [
             'name.required' => 'vui lòng nhập trường này!',
             'name.unique' => 'danh mục này đã tồn tại!',
+            'image.required' => 'không để ảnh trống',
+            'image.mimes' => 'định dạng ảnh gồm (png, jpg, jpeg, gif, svg)',
+            'image.max' => 'ảnh quá lớn (không vượt quá 2048KB)',
         ];
     }
 }

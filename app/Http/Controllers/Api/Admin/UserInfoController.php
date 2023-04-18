@@ -28,7 +28,11 @@ class UserInfoController extends Controller
                 'gender' => $item->gender ? $item->gender : 'other',
                 'avatar' => $item->avatar ? Storage::disk('google')->url($item->avatar) : null,
                 'user_id' => $item->user_id,
-                'user_name' =>  $item->user->username
+                'user_name' =>  $item->user->username,
+                'permanent_address' => $item->permanent_address,
+                'role_id' => $item->user->role_id,
+                'position_id' => $item->user->position_id,
+                'position_name' => $item->user->position->name,
             ];
             $datas[] = $data;
         }

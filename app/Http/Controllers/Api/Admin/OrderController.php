@@ -12,7 +12,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::paginate($this->itemsPerPage);
         $datas = [];
         foreach ($orders as $item) {
             $address = $item->address;
@@ -24,10 +24,10 @@ class OrderController extends Controller
                 'order_status' => $item->order_status->status,
                 'order_status_id' => $item->status_id,
             ];
-
             $datas[] = $data;
         }
-        return response()->json($datas, 200);
+        $pagination = $this->getPagination($datas, $orders);
+        return response()->json($pagination, 200);
     }
 
     public function order_detail($order_id)
