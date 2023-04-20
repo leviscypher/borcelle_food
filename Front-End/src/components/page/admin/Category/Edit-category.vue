@@ -44,7 +44,6 @@ const updateCategory = async (id: any) => {
           isSuccess.value = '422'
           break
       }
-      console.log(isSuccess.value); 
     } catch (error) {
       return
     }

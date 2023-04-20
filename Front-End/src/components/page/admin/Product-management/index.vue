@@ -13,9 +13,6 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
-const getCategory = computed(() => {
-  return category.getCategory;
-});
 
 const getProduct = computed(() => {
   return products.getProduct;
@@ -113,9 +110,13 @@ const deleteProduct = async (id: any) => {
               <img :src="product.image_path[0]" width="100" />
             </td>
             <td>{{ product.quantity }}</td>
-            <td><span class="badge bg-success">Còn hàng</span></td>
+            <td>
+              {{product.status_id   }}
+              <span class="badge bg-success" v-if="product.status_id == '1'">{{ product.status_name }}</span>
+              <span class="badge bg-danger" v-else-if="product.status_id== '2'">{{ product.status_name }}</span>
+            </td>
             <td>{{ product.price }}</td>
-            <td>{{ product.category_name.name }}</td>
+            <td>{{ product.category_name }}</td>
             <td>
               <base-button
                 type="button"

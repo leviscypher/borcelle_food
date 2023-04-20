@@ -87,3 +87,12 @@
 }
 
 /* END BANNER */
+[type='text'] {
+  &:focus {
+      &:focus {
+          border: none;
+          background-color: transparent !important;
+          box-shadow: none;
+      }
+  }
+}

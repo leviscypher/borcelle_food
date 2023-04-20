@@ -17,7 +17,7 @@ const products = reactive({
   categories_id: "",
 });
 
-const images = ref([]);
+const selectedImages = ref([]);
 
 onMounted(async () => {
   const id = route.params.id;
@@ -43,15 +43,13 @@ const getProduct = computed(() => {
   return product.getEditproducts;
 });
 
-const onFileChange = (e: any) => {
-  images.value = [];
-  products.image_path = [];
-  if (e.target.files.length <= 3) {
+  const onFileChange = (e: any) => {
+  if (selectedImages.value.length < 3 && e.target.files.length <= (3 - selectedImages.value.length)) {
     for (let i = 0; i < e.target.files.length; i++) {
       const file = e.target.files[i];
       const reader = new FileReader();
       reader.onload = (e) => {
-        images.value.push(e.target.result);
+        selectedImages.value.push(e.target.result);
       };
       reader.readAsDataURL(file);
       products.image_path.push(file);
@@ -63,7 +61,7 @@ const onFileChange = (e: any) => {
 
 const removeImage = (index: any) => {
   products.image_path.splice(index, 1);
-  images.value.splice(index, 1);
+  selectedImages.value.splice(index, 1);
 };
 
 const updateCategory = (id: any) => {

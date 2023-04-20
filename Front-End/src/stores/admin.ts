@@ -18,7 +18,7 @@ export const useAdminStore = defineStore('admin', {
   actions: {
     async fetchCategory() {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/admin/categories/all', constants.routeApis.TOKEN)
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/categories/all', constants.routeApis.TOKENADMIN)
         this.categorys = data.data.data
       } catch (error) {
         return
@@ -38,7 +38,7 @@ export const useAdminStore = defineStore('admin', {
     async fetchEdit(id: any) {
       try {
         await axios
-          .get(`http://127.0.0.1:8000/api/admin/categories/edit/${id}`, constants.routeApis.TOKEN)
+          .get(`http://127.0.0.1:8000/api/admin/categories/edit/${id}`, constants.routeApis.TOKENADMIN)
           .then((res) => {
             this.editCategorys = res.data
           })
@@ -48,14 +48,14 @@ export const useAdminStore = defineStore('admin', {
     },
     async fetchUpdate(id: any, data: any) {
       try {
-        await axios.post(`http://127.0.0.1:8000/api/admin/categories/update/${id}`, data, constants.routeApis.TOKEN)
+        await axios.post(`http://127.0.0.1:8000/api/admin/categories/update/${id}`, data, constants.routeApis.TOKENADMIN)
       } catch (error) {
         return
       }
     },
     async fetchDelete(id: any) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/admin/categories/delete/${id}`, constants.routeApis.TOKEN)
+        await axios.delete(`http://127.0.0.1:8000/api/admin/categories/delete/${id}`, constants.routeApis.TOKENADMIN)
       } catch (error) {
         return
       }
@@ -68,6 +68,7 @@ export const useAccountManagement = defineStore('account', {
   state: () => ({
     accounts: [],
     editAccounts: [],
+    status: []
   }),
   getters: {
     getAccounts(state) {
@@ -76,12 +77,15 @@ export const useAccountManagement = defineStore('account', {
     getEditAccounts(state) {
       return state.editAccounts
     },
+    getStatus(state) {
+      return state.status
+    },
   },
   actions: {
     async fetchAccounts() {
       try {
         const data = await axios.get('http://127.0.0.1:8000/api/admin/user/all', constants.routeApis.TOKENADMIN)
-        this.accounts = data.data
+        this.accounts = data.data        
       } catch (error) {
         return
       }
@@ -89,6 +93,12 @@ export const useAccountManagement = defineStore('account', {
     async fetchAdd(accounts: any) {
       try {
         await axios.post('http://127.0.0.1:8000/api/admin/user/create', accounts, constants.routeApis.TOKEN_LOGOUT_ADMIN)
+          .then((res) => {
+            this.status = res.status
+          })
+          .catch((res) => {
+            this.status = res.response.status
+          })
       } catch (error) {
         return
       }
@@ -105,6 +115,12 @@ export const useAccountManagement = defineStore('account', {
     async fetchUpdate(id: any, data: any) {
       try {
         await axios.post(`http://127.0.0.1:8000/api/admin/user/update/${id}`, data, constants.routeApis.TOKENADMIN)
+        .then((res) => {
+          this.status = res.status
+        })
+        .catch((res) => {
+          this.status = res.response.status
+        })
       } catch (error) {
         return
       }
@@ -168,6 +184,27 @@ export const useRole = defineStore('role', {
       try {
         const data = await axios.get('http://127.0.0.1:8000/api/admin/role/all', constants.routeApis.TOKENADMIN)
         this.role = data.data.data
+      } catch (error) {
+        return
+      }
+    },
+  },
+})
+export const useProductStatus = defineStore('productStatus', {
+  state: () => ({
+    productStatus: [],
+  }),
+  getters: {
+    getProductStatus(state) {
+      return state.productStatus
+    },
+  },
+  actions: {
+    async fetchProductStatus() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/product-status/all', constants.routeApis.TOKENADMIN)
+        this.productStatus = data.data
+        
       } catch (error) {
         return
       }

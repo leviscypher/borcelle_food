@@ -38,7 +38,8 @@ const login = async (e: any) => {
     error.errorPassword = 'Tài khoản hoặc mật khẩu chưa chính xác'
   } else {
     try {
-      useAuth.fetchLogin(dataAuth)
+     await useAuth.fetchLogin(dataAuth)
+      window.location.href= "/"
     } catch (error) {
       return
     }

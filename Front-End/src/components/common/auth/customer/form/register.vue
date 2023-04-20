@@ -30,7 +30,7 @@ const getStatus = computed(() => {
 
 const showPassword = ref(false)
 const re =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const register = async (e: any) => {
   e.preventDefault()
   const minLength = 8
@@ -88,7 +88,7 @@ const togglePassword = () => {
   >
     <div
       v-if="isSuccess === '422'"
-      class="alert alert-danger text-[14px]"
+      class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
       role="alert"
     >
       Tên tài khoản và email đã được đăng ký

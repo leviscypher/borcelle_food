@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, computed } from "vue";
-import { useProduct, useAdminStore } from "@/stores/admin";
+import { useProduct, useAdminStore,useProductStatus } from "@/stores/admin";
 const product = useProduct();
 const category = useAdminStore();
+const productStatus = useProductStatus();
 
 const products = reactive({
   name: "",
@@ -10,7 +11,7 @@ const products = reactive({
   price: "",
   quantity: "",
   description: "",
-  status: "",
+  product_status_id: "",
   categories_id: "",
 });
 
@@ -18,14 +19,19 @@ const selectedImages = ref([]);
 
 onMounted(() => {
   category.fetchCategory();
+  productStatus.fetchProductStatus()
 });
 
 const getCategory = computed(() => {
   return category.getCategory;
 });
+const getProductStatus = computed(() => {
+  return productStatus.getProductStatus;
+});
+
 
 const onFileChange = (e: any) => {
-  if (e.target.files.length <= 3) {
+  if (selectedImages.value.length < 3 && e.target.files.length <= (3 - selectedImages.value.length)) {
     for (let i = 0; i < e.target.files.length; i++) {
       const file = e.target.files[i];
       const reader = new FileReader();
@@ -66,11 +72,16 @@ const addProducts = () => {
                 <select
                   class="form-control"
                   id="exampleSelect1"
-                  v-model="products.status"
+                  v-model="products.product_status_id"
                 >
                   <option value="">-- Chọn tình trạng --</option>
-                  <option value="1">Còn hàng</option>
-                  <option value="0">Hết hàng</option>
+                  <option
+                    v-for="productstatus in getProductStatus"
+                    :key="productstatus.id"
+                    :value="productstatus.id"
+                  >
+                    {{ productstatus.status }}
+                  </option>
                 </select>
               </div>
               <div class="form-group col-md-3">
