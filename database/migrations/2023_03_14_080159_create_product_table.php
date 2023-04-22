@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->decimal('price', 10, 0);
             $table->string('quantity', 255);
-            $table->string('image_path');
+            $table->json('image_path');
             $table->string('description');
             $table->unsignedBigInteger('categories_id');
             $table->unsignedBigInteger('product_status_id')->default('1');

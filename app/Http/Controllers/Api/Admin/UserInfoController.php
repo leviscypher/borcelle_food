@@ -4,85 +4,78 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserInfoRequest;
-
+use App\Http\Resources\UserInfoResource;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Response;
+
+
 
 class UserInfoController extends Controller
 {
 
+    protected $userInfo;
+
+    public function __construct(UserInfo $userInfo)
+    {
+        $this->userInfo = $userInfo;
+    }
+
     public function index()
     {
-        $user_info = UserInfo::paginate($this->itemsPerPage);
-        $datas = [];
-
-        foreach ($user_info as $item) {
-            $data = [
-                'id' => $item->id,
-                'fullname' => $item->fullname,
-                'nickname' => $item->nickname,
-                'phone' => $item->phone,
-                'email' => $item->user->email,
-                'birthday' => $item->birthday,
-                'gender' => $item->gender ? $item->gender : 'other',
-                'avatar' => $item->avatar ? Storage::disk('google')->url($item->avatar) : null,
-                'user_id' => $item->user_id,
-                'user_name' =>  $item->user->username,
-                'permanent_address' => $item->permanent_address,
-                'role_id' => $item->user->role_id,
-                'position_id' => $item->user->position_id,
-                'position_name' => $item->user->position->name,
-            ];
-            $datas[] = $data;
-        }
-        $pagination = $this->getPagination($datas, $user_info);
-        return response()->json($pagination, 200);
+        $userInfo = $this->userInfo->paginate($this->itemsPerPage);
+        $userInfoResouce = userInfoResource::collection($userInfo);
+        $pagination = $this->getPagination($userInfoResouce, $userInfo);
+        return response()->json($pagination, Response::HTTP_OK);
     }
 
     public function edit($id)
     {
         try {
-            $user_info_edit = UserInfo::where('user_id', $id)->first();
-            if (!$user_info_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $userInfo = $this->userInfo->find($id);
+            if (!$userInfo) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $item = [
-                'id' => $user_info_edit->id,
-                'fullname' => $user_info_edit->fullname,
-                'nickname' => $user_info_edit->nickname,
-                'phone' => $user_info_edit->phone,
-                'email' => $user_info_edit->user->email,
-                'birthday' => $user_info_edit->birthday,
-                'gender' => $user_info_edit->gender ? $user_info_edit->gender : 'other',
-                'avatar' => $user_info_edit->avatar ? Storage::disk('google')->url($user_info_edit->avatar) : null,
-                'user_id' => $user_info_edit->user_id,
-                'user_name' =>  $user_info_edit->user->username
-            ];
-            return response()->json($item, 200);
+            $userInfoResouce = new UserInfoResource($userInfo);
+            return response()->json($userInfoResouce, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function update(AdminUserInfoRequest $request, $user_id)
     {
-        try {
-            $user_info_update = UserInfo::where('user_id', $user_id)->first();
+        // try {
+        //     $user_info_update = UserInfo::where('user_id', $user_id)->first();
 
-            if (!$user_info_update) {
-                $this->handleCreate($request, $user_id);
-                DB::table('users')->where('id', $user_id)->update([
-                    'isActive' => 1
-                ]);
-                return response()->json($this->message($this->updateSuccess), 201);
-            } else {
-                $this->handleUpdate($user_info_update, $request, $user_id);
-                return response()->json($this->message($this->updateSuccess), 200);
-            }
-        } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+        //     if (!$user_info_update) {
+        //         $this->handleCreate($request, $user_id);
+        //         DB::table('users')->where('id', $user_id)->update([
+        //             'isActive' => 1
+        //         ]);
+        //         return response()->json($this->message($this->updateSuccess), 201);
+        //     } else {
+        //         $this->handleUpdate($user_info_update, $request, $user_id);
+        //         return response()->json($this->message($this->updateSuccess), 200);
+        //     }
+        // } catch (\Throwable $th) {
+        //     return response()->json($this->message($this->anUnspecifiedError), 404);
+        // }
+
+        $userInfo = $this->userInfo->find($user_id);
+
+        if($userInfo == null) {
+            $this->handleCreate($request, $user_id);
+            DB::table('users')->where('id', $user_id)->update([
+                'isActive' => 1
+            ]);
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
+        } else {
+            $this->handleUpdate($userInfo, $request, $user_id);
+            return response()->json($this->message($this->updateSuccess), Response::HTTP_CREATED);
         }
+
     }
 
     public function delete($id)
@@ -107,49 +100,39 @@ class UserInfoController extends Controller
 
     private function handleCreate($request, $user_id)
     {
-        if (!$request->avatar) {
-            $pathImage = null;
-        }
-
-        if ($request->email) {
-            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
-        }
-
-        $pathImage = $this->uploadImageDrive($request->avatar);
-        UserInfo::create([
-            'fullname' => $request->fullname,
-            'nickname' => $request->nickname,
-            'phone' => $request->phone,
-            'birthday' => $request->birthday,
-            'gender' => $request->gender ? $request->gender : 'other',
-            'avatar' => $pathImage,
-            'permanent_address' => $request->permanent_address,
-            'user_id' => $user_id
-        ]);
+        $data = $request->all();
+        $avatar = $this->uploadImageDrive($request->avatar);
+        $data['avatar'] = json_encode($avatar);
+        $data['user_id'] = $user_id;
+        $this->userInfo->create($data);
+        $this->userInfo->save();
     }
 
     private function handleUpdate($repository, $request, $user_id)
     {
-        if ($request->email) {
-            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
-        }
-
-        if ($request->avatar) {
-            $pathImage = $this->uploadImageDrive($request->avatar);
-            $this->deleteImageDrive($repository->avatar);
-        } else {
-            $pathImage = null;
-            $this->deleteImageDrive($repository->avatar);
-        }
-        DB::table('user_info')->where('user_id', $user_id)->update([
-            'fullname' => $request->fullname,
-            'nickname' => $request->nickname,
-            'phone' => $request->phone,
-            'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
-            'gender' => $request->gender ? $request->gender : $repository->gender,
-            'avatar' => $pathImage,
-            'permanent_address' => $request->permanent_address,
-            'user_id' => $user_id
-        ]);
+        // if ($request->avatar) {
+        //     $pathImage = $this->uploadImageDrive($request->avatar);
+        //     $this->deleteImageDrive($repository->avatar);
+        // } else {
+        //     $pathImage = null;
+        //     $this->deleteImageDrive($repository->avatar);
+        // }
+        // DB::table('user_info')->where('user_id', $user_id)->update([
+        //     'fullname' => $request->fullname,
+        //     'nickname' => $request->nickname,
+        //     'phone' => $request->phone,
+        //     'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
+        //     'gender_id' => $request->gender_id ? $request->gender_id : $repository->gender_id,
+        //     'avatar' => $pathImage,
+        //     'permanent_address' => $request->permanent_address,
+        //     'user_id' => $user_id
+        // ]);
+        $data = $request->all();
+        $this->deleteImageDrive($repository->avatar);
+        $avatar = $this->uploadImageDrive($request->avatar);
+        $data['avatar'] = json_encode($avatar);
+        $data['user_id'] = $user_id;
+        $repository->update($data);
+        $repository->save();
     }
 }

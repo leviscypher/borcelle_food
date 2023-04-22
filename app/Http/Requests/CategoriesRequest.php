@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
+
 
 class CategoriesRequest extends FormRequest
 {
@@ -39,4 +43,12 @@ class CategoriesRequest extends FormRequest
             'image.max' => 'ảnh quá lớn (không vượt quá 2048KB)',
         ];
     }
+
+    // public function failedValidation(Validator $validator) 
+    // {
+    //     $response = new Response([
+    //         'errors' => $validator->errors()
+    //     ], Response::HTTP_UNPROCESSABLE_ENTITY);
+    //     throw(new ValidationException($validator, $response));
+    // }
 }

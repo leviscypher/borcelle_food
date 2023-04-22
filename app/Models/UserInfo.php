@@ -13,7 +13,7 @@ class UserInfo extends Model
     protected $table = 'user_info';
 
     protected $fillable = [
-        'fullname', 'nickname', 'phone', 'birthday', 'avatar', 'gender', 'user_id', 'permanent_address'
+        'fullname', 'nickname', 'phone', 'birthday', 'avatar', 'gender_id', 'user_id', 'permanent_address'
     ];
 
     /**
@@ -24,5 +24,15 @@ class UserInfo extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+
+    /**
+     * Get the gender that owns the gender
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Gender', 'gender_id', 'id');
     }
 }

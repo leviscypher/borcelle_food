@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'username' => 'required|unique:users,username',
-            'password' => 'required|confirmed',
+            'password' => 'required|confirmed|min:8',
             'email' => 'required|unique:users,email|email',
             'password_confirmation' => 'required',
         ];
@@ -42,6 +42,7 @@ class RegisterRequest extends FormRequest
             'username.required' => 'nhập tên tài khoản',
             'username.unique' => 'tài khoản đã tồn tại',
             'password.required' => 'nhập mật khẩu',
+            'password.min' => 'nhập mật có tối thiểu 8 kí tự',
             'password.confirmed' => 'nhập lại mật khẩu không đúng',
             'password_confirmation.required' => 'vui lòng nhập lại mật khẩu!',
             'email.required' => 'nhập email của bạn',

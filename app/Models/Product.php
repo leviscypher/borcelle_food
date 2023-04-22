@@ -15,6 +15,16 @@ class Product extends Model
         'name', 'price', 'image_path', 'description', 'categories_id', 'quantity', 'product_status_id'
     ];
 
+    public function setImagesAttribute($value)
+    {
+        $this->attributes['images'] = json_encode($value);
+    }
+
+    public function getImagesAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
     /**
      * Get the user that owns the Product
      *
@@ -34,4 +44,6 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\ProductStatus', 'product_status_id', 'id');
     }
+
+    
 }

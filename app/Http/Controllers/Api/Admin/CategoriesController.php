@@ -3,97 +3,90 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Categories;
 use App\Http\Requests\CategoriesRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CategoriesResource;
+use Illuminate\Http\Response;
 
 
 class CategoriesController extends Controller
 {
+
+    protected $categories;
+
+    public function __construct(Categories $categories)
+    {
+        $this->categories = $categories;
+    }
+
     public function index()
     {
-        $categories = Categories::all();
-        $datas = [];
-        foreach($categories as $item) {
-            $data = [
-                'name' => $item->name,
-                'image' => Storage::disk('google')->url(json_decode($item->image)),
-            ];
-            $datas[] = $data;
-        }
-        return response()->json(['data' => $datas], 200);
+        $categories = $this->categories->all();
+        $categoriesResouce = CategoriesResource::collection($categories);
+        return response()->json($categoriesResouce, Response::HTTP_OK);
     }
 
     public function create(CategoriesRequest $request)
     {
         try {
-            $images = $request->file('image');
-            $image_path = $this->uploadImageDrive($images);
-            Categories::create([
-                'name' => $request->name,
-                'image' => json_encode($image_path),
-            ]);
-
-            return response()->json($this->message($this->addSuccess), 201);
+            $image_path = $this->uploadImageDrive($request->image);
+            $this->categories->name = $request->name;
+            $this->categories->image = $image_path;
+            $this->categories->save();
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function edit($id)
     {
         try {
-            $category_edit = Categories::find($id);
-            if (!$category_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $category = Categories::find($id);
+            if (!$category) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            return response()->json($category_edit, 200);
+            return response()->json($category, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function update(CategoriesRequest $request, $id)
     {
-        try {
-            $category_update = Categories::find($id);
-
-            if(!$category_update) {
-                return response()->json($this->message($this->doesNotExist), 404);
+       try {
+            $category = $this->categories->find($id);
+            if(!$category) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-
-            if($request->file('image')) {
-                $images = $request->file('image');
-                $image_path = $this->uploadImageDrive($images);
-                $this->deleteImageDrive(json_decode($category_update->image));
-                $category_update->image = json_encode($image_path);
-                $category_update->save();
+            if($request->image) {
+                $this->deleteImageDrive(json_decode($category->image));
+                $image_path = $this->uploadImageDrive($request->image);
+                $category->name = $request->name;
+                $category->image = $image_path;
+                $category->save();
             }
+            $category->name = $request->name;
+            $category->save();
+            return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
+       } catch (\Throwable $th) {
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
+       }
 
-            $category_update->name = $request->name;
-            $category_update->save();
-
-            return response()->json(['message' => $this->updateSuccess], 200);
-        } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
-        }
     }
 
     public function delete($id)
     {
         try {
-            $category_delete = Categories::find($id);
-
-            if (!$category_delete) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $category = $this->categories->find($id);;
+            if (!$category) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $this->deleteImageDrive(json_decode($category_delete->image));
-            $category_delete->delete();
-            return response()->json($this->message($this->deleteSuccess), 200);
+            $this->deleteImageDrive(json_decode($category->image));
+            $category->delete();
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

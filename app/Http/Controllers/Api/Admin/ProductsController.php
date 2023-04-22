@@ -6,121 +6,80 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 
 
 
+
 class ProductsController extends Controller
 {
+
+    protected $product;
+
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
+
     public function index()
     {
-        $product = Product::paginate($this->itemsPerPage);
-        $datas = [];
-        foreach ($product->items() as $list) {
-            $image_path = json_decode($list->image_path);
-            $image_url = [];
-            foreach ($image_path as $item) {
-                $url = Storage::disk('google')->url($item);
-                $image_url[] = $url;
-            }
-            $data = [
-                'id' => $list->id,
-                'name' => $list->name,
-                'price' => $list->price,
-                'quantity' => $list->quantity,
-                'description' => $list->description,
-                'image_path' => $image_url,
-                'categories_id' => $list->categories_id,
-                'category_name' => $list->categories->name,
-                'status_name' => $list->product_status->status,
-                'status_id' => $list->product_status_id,
-            ];
-            $datas[] = $data;
-        }
-        $pagination = $this->getPagination($datas, $product);
-        return response()->json($pagination, 200);
+        $product = $this->product->paginate($this->itemsPerPage);
+        $productResouce = ProductResource::collection($product);
+        $pagination = $this->getPagination($productResouce, $product);
+        return response()->json($pagination, Response::HTTP_OK);
     }
 
 
     public function create(ProductRequest $request)
     {
-        try {
-            $images = $request->file('image_path');
-            $image_path = $this->uploadImageDrive($images);
-
-            Product::create([
-                'name' => $request->name,
-                'price' => $request->price,
-                'image_path' => json_encode($image_path),
-                'description' => $request->description,
-                'quantity' => $request->quantity,
-                'product_status_id' => $request->product_status_id,
-                'categories_id' => $request->categories_id
-            ]);
-            return response()->json($this->message($this->addSuccess), 201);
-        } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
-        }
+       try {
+            $data = $request->all();
+            $image_path = $this->uploadImageDrive($request->image_path);
+            $data['image_path'] = json_encode($image_path);
+            $this->product->create($data);
+            $this->product->save();
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
+       } catch (\Throwable $th) {
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
+       }
     }
 
     public function edit($id)
     {
         try {
-            $product_edit = Product::find($id);
+            $product_edit = $this->product->find($id);
             if (!$product_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $image_path = json_decode($product_edit->image_path);
-            $image_url = [];
-            foreach ($image_path as $item) {
-                $url = Storage::disk('google')->url($item);
-                $image_url[] = $url;
-            };
-
-            $data = [
-                'id' => $product_edit->id,
-                'name' => $product_edit->name,
-                'price' => $product_edit->price,
-                'quantity' => $product_edit->quantity,
-                'description' => $product_edit->description,
-                'image_path' => $image_url,
-                'categories_id' => $product_edit->categories_id
-            ];
-
-            return response()->json(['data' => $data], 200);
+            $productResouce = new ProductResource($product_edit);
+            return response()->json($productResouce, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function update(ProductRequest $request, $id)
     {
         try {
-            $product_update = Product::find($id);
-            if (!$product_update) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $product = $this->product->find($id);
+            if(!$product) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-
+            $data = $request->all();
             $images = $request->file('image_path');
             $image_path_new = $this->uploadImageDrive($images);
-            $image_path_old = json_decode($product_update->image_path);
+            $image_path_old = json_decode($product->image_path);
             $this->deleteImageDrive($image_path_old);
-
-            DB::table('product')->where('id', $id)->update([
-                'name' => $request->name,
-                'price' => $request->price,
-                'quantity' => $request->quantity,
-                'description' => $request->description,
-                'image_path' => json_encode($image_path_new),
-                'product_status_id' => $request->product_status_id ? $request->product_status_id : $product_update->product_status_id,
-                'categories_id' => $request->categories_id ? $request->categories_id : $product_update->categories_id
-            ]);
-
-            return response()->json(['message' => $this->updateSuccess], 200);
+            $data['image_path'] = json_encode($image_path_new);
+            $product->update($data);
+            $product->save();
+            return response()->json(['message' => $this->updateSuccess], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -128,16 +87,15 @@ class ProductsController extends Controller
     {
         try {
             $product_delete = Product::find($id);
-
             if (!$product_delete) {
-                return response()->json($this->message($this->doesNotExist), 404);
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
             $image_path = json_decode($product_delete->image_path);
             $this->deleteImageDrive($image_path);
             $product_delete->delete();
-            return response()->json($this->message($this->deleteSuccess), 200);
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
