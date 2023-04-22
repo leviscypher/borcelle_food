@@ -99,7 +99,7 @@ Route::prefix('admin')->group(function () {
         // ORDER
         Route::prefix('order')->group(function () {
             Route::get('all', [OrderController::class, 'index']);
-            Route::get('order_detail/{order_id}', [OrderController::class, 'order_detail']);
+            Route::get('order-detail/{order_id}', [OrderController::class, 'orderDetail']);
             Route::post('update-status/{order_id}', [OrderController::class, 'updateStatus']);
         });
     });

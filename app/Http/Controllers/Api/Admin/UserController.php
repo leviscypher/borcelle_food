@@ -3,82 +3,82 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Http\Response;
 
 
 class UserController extends Controller
 {
+
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function index()
     {
-        $user = User::all();
-        return response()->json($user, 200);
+        $user = $this->user->all();
+        return response()->json($user, Response::HTTP_OK);
     }
 
     public function create(UserRequest $request)
     {
         try {
-            User::create([
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'email' => $request->email,
-                'role_id' => $request->role_id,
-                'position_id' => $request->position_id
-            ]);
-            return response()->json($this->message($this->addSuccess), 201);
+            $data = $request->all();
+            $data['password'] = Hash::make($request->password);
+            $this->user->create($data);
+            $this->user->save();
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
-        }
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }        
     }
 
     public function edit($id)
     {
         try {
-            $user_edit = User::find($id);
-            if (!$user_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $user = $this->user->find($id);
+            if (!$user) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            return response()->json($user_edit, 200);
+            return response()->json($user, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function update(UserRequest $request, $id)
     {
         try {
-            $user_update = User::find($id);
-            if (!$user_update) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $user = $this->user->find($id);
+            if (!$user) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            DB::table('users')->where('id', $id)->update([
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'email' => $request->email,
-                'role_id' => $request->role_id ? $request->role_id : $user_update->role_id,
-                'position_id' => $request->position_id ? $request->position_id : $user_update->position_id,
-            ]);
-            return response()->json($this->message($this->updateSuccess), 200);
+            $data = $request->all();
+            $data['password'] = Hash::make($request->password);
+            $userUpdate = $user->update($data);
+            $userUpdate->save();
+            return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function delete($id)
     {
         try {
-            $user_delete = User::find($id);
-            if (!$user_delete) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $user = $this->user->find($id);
+            if (!$user) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $user_delete->delete();
-            return response()->json($this->message($this->deleteSuccess), 200);
+            $user->delete();
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

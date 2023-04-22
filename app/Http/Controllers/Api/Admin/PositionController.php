@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\PositionRequest;
 use App\Models\Position;
+use Illuminate\Http\Response;
+
+
 
 
 class PositionController extends Controller
@@ -13,7 +16,7 @@ class PositionController extends Controller
     public function index()
     {
         $data = Position::all();
-        return response()->json(['data' => $data], 200);
+        return response()->json(['data' => $data], Response::HTTP_OK);
     }
 
     public function create(PositionRequest $request)
@@ -23,27 +26,23 @@ class PositionController extends Controller
                 'name' => $request->name
             ]);
 
-            return response()->json($this->message($this->addSuccess), 201);
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
     public function delete($id)
     {
         try {
-
-            $position_delete = Position::find($id);
-
-            if (!$position_delete) {
-                return response()->json(['message' => $this->doesNotExist], 404);
+            $position = Position::find($id);
+            if (!$position) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-
-            $position_delete->delete();
-
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            $position->delete();
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 }

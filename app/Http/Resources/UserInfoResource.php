@@ -25,7 +25,7 @@ class UserInfoResource extends JsonResource
             'birthday' => $this->birthday,
             'gender_id' => $this->gender_id,
             'gender' => $this->gender->gender,
-            'avatar' => $this->avatar ? Storage::disk('google')->url($this->avatar) : null,
+            'avatar' => $this->avatar ? Storage::disk('google')->url(json_decode($this->avatar)) : null,
             'user_id' => $this->user_id,
             'user_name' =>  $this->user->username,
             'permanent_address' => $this->permanent_address,

@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserInfoRequest;
 use App\Http\Resources\UserInfoResource;
 use App\Models\UserInfo;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
 
 
@@ -46,93 +44,57 @@ class UserInfoController extends Controller
 
     public function update(AdminUserInfoRequest $request, $user_id)
     {
-        // try {
-        //     $user_info_update = UserInfo::where('user_id', $user_id)->first();
+        try {
+            $userInfo = UserInfo::updateOrCreate(
+                ['user_id' => $user_id], 
+                [
+                    'fullname' => $request->fullname,
+                    'nickname' => $request->nickname,
+                    'phone' => $request->phone,
+                    'birthday' => $request->birthday,
+                    'permanent_address' => $request->permanent_address,
+                    'gender_id' => $request->gender_id,
+                    'user_id' => $user_id,
+                ],
+            );
 
-        //     if (!$user_info_update) {
-        //         $this->handleCreate($request, $user_id);
-        //         DB::table('users')->where('id', $user_id)->update([
-        //             'isActive' => 1
-        //         ]);
-        //         return response()->json($this->message($this->updateSuccess), 201);
-        //     } else {
-        //         $this->handleUpdate($user_info_update, $request, $user_id);
-        //         return response()->json($this->message($this->updateSuccess), 200);
-        //     }
-        // } catch (\Throwable $th) {
-        //     return response()->json($this->message($this->anUnspecifiedError), 404);
-        // }
+            if ($request->avatar && $request->avatar != null) {
+                $avatar = $this->uploadImageDrive($request->avatar);
+                $oldAvatar = $userInfo->getOriginal('avatar');
+                $userInfo->avatar = json_encode($avatar);
+                $userInfo->save();
+                $this->deleteImageDrive(json_decode($oldAvatar));
 
-        $userInfo = $this->userInfo->find($user_id);
-
-        if($userInfo == null) {
-            $this->handleCreate($request, $user_id);
-            DB::table('users')->where('id', $user_id)->update([
-                'isActive' => 1
-            ]);
-            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
-        } else {
-            $this->handleUpdate($userInfo, $request, $user_id);
-            return response()->json($this->message($this->updateSuccess), Response::HTTP_CREATED);
+            } 
+            
+            if ($userInfo->wasRecentlyCreated) {
+                $user = $userInfo->user;
+                $user->isActive = 1;
+                $user->save();
+                return response()->json($this->message($this->addSuccess), Response::HTTP_OK);                
+            } else {
+                return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
+            }
+        } catch (\Throwable $th) {
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
     public function delete($id)
     {
         try {
-            $user_info_delete = UserInfo::find($id);
-
-            if (!$user_info_delete) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $userInfo = $this->userInfo->find($id);
+            if (!$userInfo) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-
-            $this->deleteImageDrive($user_info_delete->avatar);
-            $user_info_delete->delete();
-            DB::table('users')->where('id', $user_info_delete->user_id)->update([
-                'isActive' => 0
-            ]);
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            $this->deleteImageDrive($userInfo->avatar);
+            $userInfo->delete();
+            $user = $userInfo->user();
+            $user->isActive = 0;
+            $user->save();
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private function handleCreate($request, $user_id)
-    {
-        $data = $request->all();
-        $avatar = $this->uploadImageDrive($request->avatar);
-        $data['avatar'] = json_encode($avatar);
-        $data['user_id'] = $user_id;
-        $this->userInfo->create($data);
-        $this->userInfo->save();
-    }
-
-    private function handleUpdate($repository, $request, $user_id)
-    {
-        // if ($request->avatar) {
-        //     $pathImage = $this->uploadImageDrive($request->avatar);
-        //     $this->deleteImageDrive($repository->avatar);
-        // } else {
-        //     $pathImage = null;
-        //     $this->deleteImageDrive($repository->avatar);
-        // }
-        // DB::table('user_info')->where('user_id', $user_id)->update([
-        //     'fullname' => $request->fullname,
-        //     'nickname' => $request->nickname,
-        //     'phone' => $request->phone,
-        //     'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
-        //     'gender_id' => $request->gender_id ? $request->gender_id : $repository->gender_id,
-        //     'avatar' => $pathImage,
-        //     'permanent_address' => $request->permanent_address,
-        //     'user_id' => $user_id
-        // ]);
-        $data = $request->all();
-        $this->deleteImageDrive($repository->avatar);
-        $avatar = $this->uploadImageDrive($request->avatar);
-        $data['avatar'] = json_encode($avatar);
-        $data['user_id'] = $user_id;
-        $repository->update($data);
-        $repository->save();
     }
 }

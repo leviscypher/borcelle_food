@@ -3,22 +3,28 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\customer\Address;
+use App\Models\Address;
 use App\Models\User;
 use App\Http\Requests\AddressRequest;
-
+use Illuminate\Http\Response;
 
 
 class AddressController extends Controller
 {
 
+    protected $address;
+
+    public function __construct(Address $address)
+    {
+        $this->address = $address;
+    }
+
     public function index()
     {
-        $address = Address::all();
-        return response()->json($address, 200);
+        $address = $this->address->all();
+        return response()->json($address, Response::HTTP_OK);
     }
 
     public function create($user_id)
@@ -28,95 +34,77 @@ class AddressController extends Controller
             'name' => $user->user_info[0]->fullname,
             'phone' => $user->user_info[0]->phone,
         ];
-        return response()->json($data, 200);
+        return response()->json($data, Response::HTTP_OK);
     }
 
     public function store(AddressRequest $request, $user_id)
     {
         try {
-            $addressByUser = Address::where('id', $user_id)->get();
-            $addressDefault = Address::where('isActive', 1)->where('user_id', $user_id)->first();
-
-
+            $data = $request->all();
+            $addressDefault = $this->address->where('isActive', 1)->where('user_id', $user_id)->first();
             if ($addressDefault && $request->isActive == 1) {
-                DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
+                $addressDefault->update(['isActive' => 0]);
+                $addressDefault->save();
             }
-
-            if ($request->city_id == 2) {
-                Address::create([
-                    'fullname' => $request->fullname,
-                    'company' => $request->company,
-                    'phone' => $request->phone,
-                    'delivery_address' => $request->delivery_address,
-                    'address_type' => $request->address_type ? $request->address_type : 0,
-                    'isActive' => $request->isActive ? $request->isActive : 0,
-                    'user_id' => $user_id,
-                    'city_id' => $request->city_id,
-                    'district_id' => $request->district_id,
-                    'ward_id' => $request->ward_id
-                ]);
-                return response()->json($this->message($this->addSuccess), 201);
+            if($request->city_id == 2) {
+                $data['user_id'] = $user_id;
+                $this->address->create($data);
+                return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
             }
-            return response()->json($this->message('xin lỗi hiện tại chúng tôi chỉ hỗ trợ khu vực Hà Nội'));
+            return response()->json($this->message('xin lỗi hiện tại chúng tôi chỉ hỗ trợ khu vực Hà Nội'), Response::HTTP_NOT_FOUND);   
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
     public function edit($id)
     {
         try {
-            $address_edit = Address::find($id);
-            if (!$address_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $address = $this->address->find($id);
+            if (!$address) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-
-            return response()->json($address_edit, 200);
+            return response()->json($address, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
     public function update(AddressRequest $request, $id)
     {
         try {
-            $addressDefault = Address::where('isActive', 1)->first();
-            $address_update = Address::find($id);
-            if (!$address_update) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $address =$this->address->find($id);
+            if (!$address) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
+
+            $addressDefault =$this->address->where('isActive', 1)->first();
             if ($addressDefault && $request->isActive == 1) {
-                DB::table('address')->where('id', $addressDefault->id)->update(['isActive' => 0]);
+                $addressDefault->update(['isActive' => 0]);
+                $addressDefault->save();
             }
-            DB::table('address')->where('id', $id)->update([
-                'fullname' => $request->fullname,
-                'company' => $request->company,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'address_type' => $request->address_type ? $request->address_type : $address_update->address_type,
-                'isActive' => $request->isActive ? $request->isActive : $address_update->isActive,
-                'user_id' => $address_update->user_id,
-                'city_id' => $request->city_id,
-                'district_id' => $request->district_id,
-                'ward_id' => $request->ward_id
-            ]);
-            return response()->json(['message' => $this->updateSuccess], 200);
+            
+            $data = $request->all();
+            $data['user_id'] = $address->user_id;
+            $address->update($data);
+            return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
+
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
     public function delete($id)
     {
         try {
-            $address_delete = Address::find($id);
-            if (!$address_delete) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $address = $this->address->find($id);
+            if (!$address) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $address_delete->delete();
-            return response()->json(['message' => $this->deleteSuccess], 200);
+            $address->delete();
+            return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -124,9 +112,9 @@ class AddressController extends Controller
     {
         try {
             $data = DB::table('city')->get();
-            return response()->json($data, 200);
+            return response()->json($data, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -134,9 +122,9 @@ class AddressController extends Controller
     {
         try {
             $data = DB::table('district')->where('city_id', $city_id)->get();
-            return response()->json($data, 200);
+            return response()->json($data, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -144,9 +132,9 @@ class AddressController extends Controller
     {
         try {
             $data = DB::table('ward')->where('district_id', $district_id)->get();
-            return response()->json($data, 200);
+            return response()->json($data, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 }

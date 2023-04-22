@@ -3,106 +3,71 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\UserInfo;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CustomerUserInfoRequest;
+use Illuminate\Http\Response;
+use App\Http\Resources\UserInfoResource;
 
 
 
 class CustomerUserInfoController extends Controller
 {
+    protected $userInfo;
+
+    public function __construct(UserInfo $userInfo)
+    {
+        $this->userInfo = $userInfo;
+    }
+
     public function edit($id)
     {
         try {
-            $user_info_edit = UserInfo::where('user_id', $id)->first();
-            if (!$user_info_edit) {
-                return response()->json($this->message($this->doesNotExist), 404);
+            $userInfo = $this->userInfo->find($id);
+            if (!$userInfo) {
+                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $item = [
-                'id' => $user_info_edit->id,
-                'fullname' => $user_info_edit->fullname,
-                'nickname' => $user_info_edit->nickname,
-                'phone' => $user_info_edit->phone,
-                'email' => $user_info_edit->user->email,
-                'birthday' => $user_info_edit->birthday,
-                'gender' => $user_info_edit->gender ? $user_info_edit->gender : 'other',
-                'avatar' => $user_info_edit->avatar ? Storage::disk('google')->url($user_info_edit->avatar) : null,
-                'user_id' => $user_info_edit->user_id,
-                'user_name' =>  $user_info_edit->user->username
-            ];
-            return response()->json($item, 200);
+            $userInfoResouce = new UserInfoResource($userInfo);
+            return response()->json($userInfoResouce, Response::HTTP_OK);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function update(CustomerUserInfoRequest $request, $user_id)
     {
         try {
-            $user_info_update = UserInfo::where('user_id', $user_id)->first();
+            $userInfo = UserInfo::updateOrCreate(
+                ['user_id' => $user_id], 
+                [
+                    'fullname' => $request->fullname,
+                    'nickname' => $request->nickname,
+                    'phone' => $request->phone,
+                    'birthday' => $request->birthday,
+                    'permanent_address' => $request->permanent_address,
+                    'gender_id' => $request->gender_id,
+                    'user_id' => $user_id,
+                ],
+            );
 
-            if (!$user_info_update) {
-                $this->handleCreate($request, $user_id);
-                DB::table('users')->where('id', $user_id)->update([
-                    'isActive' => 1
-                ]);
-                return response()->json($this->message($this->updateSuccess), 201);
+            if ($request->avatar && $request->avatar != null) {
+                $avatar = $this->uploadImageDrive($request->avatar);
+                $oldAvatar = $userInfo->getOriginal('avatar');
+                $userInfo->avatar = json_encode($avatar);
+                $userInfo->save();
+                $this->deleteImageDrive(json_decode($oldAvatar));
+
+            } 
+            
+            if ($userInfo->wasRecentlyCreated) {
+                $user = $userInfo->user;
+                $user->isActive = 1;
+                $user->save();
+                return response()->json($this->message($this->addSuccess), Response::HTTP_OK);                
             } else {
-                $this->handleUpdate($user_info_update, $request, $user_id);
-                return response()->json($this->message($this->updateSuccess), 200);
+                return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
             }
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private function handleCreate($request, $user_id)
-    {
-        if (!$request->avatar) {
-            $pathImage = null;
-        }
-
-        if ($request->email) {
-            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
-        }
-
-        $pathImage = $this->uploadImageDrive($request->avatar);
-        UserInfo::create([
-            'fullname' => $request->fullname,
-            'nickname' => $request->nickname,
-            'phone' => $request->phone,
-            'birthday' => $request->birthday,
-            'gender' => $request->gender ? $request->gender : 'other',
-            'avatar' => $pathImage,
-            'permanent_address' => $request->permanent_address,
-            'user_id' => $user_id
-        ]);
-    }
-
-    private function handleUpdate($repository, $request, $user_id)
-    {
-        if ($request->email) {
-            DB::table('users')->where('id', $user_id)->update(['email' => $request->email]);
-        }
-
-        if ($request->avatar) {
-            $pathImage = $this->uploadImageDrive($request->avatar);
-            $this->deleteImageDrive($repository->avatar);
-        } else {
-            $pathImage = null;
-            $this->deleteImageDrive($repository->avatar);
-        }
-        DB::table('user_info')->where('user_id', $user_id)->update([
-            'fullname' => $request->fullname,
-            'nickname' => $request->nickname,
-            'phone' => $request->phone,
-            'birthday' => $request->birthday ? $request->birthday : $repository->birthday,
-            'gender' => $request->gender ? $request->gender : $repository->gender,
-            'avatar' => $pathImage,
-            'permanent_address' => $request->permanent_address,
-            'user_id' => $user_id
-        ]);
     }
 }

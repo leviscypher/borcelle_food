@@ -8,6 +8,8 @@ use App\Models\OrderDetail;
 use App\Models\Product;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class CustomerOrderController extends Controller
 {
@@ -45,9 +47,9 @@ class CustomerOrderController extends Controller
                 $product->quantity = $product->quantity - $item['quantity'];
                 $product->save();
             }
-            return response()->json($this->message($this->addSuccess), 201);
+            return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
         } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), 404);
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
 }

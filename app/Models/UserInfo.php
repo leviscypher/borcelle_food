@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserInfo extends Model
 {
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->updating(function ($model) {
+            $oldData = $model->getOriginal();
+            return $oldData;
+        });
+    }
+
     use HasFactory;
 
     protected $table = 'user_info';
