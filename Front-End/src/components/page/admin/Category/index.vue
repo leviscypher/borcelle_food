@@ -14,6 +14,7 @@ onMounted(async () => {
 
 const getCategory = computed(() => {
   return category.getCategory
+  
 })
 
 const getId = (id: any) => {
@@ -131,6 +132,12 @@ const deleteCategory = async (id: any) => {
                     Tên danh
                   </th>
                   <th
+                    width="150"
+                    class="text-center"
+                  >
+                    Ảnh
+                  </th>
+                  <th
                     width="100"
                     class="text-center"
                   >
@@ -140,7 +147,7 @@ const deleteCategory = async (id: any) => {
               </thead>
               <tbody v-if="!isLoading">
                 <tr
-                  v-for="category in getCategory"
+                  v-for="(category, index) in getCategory"
                   :key="category.id"
                 >
                   <td
@@ -154,8 +161,14 @@ const deleteCategory = async (id: any) => {
                       value="1"
                     />
                   </td>
-                  <td>{{ category.id }}</td>
+                  <td>{{ index + 1  }}</td>
                   <td>{{ category.name }}</td>
+                  <td>
+                    <img
+                      :src="category.image"
+                      width="100"
+                    />
+                  </td>
                   <td class="table-td-center flex justify-center">
                     <base-button
                       type="button"

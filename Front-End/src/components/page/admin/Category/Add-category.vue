@@ -6,16 +6,40 @@ const isSuccess = ref('')
 
 const categorys = reactive({
   name: '',
+  image: '',
 })
 const error = reactive({
   name: '',
+  image:''
 })
+const selectedImages = ref([])
 const getStatus = computed(() => {
   return useAdmin.getStatus
 })
+
+const onFileChange = (e: any) => {
+  if (selectedImages.value.length < 1 && e.target.files.length <= 1 - selectedImages.value.length) {
+    for (let i = 0; i < e.target.files.length; i++) {
+      const file = e.target.files[i]
+      const reader = new FileReader()
+      if (!file.type.match('image.*')) {
+        error.image = 'Chỉ cho phép tải lên tập tin hình ảnh'
+        return
+      }
+      reader.onload = (e) => {
+        selectedImages.value.push(e.target.result)
+      }
+      reader.readAsDataURL(file)
+      categorys.image = file
+    }
+  } else {
+    alert('ảnh tối đa là 1')
+  }
+}
 const addCategory = async () => {
-  if (categorys.name === '') {
+  if (categorys.name === '' && selectedImages.value.length < 1) {
     error.name = 'Chưa nhập dữ liệu'
+    error.image = 'Vui lòng chọn ít nhất 1 ảnh'
   } else {
     try {
       await useAdmin.fetchAdd(categorys)
@@ -23,19 +47,19 @@ const addCategory = async () => {
         case 201:
           isSuccess.value = '201'
           break
-        case 422:
+        case 404:
           isSuccess.value = '422'
           break
         default:
           break
       }
     } catch (error) {
-      return
+      isSuccess.value = null
     }
   }
 }
 </script>
-<template >
+<template>
   <main class="app-content mt-0 pt-0">
     <div class="row">
       <div class="col-md-12">
@@ -74,6 +98,46 @@ const addCategory = async () => {
                   >
                 </transition>
               </div>
+              <div class="form-group col-md-12">
+                <label class="control-label">Ảnh sản phẩm</label>
+                <div id="boxchoice">
+                  <div
+                    v-if="selectedImages.length > 0"
+                    class="flex gap-5"
+                  >
+                    <div
+                      v-for="(image, index) in selectedImages"
+                      :key="index"
+                      class="relative"
+                    >
+                      <img
+                        :src="image"
+                        height="100"
+                      />
+                      <base-button
+                        class="btn-remove p-0 m-0"
+                        @click.stop.prevent="removeImage(index)"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-xmark" />
+                      </base-button>
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    ref="fileInput"
+                    id="choicefile"
+                    class="d-none"
+                    @change="onFileChange"
+                    multiple
+                    @input="error.image = ''"
+                  />
+                  <label
+                    for="choicefile"
+                    class="Choicefile"
+                    >Chọn ảnh</label
+                  >
+                </div>
+              </div>
             </form>
           </div>
           <div class="flex gap-[15px]">
@@ -98,4 +162,10 @@ const addCategory = async () => {
 <style lang="scss" scoped>
 @import '@/assets/styles/admin/admin.scss';
 @import '@/assets/styles/admin/add/add.scss';
+.btn-remove {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 0;
+}
 </style>

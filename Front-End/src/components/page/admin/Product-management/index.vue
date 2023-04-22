@@ -1,36 +1,35 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useProduct, useAdminStore } from "@/stores/admin";
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useProduct, useAdminStore } from '@/stores/admin'
 
-const isLoading = ref(true);
-const products = useProduct();
-const category = useAdminStore();
+const isLoading = ref(true)
+const products = useProduct()
+const category = useAdminStore()
 
-const idCategory = reactive({ id: "" });
+const idCategory = reactive({ id: '' })
 
 onMounted(async () => {
-  await Promise.all([products.fetchProduct(), category.fetchCategory()]);
-  isLoading.value = false;
-});
-
+  await Promise.all([products.fetchProduct(), category.fetchCategory()])
+  isLoading.value = false
+})
 
 const getProduct = computed(() => {
-  return products.getProduct;
-});
+  return products.getProduct
+})
 
 const getId = (id: any) => {
-  idCategory.id = id;
-};
+  idCategory.id = id
+}
 
 const deleteProduct = async (id: any) => {
-  isLoading.value = true;
-  await Promise.all([products.fetchDelete(id), products.fetchProduct()]);
-  isLoading.value = false;
-};
+  isLoading.value = true
+  await Promise.all([products.fetchDelete(id), products.fetchProduct()])
+  isLoading.value = false
+}
 </script>
 <template>
   <base-title>Quản lý sản phẩm</base-title>
-  <div class="tile" >
+  <div class="tile">
     <div class="tile-body">
       <div class="row element-button">
         <div class="col-sm-2">
@@ -71,26 +70,45 @@ const deleteProduct = async (id: any) => {
         </div>
 
         <div class="col-sm-2">
-          <a class="btn btn-excel btn-sm btn-function" href="" title="In">
+          <a
+            class="btn btn-excel btn-sm btn-function"
+            href=""
+            title="In"
+          >
             <font-awesome-icon icon="fa-solid fa-file-excel" />
             Xuất Excel
           </a>
         </div>
         <div class="col-sm-2">
-          <a class="btn btn-delete btn-sm pdf-file btn-function" type="button" title="In"
+          <a
+            class="btn btn-delete btn-sm pdf-file btn-function"
+            type="button"
+            title="In"
             ><i class="bx bxs-file-pdf"></i>Xuất PDF</a
           >
         </div>
         <div class="col-sm-2">
-          <a class="btn btn-delete btn-sm btn-function" type="button" title="Xóa">
+          <a
+            class="btn btn-delete btn-sm btn-function"
+            type="button"
+            title="Xóa"
+          >
             <i class="bx bxs-trash"></i> Xóa tất cả
           </a>
         </div>
       </div>
-      <table class="table table-hover table-bordered" id="sampleTable">
+      <table
+        class="table table-hover table-bordered"
+        id="sampleTable"
+      >
         <thead>
           <tr>
-            <th width="10"><input type="checkbox" id="all" /></th>
+            <th width="10">
+              <input
+                type="checkbox"
+                id="all"
+              />
+            </th>
             <th>Mã sản phẩm</th>
             <th>Tên sản phẩm</th>
             <th>Ảnh</th>
@@ -102,18 +120,38 @@ const deleteProduct = async (id: any) => {
           </tr>
         </thead>
         <tbody v-if="!isLoading">
-          <tr v-for="product in getProduct" :key="product.id">
-            <td width="10"><input type="checkbox" name="check1" value="1" /></td>
-            <td>{{ product.id }}</td>
+          <tr
+            v-for="(product, index) in getProduct"
+            :key="product.id"
+          >
+            <td width="10">
+              <input
+                type="checkbox"
+                name="check1"
+                value="1"
+              />
+            </td>
+            <td>{{ index + 1 }}</td>
             <td>{{ product.name }}</td>
             <td>
-              <img :src="product.image_path[0]" width="100" />
+              <img
+                :src="product.image_path[0]"
+                width="100"
+              />
             </td>
             <td>{{ product.quantity }}</td>
             <td>
-              {{product.status_id   }}
-              <span class="badge bg-success" v-if="product.status_id == '1'">{{ product.status_name }}</span>
-              <span class="badge bg-danger" v-else-if="product.status_id== '2'">{{ product.status_name }}</span>
+              {{ product.status_id }}
+              <span
+                class="badge bg-success"
+                v-if="product.status_id == '1'"
+                >{{ product.status_name }}</span
+              >
+              <span
+                class="badge bg-danger"
+                v-else-if="product.status_id == '2'"
+                >{{ product.status_name }}</span
+              >
             </td>
             <td>{{ product.price }}</td>
             <td>{{ product.category_name }}</td>
@@ -139,7 +177,10 @@ const deleteProduct = async (id: any) => {
           </tr>
         </tbody>
       </table>
-      <div class="text-center" v-if="isLoading">
+      <div
+        class="text-center"
+        v-if="isLoading"
+      >
         <base-load></base-load>
       </div>
     </div>
@@ -154,7 +195,10 @@ const deleteProduct = async (id: any) => {
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title text-black" id="exampleModalLabel">
+          <h2
+            class="modal-title text-black"
+            id="exampleModalLabel"
+          >
             Bạn có muốn xoá không
           </h2>
           <button
@@ -168,9 +212,7 @@ const deleteProduct = async (id: any) => {
           <div class="text-center">
             <i class="bx bxs-trash"></i>
           </div>
-          <p class="text-center body">
-            Bạn có chắn chắn muốn xoá danh mục này không không ?
-          </p>
+          <p class="text-center body">Bạn có chắn chắn muốn xoá danh mục này không không ?</p>
         </div>
         <div class="modal-footer gap-[10px]">
           <base-button
@@ -194,7 +236,7 @@ const deleteProduct = async (id: any) => {
 </template>
 
 <style scoped>
-@import "@/assets/styles/admin/admin.scss";
+@import '@/assets/styles/admin/admin.scss';
 
 th {
   font-size: 14px !important;

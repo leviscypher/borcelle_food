@@ -5,10 +5,6 @@ export const admin = [
     name: 'admin',
     component: login,
     meta: { layout: 'layoutadmin' },
-    beforeEnter: (to: any, from: any) => {
-      // reject the navigation
-      return { path: '/admin' }
-    },
   },
   {
     path: '/admin/home',
