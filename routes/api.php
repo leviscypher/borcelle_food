@@ -114,8 +114,6 @@ Route::prefix('admin')->group(function () {
 // THÊM SỬA THÔNG TIN TÀI KHOẢN CỦA NGƯỜI DÙNG - KHÔNG CÓ QUYỀN XÓA.
 Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
 
-    Route::post('get/product/all', [CustomerProductController::class, 'index']);
-
     Route::prefix('user-info')->group(function () {
         Route::get('edit/{user_id}', [CustomerUserInfoController::class, 'edit']);
         Route::post('update/{user_id}', [CustomerUserInfoController::class, 'update'])->middleware('enterAdressRole');
@@ -135,3 +133,5 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
 
     Route::post('order/create/{user_id}', [CustomerOrderController::class, 'createOrder'])->middleware('isActive');
 });
+
+Route::get('customer/get/product/all', [CustomerProductController::class, 'index']);
