@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\UserInfoController;
 use App\Http\Controllers\Api\Admin\CategoriesController;
+use App\Http\Controllers\Api\Admin\GenderController;
 use App\Http\Controllers\Api\Admin\ProductsController;
 use App\Http\Controllers\Api\Admin\PositionController;
 use App\Http\Controllers\Api\Admin\RolesController;
@@ -94,6 +95,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('role/all', [RolesController::class, 'index']);
         Route::get('product-status/all', [ProductStatusController::class, 'index']);
+        Route::get('gender/all', [GenderController::class, 'index']);
 
 
         // ORDER
