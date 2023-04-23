@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 const quantity = ref(1)
-const maxQuantity = 100
+const maxQuantity = 10
 
 const decrement = () => {
   if (quantity.value > 1) {
@@ -29,7 +29,7 @@ const limitQuantity = (event: any) => {
     <font-awesome-icon icon="fa-solid fa-minus" />
   </base-button>
   <div class="pr-4 pl-4">
-    <input type="number" :value="quantity" :v-model="quantity" @input="limitQuantity" class="quantity-bulk" min="1" max="100">
+    <input type="number" :value="quantity" :v-model="quantity" @input="limitQuantity" class="quantity-bulk" min="1" max="10">
   </div>
   <base-button class="quantity-increase m-0" @click="increment">
     <font-awesome-icon icon="fa-solid fa-plus" />
