@@ -151,6 +151,12 @@ const Tonggle = (e: any) => {
                       Email
                     </th>
                     <th
+                      width="150"
+                      class="text-center"
+                    >
+                      Trạng thái
+                    </th>
+                    <th
                       width="100"
                       class="text-center"
                     >
@@ -178,6 +184,10 @@ const Tonggle = (e: any) => {
                     <td v-if="account.role_id == 1">{{ index + 1 }}</td>
                     <td v-if="account.role_id == 1">{{ account.username }}</td>
                     <td v-if="account.role_id == 1">{{ account.email }}</td>
+                    <td v-if="account.role_id == 1">
+                      <template v-if="account.isActive == 1">Kích hoạt</template>
+                      <template v-if="account.isActive == 0">chưa kích hoạt</template>
+                    </td>
                     <td
                       v-if="account.role_id == 1"
                       class="table-td-center flex justify-center"
@@ -245,6 +255,12 @@ const Tonggle = (e: any) => {
                       Email
                     </th>
                     <th
+                      width="150"
+                      class="text-center"
+                    >
+                      Trạng thái
+                    </th>
+                    <th
                       width="100"
                       class="text-center"
                     >
@@ -269,9 +285,13 @@ const Tonggle = (e: any) => {
                         value="1"
                       />
                     </td>
-                    <td v-if="account.role_id == 2">{{ index + 1 }}</td>
+                    <td v-if="account.role_id == 2">{{ index++  }}</td>
                     <td v-if="account.role_id == 2">{{ account.username }}</td>
                     <td v-if="account.role_id == 2">{{ account.email }}</td>
+                    <td v-if="account.role_id == 2">
+                      <template v-if="account.isActive == 1">Kích hoạt</template>
+                      <template v-if="account.isActive == 0">chưa kích hoạt</template>
+                    </td>
                     <td
                       v-if="account.role_id == 2"
                       class="table-td-center flex justify-center"

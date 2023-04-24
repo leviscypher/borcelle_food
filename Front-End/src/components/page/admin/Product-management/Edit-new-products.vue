@@ -31,7 +31,7 @@ onMounted(async () => {
       products.description = getProduct.value.description;
       products.categories_id = getProduct.value.categories_id;
       products.image_path = getProduct.value.image_path;
-      images.value = getProduct.value.image_path;
+      selectedImages.value = getProduct.value.image_path;
     }
   }
 });
@@ -116,8 +116,8 @@ const updateCategory = (id: any) => {
               <div class="form-group col-md-12">
                 <label class="control-label">Ảnh sản phẩm</label>
                 <div id="boxchoice">
-                  <div v-if="images.length > 0" class="flex gap-5">
-                    <div v-for="(image, index) in images" :key="index" class="relative">
+                  <div v-if="selectedImages.length > 0" class="flex gap-5">
+                    <div v-for="(image, index) in selectedImages" :key="index" class="relative">
                       <img :src="image" height="100" />
                       <base-button
                         class="btn-remove p-0 m-0"

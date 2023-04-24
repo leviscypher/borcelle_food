@@ -234,7 +234,28 @@ export const useProductStatus = defineStore('productStatus', {
     },
   },
 })
+export const useGender = defineStore('gender', {
+  state: () => ({
+    gender: [],
+  }),
+  getters: {
+    getGender(state) {
+      return state.gender
+    },
+  },
+  actions: {
+    async fetchGender() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/gender/all', constants.routeApis.TOKENADMIN)
+        this.gender = data.data
+      } catch (error) {
+        return
+      }
+    },
+  },
+})
 // product
+
 export const useProduct = defineStore('product', {
   state: () => ({
     products: [],
@@ -293,6 +314,102 @@ export const useProduct = defineStore('product', {
     async fetchDelete(id: any) {
       try {
         await axios.delete(`http://127.0.0.1:8000/api/admin/product/delete/${id}`, constants.routeApis.TOKENADMIN)
+      } catch (error) {
+        return
+      }
+    },
+  },
+})
+
+//order
+export const useOrder = defineStore('order', {
+  state: () => ({
+    orders: [],
+    editorder: [],
+  }),
+  getters: {
+    getOrder(state) {
+      return state.orders
+    },
+    getEditOrder(state) {
+      return state.editorder
+    },
+  },
+  actions: {
+    async fetchOrder() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all', constants.routeApis.TOKENADMIN)
+        this.orders = data.data.data
+      } catch (error) {
+        return
+      }
+    },
+    async fetchAdd(orders: any) {
+      try {
+        await axios.post(
+          'http://127.0.0.1:8000/api/admin/user-info/update',
+          orders,
+          constants.routeApis.TOKEN_LOGOUT_ADMIN
+        )
+      } catch (error) {
+        return
+      }
+    },
+  },
+})
+
+//user-info
+export const useUserInfo = defineStore('user-info', {
+  state: () => ({
+    UserInfo: [],
+    editUserInfo: [],
+    status: [],
+  }),
+  getters: {
+    getUserInfo(state) {
+      return state.UserInfo
+    },
+    getEditUserInfo(state) {
+      return state.editUserInfo
+    },
+    getStatus(state) {
+      return state.status
+    },
+  },
+  actions: {
+    async fetchUserInfo() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/user-info/all', constants.routeApis.TOKENADMIN)
+        this.UserInfo = data.data.data
+      } catch (error) {
+        return
+      }
+    },
+    async fetchAdd(id: any, userinfo: any) {
+      try {
+        await axios
+          .post(
+            `http://127.0.0.1:8000/api/admin/user-info/update/${id}`,
+            userinfo,
+            constants.routeApis.TOKEN_LOGOUT_ADMIN
+          )
+          .then((res) => {
+            this.status = res.status
+          })
+          .catch((res) => {
+            this.status = res.response.status            
+          })
+      } catch (error) {
+        return
+      }
+    },
+    async fetchEdit(id: any) {
+      try {
+        await axios
+          .get(`http://127.0.0.1:8000/api/admin/user-info/edit/${id}`, constants.routeApis.TOKENADMIN)
+          .then((res) => {
+            this.editUserInfo = res.data            
+          })
       } catch (error) {
         return
       }

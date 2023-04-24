@@ -3,45 +3,46 @@ import { ref, computed, reactive } from 'vue'
 import { useAdminStore } from '@/stores/admin'
 const useAdmin = useAdminStore()
 const isSuccess = ref('')
-
+const isloading = ref(false)
 const categorys = reactive({
   name: '',
   image: '',
 })
 const error = reactive({
   name: '',
-  image:''
+  image: '',
 })
-const selectedImages = ref([])
+const selectedImage = ref(null)
 const getStatus = computed(() => {
   return useAdmin.getStatus
 })
 
 const onFileChange = (e: any) => {
-  if (selectedImages.value.length < 1 && e.target.files.length <= 1 - selectedImages.value.length) {
-    for (let i = 0; i < e.target.files.length; i++) {
-      const file = e.target.files[i]
-      const reader = new FileReader()
-      if (!file.type.match('image.*')) {
-        error.image = 'Chỉ cho phép tải lên tập tin hình ảnh'
-        return
-      }
-      reader.onload = (e) => {
-        selectedImages.value.push(e.target.result)
-      }
-      reader.readAsDataURL(file)
-      categorys.image = file
+  if (e.target.files.length === 1) {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      selectedImage.value = e.target.result
     }
+    reader.readAsDataURL(file)
+    categorys.image = file
   } else {
-    alert('ảnh tối đa là 1')
+    alert('Chỉ được tải lên 1 ảnh')
   }
 }
+
+const removeImage = () => {
+  categorys.image = ''
+  selectedImage.value = null
+}
+
 const addCategory = async () => {
   if (categorys.name === '' && selectedImages.value.length < 1) {
     error.name = 'Chưa nhập dữ liệu'
     error.image = 'Vui lòng chọn ít nhất 1 ảnh'
   } else {
     try {
+      isloading.value = true
       await useAdmin.fetchAdd(categorys)
       switch (getStatus.value) {
         case 201:
@@ -55,6 +56,8 @@ const addCategory = async () => {
       }
     } catch (error) {
       isSuccess.value = null
+    } finally {
+      isloading.value = false
     }
   }
 }
@@ -65,23 +68,37 @@ const addCategory = async () => {
       <div class="col-md-12">
         <div class="tile">
           <h3 class="tile-title">Tạo mới danh mục</h3>
+
           <div class="tile-body">
             <form class="row">
-              <div class="form-group col-md-4">
+              <div v-if="isloading">
+                <base-load></base-load>
+              </div>
+              <div v-else>
                 <div
+                  class="form-group col-md-4"
                   v-if="isSuccess === '422'"
-                  class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
-                  role="alert"
                 >
-                  Danh mục đã tồn tại
+                  <div
+                    class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
+                    role="alert"
+                  >
+                    Danh mục đã tồn tại
+                  </div>
                 </div>
                 <div
+                  class="form-group col-md-4"
                   v-else-if="isSuccess === '201'"
-                  class="alert alert-success text-[14px]"
-                  role="alert"
                 >
-                  Thêm danh mục thành công
+                  <div
+                    class="alert alert-success text-[14px]"
+                    role="alert"
+                  >
+                    Thêm danh mục thành công
+                  </div>
                 </div>
+              </div>
+              <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
                 <input
                   class="form-control"
@@ -98,25 +115,22 @@ const addCategory = async () => {
                   >
                 </transition>
               </div>
+
               <div class="form-group col-md-12">
-                <label class="control-label">Ảnh sản phẩm</label>
+                <label class="control-label">Ảnh 3x4 nhân viên</label>
                 <div id="boxchoice">
                   <div
-                    v-if="selectedImages.length > 0"
+                    v-if="selectedImage !== null"
                     class="flex gap-5"
                   >
-                    <div
-                      v-for="(image, index) in selectedImages"
-                      :key="index"
-                      class="relative"
-                    >
+                    <div class="relative">
                       <img
-                        :src="image"
-                        height="100"
+                        :src="selectedImage"
+                        class="avatar"
                       />
                       <base-button
                         class="btn-remove p-0 m-0"
-                        @click.stop.prevent="removeImage(index)"
+                        @click.stop.prevent="removeImage"
                       >
                         <font-awesome-icon icon="fa-solid fa-xmark" />
                       </base-button>
@@ -128,14 +142,14 @@ const addCategory = async () => {
                     id="choicefile"
                     class="d-none"
                     @change="onFileChange"
-                    multiple
-                    @input="error.image = ''"
+                    accept="image/*"
                   />
                   <label
                     for="choicefile"
                     class="Choicefile"
-                    >Chọn ảnh</label
                   >
+                    <i class="bx bx-upload"></i>
+                  </label>
                 </div>
               </div>
             </form>
@@ -150,7 +164,7 @@ const addCategory = async () => {
             </button>
             <router-link
               class="btn btn-cancel"
-              to="/admin/category"
+              to="/admin/category/"
               >Hủy bỏ</router-link
             >
           </div>
@@ -167,5 +181,10 @@ const addCategory = async () => {
   width: 30px;
   height: 30px;
   right: 0;
+}
+.avatar{
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
 }
 </style>

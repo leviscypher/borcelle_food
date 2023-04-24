@@ -80,9 +80,9 @@ export const admin = [
         meta: { layout: 'layoutadmin' },
       },
       {
-        path: '/admin/employee-management/add-products',
-        name: 'add-products',
-        component: () => import('@/page/admin/Product-management/Add-new-products.vue'),
+        path: '/admin/employee-management/edit-staff/:id',
+        name: 'edit-staff',
+        component: () => import('@/page/admin/Employee-manager/Edit-staff.vue'),
         meta: { layout: 'layoutadmin' },
       },
       // category

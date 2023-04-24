@@ -1,4 +1,18 @@
 <script lang="ts" setup>
+import { ref, computed, onMounted } from 'vue'
+
+import { useUserInfo } from '@/stores/admin'
+
+const userInfos = useUserInfo()
+const isLoading = ref(true)
+
+onMounted(async () => {
+  await Promise.all([userInfos.fetchUserInfo()])
+  isLoading.value = false
+})
+const getUserInfo = computed(() => {
+  return userInfos.getUserInfo
+})
 
 </script>
 <template>
@@ -47,7 +61,11 @@
               </div>
 
               <div class="col-sm-2">
-                <a class="btn btn-excel btn-sm btn-function" href="" title="In">
+                <a
+                  class="btn btn-excel btn-sm btn-function"
+                  href=""
+                  title="In"
+                >
                   <font-awesome-icon icon="fa-solid fa-file-excel" />
                   Xuất Excel
                 </a>
@@ -61,7 +79,11 @@
                 >
               </div>
               <div class="col-sm-2">
-                <a class="btn btn-delete btn-sm btn-function" type="button" title="Xóa">
+                <a
+                  class="btn btn-delete btn-sm btn-function"
+                  type="button"
+                  title="Xóa"
+                >
                   <i class="bx bxs-trash"></i> Xóa tất cả
                 </a>
               </div>
@@ -75,7 +97,12 @@
             >
               <thead>
                 <tr>
-                  <th width="10"><input type="checkbox" id="all" /></th>
+                  <th width="10">
+                    <input
+                      type="checkbox"
+                      id="all"
+                    />
+                  </th>
                   <th>ID nhân viên</th>
                   <th width="150">Họ và tên</th>
                   <th width="20">Ảnh thẻ</th>
@@ -87,19 +114,31 @@
                   <th width="100">Tính năng</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td width="10"><input type="checkbox" name="check1" value="1" /></td>
-                  <td>#CD12837</td>
-                  <td>Hồ Thị Thanh Ngân</td>
-                  <td>
-                    <img class="img-card-person" src="@/assets/cardphoto/1.jfif" alt="" />
+              <tbody v-if="!isLoading">
+                <tr
+                  v-for="(userinfo, index) in getUserInfo"
+                  :key="userinfo.id"
+                >
+                  <td width="10">
+                    <input
+                      type="checkbox"
+                      name="check1"
+                      value="1"
+                    />
                   </td>
-                  <td>155-157 Trần Quốc Thảo, Quận 3, Hồ Chí Minh</td>
-                  <td>12/02/1999</td>
-                  <td>Nữ</td>
-                  <td>0926737168</td>
-                  <td>Bán hàng</td>
+                  <td>{{ index++ }}</td>
+                  <td>{{ userinfo.fullname }}</td>
+                  <td>
+                    <img
+                      :src="userinfo.avatar"
+                      width="100"
+                    />
+                  </td>
+                  <td>{{ userinfo.permanent_address }}</td>
+                  <td>{{ userinfo.birthday }}</td>
+                  <td>{{ userinfo.gender }}</td>
+                  <td>{{ userinfo.phone }}</td>
+                  <td>{{ userinfo.position_name }}</td>
                   <td class="table-td-center">
                     <button
                       class="btn btn-primary btn-sm trash mr-[4px]"
@@ -108,23 +147,33 @@
                     >
                       <i class="bx bxs-trash"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm edit">
+                    <router-link
+                      :to="`/admin/employee-management/edit-staff/${userinfo.id}`"
+                      class="btn btn-primary btn-sm edit"
+                      type="button"
+                      title="Sửa"
+                    >
                       <i class="bx bxs-edit"></i>
-                    </button>
+                    </router-link>
                   </td>
                 </tr>
               </tbody>
             </table>
+            <div
+              class="text-center"
+              v-if="isLoading"
+            >
+              <base-load></base-load>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
-
 </template>
 
 <style scoped>
-@import "@/assets/styles/admin/admin.scss";
+@import '@/assets/styles/admin/admin.scss';
 
 th {
   font-size: 14px !important;
