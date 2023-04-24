@@ -55,7 +55,6 @@ declare module '@vue/runtime-core' {
     NewSalary: typeof import('./src/components/page/admin/Salary-statement/New-salary.vue')['default']
     Order: typeof import('./src/components/page/user/Order/index.vue')['default']
     OrderManagement: typeof import('./src/components/page/admin/Order-management/index.vue')['default']
-    Pagination: typeof import('./src/components/common/Pagination.vue')['default']
     Payment: typeof import('./src/components/page/user/Payment/index.vue')['default']
     ProductDetail: typeof import('./src/components/page/user/ProductDetail/ProductDetail.vue')['default']
     ProductManagement: typeof import('./src/components/page/admin/Product-management/index.vue')['default']
