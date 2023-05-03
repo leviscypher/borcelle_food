@@ -29,9 +29,7 @@ class CategoriesController extends Controller
     public function create(CategoriesRequest $request)
     {
         try {
-            $image_path = $this->uploadImageDrive($request->image);
             $this->categories->name = $request->name;
-            $this->categories->image = $image_path;
             $this->categories->save();
             return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
         } catch (\Throwable $th) {
@@ -59,13 +57,6 @@ class CategoriesController extends Controller
             if(!$category) {
                 return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            if($request->image) {
-                $this->deleteImageDrive(json_decode($category->image));
-                $image_path = $this->uploadImageDrive($request->image);
-                $category->name = $request->name;
-                $category->image = $image_path;
-                $category->save();
-            }
             $category->name = $request->name;
             $category->save();
             return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
@@ -82,7 +73,6 @@ class CategoriesController extends Controller
             if (!$category) {
                 return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
-            $this->deleteImageDrive(json_decode($category->image));
             $category->delete();
             return response()->json($this->message($this->deleteSuccess), Response::HTTP_OK);
         } catch (\Throwable $th) {

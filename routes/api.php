@@ -20,6 +20,9 @@ use App\Http\Controllers\Api\Customer\CustomerUserInfoController;
 use App\Http\Controllers\Api\Customer\AddressController;
 use App\Http\Controllers\Api\Customer\CustomerOrderController;
 use App\Http\Controllers\Api\Customer\CustomerProductController;
+use App\Http\Controllers\Api\Customer\CustomerCategoryController;
+use App\Http\Controllers\Api\Customer\SearchController;
+use App\Http\Controllers\Api\Customer\MapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,18 +123,27 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
     });
 
     Route::prefix('address')->group(function () {
+        Route::get('{user_id}', [AddressController::class, 'index']);
         Route::get('create/{user_id}', [AddressController::class, 'create']);
-        // thêm địa chỉ.
         Route::post('store/{user_id}', [AddressController::class, 'store']);
         Route::get('edit/{id}', [AddressController::class, 'edit']);
+        Route::get('active/{user_id}', [AddressController::class, 'active']);
         Route::post('update/{id}', [AddressController::class, 'update']);
-        Route::get('get-city', [AddressController::class, 'getCity']);
-        Route::get('get-district/{city_id}', [AddressController::class, 'getDistricts']);
-        Route::get('get-ward/{district_id}', [AddressController::class, 'getWards']);
+        Route::post('update/active/{address_id}', [AddressController::class, 'activeAddress']);
         Route::delete('delete/{id}', [AddressController::class, 'delete']);
     });
 
+    Route::get('get/city', [MapController::class, 'getCity']);
+    Route::get('get/district/{city_id}', [MapController::class, 'getDistricts']);
+    Route::get('get/ward/{district_id}', [MapController::class, 'getWards']);
+    
     Route::post('order/create/{user_id}', [CustomerOrderController::class, 'createOrder'])->middleware('isActive');
 });
 
 Route::get('customer/get/product/all', [CustomerProductController::class, 'index']);
+Route::get('customer/get/categories/all', [CustomerCategoryController::class, 'index']);
+Route::get('customer/get/product/get-product/{id}', [CustomerProductController::class, 'getProduct']);
+Route::post('customer/search/{query}', [SearchController::class, 'search']);
+Route::post('customer/search-category/{category_id}', [SearchController::class, 'searchCategory']);
+
+

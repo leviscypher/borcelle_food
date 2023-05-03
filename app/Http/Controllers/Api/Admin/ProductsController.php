@@ -38,7 +38,6 @@ class ProductsController extends Controller
             $image_path = $this->uploadImageDrive($request->image_path);
             $data['image_path'] = json_encode($image_path);
             $this->product->create($data);
-            $this->product->save();
             return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
        } catch (\Throwable $th) {
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -73,7 +72,6 @@ class ProductsController extends Controller
             $this->deleteImageDrive($image_path_old);
             $data['image_path'] = json_encode($image_path_new);
             $product->update($data);
-            $product->save();
             return response()->json(['message' => $this->updateSuccess], Response::HTTP_OK);
         } catch (\Throwable $th) {
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);

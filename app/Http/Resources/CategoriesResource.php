@@ -19,7 +19,6 @@ class CategoriesResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => Storage::disk('google')->url(json_decode($this->image)),
         ];
     }
 }

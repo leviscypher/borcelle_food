@@ -31,7 +31,7 @@ class UserInfoController extends Controller
     public function edit($id)
     {
         try {
-            $userInfo = $this->userInfo->find($id);
+            $userInfo = $this->userInfo->where('user_id', $id);
             if (!$userInfo) {
                 return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }

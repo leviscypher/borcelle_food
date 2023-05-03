@@ -12,11 +12,6 @@ class Categories extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'name', 'image'
+        'name'
     ];
-
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = json_encode($value);
-    }
 }

@@ -19,10 +19,10 @@ class CustomerUserInfoController extends Controller
         $this->userInfo = $userInfo;
     }
 
-    public function edit($id)
+    public function edit($user_id)
     {
         try {
-            $userInfo = $this->userInfo->find($id);
+            $userInfo = $this->userInfo->where('user_id', $user_id)->first();
             if (!$userInfo) {
                 return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
@@ -36,6 +36,7 @@ class CustomerUserInfoController extends Controller
     public function update(CustomerUserInfoRequest $request, $user_id)
     {
         try {
+            $userInfoUpdate = $this->userInfo->find($user_id);
             $userInfo = UserInfo::updateOrCreate(
                 ['user_id' => $user_id], 
                 [
@@ -58,6 +59,11 @@ class CustomerUserInfoController extends Controller
 
             } 
             
+            if($request->avatar == null) {
+                $userInfo->avatar = $userInfoUpdate->avatar;
+                $userInfo->save();
+            }
+
             if ($userInfo->wasRecentlyCreated) {
                 $user = $userInfo->user;
                 $user->isActive = 1;

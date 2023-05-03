@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Response;
 use App\Http\Resources\ProductResource;
+use Illuminate\Http\Request;
+
 
 
 class CustomerProductController extends Controller
@@ -23,5 +25,11 @@ class CustomerProductController extends Controller
         $productResouce = ProductResource::collection($product);
         $pagination = $this->getPagination($productResouce, $product);
         return response()->json($pagination, Response::HTTP_OK);
+    }
+
+    public function getProduct($id) {
+        $product = $this->product->find($id);
+        $productResouce = new ProductResource($product);
+        return response()->json($productResouce, Response::HTTP_OK);
     }
 }

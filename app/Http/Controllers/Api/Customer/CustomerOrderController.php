@@ -22,11 +22,17 @@ class CustomerOrderController extends Controller
 
             $order = Order::create([
                 'user_id' => $user_id,
-                'address_id' => $request->address_id
+                'address_id' => $request->address_id,
+                'delivery_fee' => $request->delivery_fee
             ]);
 
             foreach ($order_details as $item) {
                 $product = Product::find($item['product_id']);
+                if((int)$product->quantity - $item['quantity'] == 0) {
+                    $product->product_status_id = 2;
+                    $product->save();
+                }
+
                 if ($item['quantity'] > $product->quantity) {
                     return response()->json(
                         ['error' => $product->name . ' chỉ còn ' . $product->quantity . ' sản phẩm'],
@@ -40,8 +46,8 @@ class CustomerOrderController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $product->id
                 ]);
-                if ($product->quantity == 0) {
-                    $product->status_product_id = 2;
+                if ($product->quantity === 0) {
+                    $product->product_status_id = 2;
                     $product->save();
                 }
                 $product->quantity = $product->quantity - $item['quantity'];
