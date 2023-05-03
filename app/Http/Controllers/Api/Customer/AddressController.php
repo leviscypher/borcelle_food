@@ -134,7 +134,7 @@ class AddressController extends Controller
 
     public function activeAddress(Request $request, $address_id)
     {
-        // try {
+        try {
             $oldActive = Address::where('user_id', $request->user_id)->where('isActive', 1)->first();
             $newActive = Address::where('user_id', $request->user_id)->where('id', $address_id)->first();
             $oldActive->isActive = 0;
@@ -142,8 +142,8 @@ class AddressController extends Controller
             $newActive->isActive = 1;
             $newActive->save();
             return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
-        // } catch (\Throwable $th) {
-        //     return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
+        }
     }
 }
