@@ -259,7 +259,7 @@ export const useGender = defineStore('gender', {
 export const useProduct = defineStore('product', {
   state: () => ({
     products: [],
-    editproducts: [],
+    editproducts: {},
   }),
   getters: {
     getProduct(state) {
@@ -291,11 +291,14 @@ export const useProduct = defineStore('product', {
     },
     async fetchEdit(id: any) {
       try {
-        await axios
-          .get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
-          .then((res) => {
-            this.editproducts = res.data.data
-          })
+        // await axios
+        //   .get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
+        //   .then((res) => {
+        //     this.editproducts = res.data.data
+        //   })
+        const data = await axios.get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
+        this.editproducts = data.data
+        
       } catch (error) {
         return
       }

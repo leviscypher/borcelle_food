@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted } from 'vue'
-import validator from 'validator'
 import { usePosition, useAccountManagement, useUserInfo, useGender } from '@/stores/admin'
 
 const positionAdd = reactive({

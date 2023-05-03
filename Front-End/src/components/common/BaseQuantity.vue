@@ -1,42 +1,83 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from 'vue'
+
+const props = defineProps<{
+  outOfStock: Number
+  maxOrder: any
+  value: Number
+}>()
+
+const emit = defineEmits(['quantity'])
 
 const quantity = ref(1)
-const maxQuantity = 10
+const maxOrder = ref(10)
+
+onMounted(() => {
+  if(props.value) {
+    quantity.value = props.value
+  }
+})
 
 const decrement = () => {
   if (quantity.value > 1) {
-    quantity.value--;
+    quantity.value--
+    emit('quantity', quantity.value)
   }
 }
 const increment = () => {
-  if (quantity.value < maxQuantity) {
-    quantity.value++;
+  quantity.value ++
+  if(quantity.value > props.maxOrder) {
+    emit('quantity', props.maxOrder)
+  } else {
+    emit('quantity', quantity.value,)
   }
 }
-const limitQuantity = (event: any) => {
-  if (event.target.value > maxQuantity) {
-    quantity.value = maxQuantity;
-    
-  } else if (event.target.value < 1) {
-    quantity.value = 1;
+
+watch(quantity, (newQuantity) => {
+  if(newQuantity) {
+    if(quantity.value > props.maxOrder) {
+      quantity.value = props.maxOrder
+    }
+    if(newQuantity > maxOrder.value) {
+      quantity.value = maxOrder.value
+    }
   }
-}
+})
+
 </script>
 <template>
-<div class="quantity-number flex items-center justify-center">
-  <base-button class="quantity-reduce m-0" @click="decrement">
-    <font-awesome-icon icon="fa-solid fa-minus" />
-  </base-button>
-  <div class="pr-4 pl-4">
-    <input type="number" :value="quantity" :v-model="quantity" @input="limitQuantity" class="quantity-bulk" min="1" max="10">
+  <div
+    class="quantity-number flex items-center justify-center"
+    :class="props.outOfStock == 2 ? 'disable' : ''"
+  >
+    <base-button
+      class="quantity-reduce m-0"
+      @click="decrement"
+      :class="props.outOfStock == 2 ? 'disable' : ''"
+    >
+      <font-awesome-icon icon="fa-solid fa-minus" />
+    </base-button>
+    <div>
+      <input
+        type="number"
+        :value="quantity"
+        :v-model="quantity"
+        class="quantity-bulk"
+        min="1"
+        :max="props.maxOrder"
+        readonly
+      />
+    </div>
+    <base-button
+      class="quantity-increase m-0"
+      @click="increment"
+      :class="props.outOfStock == 2 ? 'disable' : ''"
+    >
+      <font-awesome-icon icon="fa-solid fa-plus" />
+    </base-button>
   </div>
-  <base-button class="quantity-increase m-0" @click="increment">
-    <font-awesome-icon icon="fa-solid fa-plus" />
-  </base-button>
-</div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/common/base-quantity.scss";
+@import '@/assets/styles/common/base-quantity.scss';
 </style>

@@ -37,8 +37,8 @@ const login = async (e: any) => {
     error.errorPassword = 'Tài khoản hoặc mật khẩu chưa chính xác'
   } else {
     try {
-      useAuth.fetchLoginAdmin(dataAuth)
-      router.push('/admin/home')
+      await useAuth.fetchLoginAdmin(dataAuth)
+      window.location.href = '/admin/home'
     } catch (error) {
       return
     }

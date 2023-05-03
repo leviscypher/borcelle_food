@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const title = ref('Blog')
+const title = ref('Tin tức')
 
 </script>
 <template>
