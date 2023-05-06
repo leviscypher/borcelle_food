@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { admin } from './admin'
+import { admin } from './admin2'
 import { user } from './user'
 import { auth } from './auth'
 import { error } from './error'
@@ -13,12 +13,14 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   const isAuthenticated = localStorage.getItem('token-admin')
-//   if (to.path === '/admin' && !isAuthenticated) {
-//     next()
-//   } else {
-//     next('/admin')
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('token-admin')
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth) 
+  if (requiresAuth && !isLoggedIn) {
+    next('/admin/login')
+  } else {
+    next()
+  }
+})
+
 export default router

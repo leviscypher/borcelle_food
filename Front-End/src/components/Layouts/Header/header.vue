@@ -3,11 +3,12 @@ import { ref, onMounted, computed, watch } from 'vue'
 import CustomerForm from '@/components/common/auth/customer/form.vue'
 import axios from 'axios'
 import constants from '@/constants'
-import { useCart } from '@/stores/user'
+import { useCart, useUserInfo } from '@/stores/user'
 
 const isOpen = ref(false)
 const userData = ref('')
 const cart = useCart()
+const user = useUserInfo()
 const userId = ref(0)
 
 const changeLoginForm = () => {
@@ -16,9 +17,9 @@ const changeLoginForm = () => {
 
 onMounted(async () => {
   if (localStorage.getItem('token')) {
-    const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKEN)
-    userData.value = data.data.username
-    userId.value = data.data.id
+    await user.fetchUser();
+    userData.value = user.getUser.username
+    userId.value = user.getUser.id
   }
 })
 

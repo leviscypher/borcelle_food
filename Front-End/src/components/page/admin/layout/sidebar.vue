@@ -21,7 +21,7 @@ const logout = async () => {
       .then((res) => {
         userData.value = ''
         localStorage.removeItem('token-admin')
-        router.push('/admin')
+        router.push('/admin/login')
       })
   } catch (error) {
     alert(error)

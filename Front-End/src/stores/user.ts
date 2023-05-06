@@ -97,7 +97,7 @@ export const useUserInfo = defineStore('user-info', {
   state: () => ({
     user: {},
     userInfo: {},
-    status: 0
+    status: 0,
   }),
   getters: {
     getUserInfo(state){
@@ -108,7 +108,11 @@ export const useUserInfo = defineStore('user-info', {
     },
     getStatus(state) {
       return state.status
+    },
+    getErrors(state) {
+      return state.errors
     }
+
   },
   actions: {
     async fetchUserInfo(id:Number) {
