@@ -74,6 +74,14 @@ export const user = [
         component: () => import('@/components/page/user/customer/layout/order/order.vue'),
         meta: { layout: 'layoutuser' },
       },
+
+      {
+        path: '/customer/order/detail/:id',
+        name: 'customer-order-detail',
+        component: () => import('@/components/page/user/customer/layout/order/detail.vue'),
+        meta: { layout: 'layoutuser' },
+      },
+
       {
         path: '/customer/address/:id',
         name: 'customer-address',

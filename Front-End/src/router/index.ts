@@ -3,6 +3,7 @@ import { admin } from './admin2'
 import { user } from './user'
 import { auth } from './auth'
 import { error } from './error'
+import axios from 'axios'
 
 const routes = [...admin, ...user, ...auth, ...error]
 
@@ -13,12 +14,21 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const isLoggedIn = localStorage.getItem('token-admin')
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth) 
-  if (requiresAuth && !isLoggedIn) {
-    next('/admin/login')
-  } else {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  if (requiresAuth && isLoggedIn) {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/user-login', {
+        headers: { Authorization: `Bearer ${isLoggedIn}` },
+      })
+      if (res.status === 200) {
+        next()
+      }
+    } catch (error) {
+      next('/admin/login')
+    }
+  }else {
     next()
   }
 })

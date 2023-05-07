@@ -419,3 +419,24 @@ export const useUserInfo = defineStore('user-info', {
     },
   },
 })
+
+export const useUser = defineStore('user', {
+  state: () => ({
+    status: '',
+  }),
+  getters: {
+    getStatus(state) {
+      return state.status
+    }
+  },
+  actions: {
+    async fetchUser() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKENADMIN);
+        console.log(data.status);
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    },
+  },
+})

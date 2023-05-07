@@ -4,16 +4,15 @@ import { RouterView } from 'vue-router'
 import { useUserInfo } from '@/stores/user'
 const title = ref('Thông tin tài khoản')
 
-const userInfo = useUserInfo();
+const userInfo = useUserInfo()
 
-onMounted(async() => {
-  await userInfo.fetchUser();
+onMounted(async () => {
+  await userInfo.fetchUser()
 })
 
 const getUserLogin = computed(() => {
   return userInfo.getUser
 })
-
 </script>
 
 <template>
@@ -70,12 +69,32 @@ const getUserLogin = computed(() => {
       <router-view />
     </div>
   </div>
+
+  <!-- hủy đơn -->
+  <!-- <div class="fixed w-full h-[100vh] top-0 left-0 bottom-0 right-0 bg-gray-500 bg-opacity-50 z-[99] flex items-center">
+    <div class="z-[999] w-[400px] bg-white mx-auto rounded-lg">
+      <div class="p-[20px]">
+        <div class="flex items-center">
+          <font-awesome-icon
+            icon="fa-sharp fa-light fa-triangle-exclamation"
+            class="text-3xl text-danger"
+          />
+          <h4 class="mb-0 ml-4">yêu cầu hủy đơn hàng</h4>
+        </div>
+        <div class="form-group mt-10">
+          <label for="">lý do hủy:</label>
+          <input type="text" class="form-control text-xl">
+        </div>
+        <div class="flex justify-end mt-8">
+          <button class="btn-info border-none px-[8px] py-[10px] mr-[10px] rounded-xl text-[14px] hover">Yêu cầu hủy đơn</button>
+          <button class="btn-primary border-none px-[18px] py-[10px] mr-[10px] rounded-xl text-[14px] hover">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
-/* .active-link {
-  background: #000;
-} */
 .navbar-item li a {
   padding: 10px;
   display: block;
