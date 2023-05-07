@@ -7,16 +7,13 @@ const route = useRoute()
 const useAdmin = useAdminStore()
 const nameCategory = reactive({
   name: '',
-  image: '',
 })
 const isloading = ref(false)
 const isSuccess = ref('')
 const error = reactive({
   name: '',
-  image: '',
 })
-const selectedImage = ref(null)
-const validImageTypes = ['image/jpeg', 'image/png', 'image/gif']
+
 const getEditCategorys = computed(() => {
   return useAdmin.getEditCategorys
 })
@@ -31,39 +28,13 @@ onMounted(async () => {
     await useAdmin.fetchEdit(id)
     if (getEditCategorys.value) {
       nameCategory.name = getEditCategorys.value.name
-      nameCategory.image = getEditCategorys.value.image
-      selectedImage.value = getEditCategorys.value.image
     }
   }
 })
 
-const onFileChange = (e: any) => {
-  if (e.target.files.length === 1) {
-    const file = e.target.files[0]
-    if (!validImageTypes.includes(file.type)) {
-      error.image = 'Tệp tin không phải là hình ảnh.'
-      return
-    }
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      selectedImage.value = e.target.result
-    }
-    reader.readAsDataURL(file)
-    nameCategory.image = file
-  } else {
-    alert('Chỉ được tải lên 1 ảnh')
-  }
-}
-
-const removeImage = () => {
-  nameCategory.image = ''
-  selectedImage.value = null
-}
 const updateCategory = async (id: any) => {
   if (nameCategory.name === '') {
     error.name = 'Chưa nhập dữ liệu'
-  } else if (nameCategory.image === '') {
-    error.image = 'Chưa chọn hình ảnh'
   } else {
     try {
       isloading.value = true
@@ -135,50 +106,6 @@ const updateCategory = async (id: any) => {
                     >{{ error.name }}</small
                   >
                 </transition>
-              </div>
-              <div class="form-group col-md-12">
-                <label class="control-label">Ảnh danh mục</label>
-                <div id="boxchoice">
-                  <div
-                    v-if="selectedImage !== null"
-                    class="flex gap-5"
-                  >
-                    <div class="relative">
-                      <img
-                        :src="selectedImage"
-                        class="avatar"
-                      />
-                      <base-button
-                        class="btn-remove p-0 m-0"
-                        @click.stop.prevent="removeImage"
-                      >
-                        <font-awesome-icon icon="fa-solid fa-xmark" />
-                      </base-button>
-                    </div>
-                  </div>
-                  <input
-                    type="file"
-                    ref="fileInput"
-                    id="choicefile"
-                    class="d-none"
-                    @change="onFileChange"
-                    accept="image/*"
-                    @input="error.image = ''"
-                  />
-                  <label
-                    for="choicefile"
-                    class="Choicefile"
-                  >
-                    <i class="bx bx-upload"></i>
-                  </label>
-                  <transition name="slide-fade">
-                  <small
-                    v-if="error.image"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.image }}</small
-                  >
-                </transition>
-                </div>
               </div>
             </form>
           </div>

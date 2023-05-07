@@ -25,18 +25,25 @@ const city = ref([])
 const district = ref([])
 const district_id = ref(0)
 const ward = ref([])
-const user_id = ref(0)
+const address_id = ref(0)
 
 onMounted(async () => {
   const id = route.params.id
-  user_id.value = id
-  await Promise.all([address.fetchAddressCreate(id), address.fetchCity(), address.fetchDistrict(2)])
-  addressData.fullname = address.getAddressCreate.name
-  addressData.phone = address.getAddressCreate.phone
+  address.value = id
+  await Promise.all([address.fetchAddressEdit(id), address.fetchCity(), address.fetchDistrict(2)])
+  addressData.fullname = address.getAddressEdit.fullname
+  addressData.company = address.getAddressEdit.company
+  addressData.phone = address.getAddressEdit.phone
+  addressData.delivery_address = address.getAddressEdit.delivery_address
+  addressData.address_type = address.getAddressEdit.address_type
+  addressData.isActive = address.getAddressEdit.isActive
+  addressData.district_id = address.getAddressEdit.district_id
+  addressData.ward_id = address.getAddressEdit.ward_id
+
+ 
   city.value = address.getCity
   district.value = address.getDistrict
-  district_id.value = district.value[0].id
-  await address.fetchWard(district_id.value)
+  await address.fetchWard(addressData.district_id)
   ward.value = address.getWard
 })
 
@@ -55,7 +62,6 @@ const checkCity = async (event: any) => {
   }
 }
 
-
 watch(showAlert, (val) => {
   if (val) {
     setTimeout(() => {
@@ -64,10 +70,10 @@ watch(showAlert, (val) => {
   }
 })
 
-const addData = async () => {
-  await address.fetchCreate(user_id.value, addressData)
+const updateData = async () => {
+  await address.fetchUpdate(address.value, addressData)
   showAlert.value = true
-  message.value = 'Thêm thành công'
+  message.value = 'cập nhật thành công'
   alertType.value = 'success'
 }
 </script>
@@ -169,6 +175,7 @@ const addData = async () => {
                   :value="item.id"
                   v-for="item in district"
                   :key="item.id"
+                  :selected="addressData.district_id"
                 >
                   {{ item.name }}
                 </option>
@@ -192,6 +199,7 @@ const addData = async () => {
                   :value="item.id"
                   v-for="item in ward"
                   :key="item.id"
+                  :selected="addressData.ward_id"
                 >
                   {{ item.name }}
                 </option>
@@ -209,7 +217,6 @@ const addData = async () => {
               <textarea
                 class="form-control"
                 v-model="addressData.delivery_address"
-                placeholder="đỉa chị cụ thể (ngõ, ngách, số nhà)"
               ></textarea>
             </div>
           </div>
@@ -271,7 +278,7 @@ const addData = async () => {
 
           <button
             class="ml-[var(--label-width)] border-none py-[8px] px-[12px] rounded bg-[var(--pale-yellow)]"
-            @click="addData"
+            @click="updateData"
           >
             Cập nhật
           </button>

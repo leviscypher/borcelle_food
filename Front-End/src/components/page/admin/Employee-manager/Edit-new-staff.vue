@@ -78,7 +78,6 @@ onMounted(async () => {
   }
 })
 
-console.log(getEditUserInfo.value);
 
 const valids = () => {
   let valid = true

@@ -15,6 +15,7 @@
       visibility: visible;
     }
   }
+  background-color: #fff;
 }
 .collections-list-img {
   position: relative;
@@ -30,7 +31,7 @@
     font-size: 20px;
     font-weight: 500;
     border: 0;
-    color: #ffbe00;
+    color: #ffbf00;
     display: inline-block;
     vertical-align: middle;
     margin-left: -4px;
@@ -111,20 +112,30 @@
     font-family: 'Playfair Display', serif;
     font-weight: 700;
   }
-  &-search {
-    width: 324px;
-    height: 43px;
-    border: none;
-    outline: none;
-    border-radius: 10px 0px 0px 10px !important;
-    font-size: 15px !important;
-    padding-left: 15px !important;
-  }
-  &-btn-seacrch {
-    border-radius: 0px 10px 10px 0px;
-  }
+  // &-search {
+  //   width: 324px;
+  //   height: 43px;
+  //   border: none;
+  //   outline: none;
+  //   border-radius: 10px 0px 0px 10px !important;
+  //   font-size: 15px !important;
+  //   padding-left: 15px !important;
+  // }
+  // &-btn-seacrch {
+  //   border-radius: 0px 10px 10px 0px;
+  // }
 }
 .active {
   color: var(--bright-orange);
   filter: none;
+}
+
+.collection-out-of-stock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.6rem;
+  color: var(--pale-yellow);
+  background-color: #fff;
+  padding: 6px 12px;
 }

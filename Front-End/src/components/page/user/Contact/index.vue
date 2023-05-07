@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const title = ref('Contact')
+const title = ref('Liên hệ')
 </script>
 <template>
   <div class="mb-40">

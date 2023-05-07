@@ -18,7 +18,7 @@ const props = withDefaults(
         <ul class="list-none flex items-center">
           <li class="inline-flex items-center">
             <router-link to="/" class="inline-flex items-center banner-title-item-home">
-              Home
+              Trang chủ
             </router-link>
           </li>
           <li class="pl-3 banner-title-item-chill-title">

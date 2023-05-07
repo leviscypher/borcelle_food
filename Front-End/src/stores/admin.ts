@@ -259,7 +259,7 @@ export const useGender = defineStore('gender', {
 export const useProduct = defineStore('product', {
   state: () => ({
     products: [],
-    editproducts: [],
+    editproducts: {},
   }),
   getters: {
     getProduct(state) {
@@ -291,11 +291,14 @@ export const useProduct = defineStore('product', {
     },
     async fetchEdit(id: any) {
       try {
-        await axios
-          .get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
-          .then((res) => {
-            this.editproducts = res.data.data
-          })
+        // await axios
+        //   .get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
+        //   .then((res) => {
+        //     this.editproducts = res.data.data
+        //   })
+        const data = await axios.get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
+        this.editproducts = data.data
+        
       } catch (error) {
         return
       }
@@ -412,6 +415,27 @@ export const useUserInfo = defineStore('user-info', {
           })
       } catch (error) {
         return
+      }
+    },
+  },
+})
+
+export const useUser = defineStore('user', {
+  state: () => ({
+    status: '',
+  }),
+  getters: {
+    getStatus(state) {
+      return state.status
+    }
+  },
+  actions: {
+    async fetchUser() {
+      try {
+        const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKENADMIN);
+        console.log(data.status);
+      } catch (error) {
+        console.log(error.response.data);
       }
     },
   },

@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="restant defaul-width-wd grid grid-cols-2 gap-36 mt-80 mx-auto">
+  <div class="restant defaul-width-wd grid grid-cols-2 gap-36 mt-80 mx-auto mb-[80px]">
     <div class="restant-img relative">
       <img
         src="@/assets/logo/logo.png"
