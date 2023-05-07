@@ -137,7 +137,12 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
     Route::get('get/district/{city_id}', [MapController::class, 'getDistricts']);
     Route::get('get/ward/{district_id}', [MapController::class, 'getWards']);
     
-    Route::post('order/create/{user_id}', [CustomerOrderController::class, 'createOrder'])->middleware('isActive');
+
+    Route::prefix('order')->middleware('isActive')->group(function() {
+        Route::get('all/{user_id}', [CustomerOrderController::class, 'index']);
+        Route::get('detail/{order_id}', [CustomerOrderController::class, 'orderDetail']);
+        Route::post('create/{user_id}', [CustomerOrderController::class, 'createOrder']);
+    });
 });
 
 Route::get('customer/get/product/all', [CustomerProductController::class, 'index']);

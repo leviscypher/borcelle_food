@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
+
 class OrderDetail extends Model
 {
     use HasFactory;
@@ -23,5 +24,15 @@ class OrderDetail extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo('App\Models\Product', 'product_id', 'id');
+    }
+
+    /**
+     * Get the order that owns the OrderDetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Order', 'order_id', 'id');
     }
 }

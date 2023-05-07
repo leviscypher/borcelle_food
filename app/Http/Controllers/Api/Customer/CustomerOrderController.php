@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderDetailsResource;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +15,19 @@ use Illuminate\Http\Response;
 
 class CustomerOrderController extends Controller
 {
+
+    public function index($user_id) {
+        $order = Order::where('user_id', $user_id)->get();
+        $orderResource = OrderResource::collection($order);
+        return response()->json($orderResource, Response::HTTP_OK);
+    }
+
+    public function orderDetail($order_id) {
+        $orderDetail = OrderDetail::where('order_id', $order_id)->get();
+        $orderDetailResource = OrderDetailsResource::collection($orderDetail);
+        return response()->json($orderDetailResource, Response::HTTP_OK);
+    }
+
     public function createOrder(Request $request, $user_id)
     {
         try {
@@ -58,4 +73,5 @@ class CustomerOrderController extends Controller
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
     }
+
 }

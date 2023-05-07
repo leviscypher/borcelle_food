@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderDetailsResource;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->order->paginate($this->itemsPerPage);
-        $orderResouce = OrderDetailsResource::collection($orders);
+        $orderResouce = OrderResource::collection($orders);
         $pagination = $this->getPagination($orderResouce, $orders);
         return response()->json($pagination, Response::HTTP_OK);
     }
