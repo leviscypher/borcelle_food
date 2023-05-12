@@ -4,27 +4,32 @@ import { useProduct, useAdminStore } from '@/stores/admin'
 
 const isLoading = ref(true)
 const products = useProduct()
-const category = useAdminStore()
+// const category = useAdminStore()
 
-const idCategory = reactive({ id: '' })
+const productId = ref(0)
+const productData = ref([])
 
 onMounted(async () => {
-  await Promise.all([products.fetchProduct(), category.fetchCategory()])
+  await Promise.all([products.fetchProduct()])
+  productData.value = products.getProduct
   isLoading.value = false
 })
 
-const getProduct = computed(() => {
-  return products.getProduct
-})
-
-const getId = (id: any) => {
-  idCategory.id = id
+const getId = (id: Number) => {
+  productId.value = id
 }
 
-const deleteProduct = async (id: any) => {
+const deleteProduct = async (id: Number) => {
   isLoading.value = true
   await Promise.all([products.fetchDelete(id), products.fetchProduct()])
+  productData.value = products.getProduct
   isLoading.value = false
+}
+
+const formatPrice = (value: number) => {
+  let currencySymbol = '₫'
+  let formattedValue = new Intl.NumberFormat('vi-VN').format(value)
+  return `${formattedValue}${currencySymbol}`
 }
 </script>
 <template>
@@ -103,44 +108,57 @@ const deleteProduct = async (id: any) => {
       >
         <thead>
           <tr>
-            <th width="10">
+            <th
+              class="text-center"
+              width="10"
+            >
               <input
                 type="checkbox"
                 id="all"
               />
             </th>
-            <th>Mã sản phẩm</th>
-            <th>Tên sản phẩm</th>
-            <th>Ảnh</th>
-            <th>Số lượng</th>
-            <th>Tình trạng</th>
-            <th>Giá tiền</th>
-            <th>Danh mục</th>
-            <th>Chức năng</th>
+            <th class="text-center">ID</th>
+            <th class="text-center w-[20%]">Tên sản phẩm</th>
+            <th class="text-center">Ảnh</th>
+            <th class="text-center">Số lượng</th>
+            <th class="text-center">Tình trạng</th>
+            <th class="text-center w-[20%]">Giá tiền</th>
+            <th class="text-center">Danh mục</th>
+            <th
+              class="text-center"
+              width="140"
+            >
+              Chức năng
+            </th>
           </tr>
         </thead>
         <tbody v-if="!isLoading">
           <tr
-            v-for="(product, index) in getProduct"
+            v-for="(product, index) in productData"
             :key="product.id"
+            class="text-center"
           >
-            <td width="10">
+            <td
+              class="text-center"
+              width="10"
+            >
               <input
                 type="checkbox"
                 name="check1"
                 value="1"
               />
             </td>
-            <td>{{ index + 1 }}</td>
-            <td>{{ product.name }}</td>
-            <td>
+            <td class="text-center">{{ index + 1 }}</td>
+            <td class="text-center">{{ product.name }}</td>
+            <td class="text-center">
               <img
                 :src="product.image_path[0]"
                 width="100"
+                class="rounded-lg h-[80px] cover"
               />
             </td>
-            <td>{{ product.quantity }}</td>
-            <td>
+            <td class="text-center">{{ product.quantity }}</td>
+            <td class="text-center">
               <span
                 class="badge bg-success"
                 v-if="product.status_id == '1'"
@@ -152,9 +170,11 @@ const deleteProduct = async (id: any) => {
                 >{{ product.status_name }}</span
               >
             </td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.category_name }}</td>
-            <td>
+            <td class="text-center">{{ formatPrice(product.price) }}</td>
+            <td class="text-center">
+              <span class="badge bg-primary px-6">{{ product.category_name }} </span>
+            </td>
+            <td class="text-center">
               <base-button
                 type="button"
                 class="btn btn-primary btn-sm trash mr-[4px]"
@@ -184,6 +204,8 @@ const deleteProduct = async (id: any) => {
       </div>
     </div>
   </div>
+
+  <!-- model -->
   <div
     class="modal modals"
     id="exampleModal"
@@ -192,42 +214,31 @@ const deleteProduct = async (id: any) => {
     aria-hidden="true"
   >
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2
-            class="modal-title text-black"
-            id="exampleModalLabel"
-          >
-            Bạn có muốn xoá không
-          </h2>
-          <button
-            type="button"
-            class="btn-close p-0 m-0"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="text-center">
-            <i class="bx bxs-trash"></i>
+      <div class="modal-content w-[380px] h-auto mx-auto">
+        <div class="bg-white mx-auto rounded-lg py-[20px]">
+          <div class="flex items-center">
+            <font-awesome-icon
+              icon="fa-sharp fa-light fa-triangle-exclamation"
+              class="text-3xl text-danger"
+            />
+            <h4 class="mb-0 ml-4">Xóa sản phẩm</h4>
           </div>
-          <p class="text-center body">Bạn có chắn chắn muốn xoá danh mục này không không ?</p>
-        </div>
-        <div class="modal-footer gap-[10px]">
-          <base-button
-            type="button"
-            class="btn-footer m-0 bg-[#0b0320] text-white"
-            data-bs-dismiss="modal"
-            >Huỷ</base-button
-          >
-
-          <base-button
-            type="button"
-            class="btn-footer bg-red-600 text-white"
-            data-bs-dismiss="modal"
-            @click="deleteProduct(idCategory.id)"
-            >Xoá</base-button
-          >
+          <p class="text-2xl mt-6 ml-10">bạn có chắc muốn xóa sản phẩm này?</p>
+          <div class="flex justify-end mt-8">
+            <button
+              class="btn-info border-none px-[18px] py-[10px] mr-[10px] rounded-xl text-xl hover focus:outline-none"
+              data-bs-dismiss="modal"
+              @click="deleteProduct(productId)"
+            >
+              Xác nhận
+            </button>
+            <button
+              class="btn-primary border-none px-[18px] py-[10px] mr-[10px] rounded-xl text-xl hover focus:outline-none"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -248,3 +259,4 @@ td {
   vertical-align: middle !important;
 }
 </style>
+

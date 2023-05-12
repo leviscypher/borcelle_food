@@ -295,7 +295,7 @@ export const useOrder = defineStore('order', {
   state: () => ({
     status: 0,
     allOrder: [],
-    orderDetail: {}
+    orderDetail: []
   }),
   getters: {
     getStatus(state) {

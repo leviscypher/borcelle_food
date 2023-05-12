@@ -38,7 +38,7 @@ const login = async (e: any) => {
   } else {
     try {
       await useAuth.fetchLoginAdmin(dataAuth)
-      window.location.href = '/admin'
+      window.location.href = '/admin/home'
     } catch (error) {
       return
     }

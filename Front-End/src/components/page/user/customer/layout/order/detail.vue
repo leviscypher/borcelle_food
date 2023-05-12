@@ -6,7 +6,7 @@ import { useOrder } from '@/stores/user'
 const order = useOrder()
 const route = useRoute()
 
-const data = ref({})
+const data = ref([])
 const recipients_name = ref('')
 const phone = ref(0)
 const address = ref('')
@@ -32,7 +32,7 @@ onMounted(async () => {
   isLoading.value = false
 })
 
-const formatPrice = (value: number) => {
+const formatPrice = (value:Number) => {
   let currencySymbol = '₫'
   let formattedValue = new Intl.NumberFormat('vi-VN').format(value)
   return `${formattedValue}${currencySymbol}`
@@ -74,7 +74,7 @@ const formatPrice = (value: number) => {
               </h4>
               <h4 class="flex">
                 <nav class="text-[var(--pale-yellow)] mr-4">Tổng tiền:</nav>
-                {{ item.total }}
+                {{ formatPrice(item.total) }}
               </h4>
             </div>
           </div>

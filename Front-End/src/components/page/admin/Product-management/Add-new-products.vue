@@ -1,130 +1,170 @@
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed } from "vue";
-import { useProduct, useAdminStore,useProductStatus } from "@/stores/admin";
-const product = useProduct();
-const category = useAdminStore();
-const productStatus = useProductStatus();
+import { reactive, ref, onMounted, computed, watch } from 'vue'
+import { useProduct, useAdminStore, useProductStatus } from '@/stores/admin'
+const product = useProduct()
+const category = useAdminStore()
+const productStatus = useProductStatus()
+
+const showAlert = ref(false)
+const message = ref('')
+const alertType = ref('')
+
+const isLoader = ref(false)
 
 const products = reactive({
-  name: "",
+  name: '',
   image_path: [],
-  price: "",
-  quantity: "",
-  description: "",
-  product_status_id: "",
-  categories_id: "",
-});
-const error = reactive({
-  errorName: "",
-  errorImage_path: "",
-  errorPrice: "",
-  errorQuantity: "",
-  errorDescription: "",
-  errorProduct_status_id: "",
-  errorCategories_id: "",
-});
+  price: '',
+  quantity: '',
+  description: '',
+  product_status_id: '',
+  categories_id: '',
+})
 
-const selectedImages = ref([]);
+const error = reactive({
+  errorName: '',
+  errorImage_path: '',
+  errorPrice: '',
+  errorQuantity: '',
+  errorDescription: '',
+  errorProduct_status_id: '',
+  errorCategories_id: '',
+})
+
+const selectedImages = ref([])
 
 onMounted(() => {
-  category.fetchCategory();
+  category.fetchCategory()
   productStatus.fetchProductStatus()
-});
+})
 
 const getCategory = computed(() => {
-  return category.getCategory;
-});
+  return category.getCategory
+})
 const getProductStatus = computed(() => {
-  return productStatus.getProductStatus;
-});
-
+  return productStatus.getProductStatus
+})
 
 const onFileChange = (e: any) => {
-  if (selectedImages.value.length < 3 && e.target.files.length <= (3 - selectedImages.value.length)) {
+  if (selectedImages.value.length < 3 && e.target.files.length <= 3 - selectedImages.value.length) {
     for (let i = 0; i < e.target.files.length; i++) {
-      const file = e.target.files[i];
-      const reader = new FileReader();
+      const file = e.target.files[i]
+      const reader = new FileReader()
       reader.onload = (e) => {
-        selectedImages.value.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
-      products.image_path.push(file);
+        selectedImages.value.push(e.target.result)
+      }
+      reader.readAsDataURL(file)
+      products.image_path.push(file)
     }
   } else {
-    alert("ảnh tối đa là 3");
+    error.errorImage_path = 'chỉ được lưu tối đa 3 ảnh'
   }
-};
+}
 
 const removeImage = (index: any) => {
-  products.image_path.splice(index, 1);
-  selectedImages.value.splice(index, 1);
-};
+  products.image_path.splice(index, 1)
+  selectedImages.value.splice(index, 1)
+}
 
 const validate = () => {
-  let valid = true;
+  let valid = true
 
-  error.errorName = "";
-  error.errorImage_path = "";
-  error.errorPrice = "";
-  error.errorQuantity = "";
-  error.errorDescription = "";
-  error.errorProduct_status_id = "";
-  error.errorCategories_id = "";
+  error.errorName = ''
+  error.errorImage_path = ''
+  error.errorPrice = ''
+  error.errorQuantity = ''
+  error.errorDescription = ''
+  error.errorProduct_status_id = ''
+  error.errorCategories_id = ''
 
-  if (!products.name.trim()) {
-    error.errorName = "Chưa nhập tên sản phẩm";
-    valid = false;
+  if (!products.name) {
+    error.errorName = 'Chưa nhập tên sản phẩm'
+    valid = false
   }
 
   if (!products.image_path.length) {
-    error.errorImage_path = "chưa thêm ảnh mới";
-    valid = false;
+    error.errorImage_path = 'chưa thêm ảnh mới'
+    valid = false
   } else {
     for (let i = 0; i < products.image_path.length; i++) {
-      const file = products.image_path[i];
-      if (!file.type.startsWith("image/")) {
-        error.errorImage_path += `Hình ảnh ${i + 1} không phải là tệp ảnh hợp lệ\n`;
-        valid = false;
+      const file = products.image_path[i]
+      if (!file.type.startsWith('image/')) {
+        error.errorImage_path += `Hình ảnh ${i + 1} không phải là tệp ảnh hợp lệ\n`
+        valid = false
       }
     }
   }
 
-  if (!products.price.trim() || isNaN(products.price)) {
-    error.errorPrice = "Chưa nhập giá trị hợp lệ";
-    valid = false;
+  if (!products.price || isNaN(products.price)) {
+    error.errorPrice = 'Chưa nhập giá trị hợp lệ'
+    valid = false
   }
 
-  if (!products.quantity.trim() || isNaN(products.quantity)) {
-    error.errorQuantity = "Chưa nhập số lượng hợp lệ";
-    valid = false;
+  if (!products.quantity || isNaN(products.quantity)) {
+    error.errorQuantity = 'Chưa nhập số lượng hợp lệ'
+    valid = false
   }
 
-  if (!products.description.trim()) {
-    error.errorDescription = "Chưa nhập mô tả";
-    valid = false;
+  if (!products.description) {
+    error.errorDescription = 'Chưa nhập mô tả'
+    valid = false
   }
 
-  if (!products.product_status_id.trim()) {
-    error.errorProduct_status_id = "Chưa chọng trạng thái";
-    valid = false;
+  if (!products.product_status_id) {
+    error.errorProduct_status_id = 'Chưa chọng trạng thái'
+    valid = false
   }
 
-  if (!products.categories_id.trim()) {
-    error.errorCategories_id = "Chưa chọn danh mục";
-    valid = false;
+  if (!products.categories_id) {
+    error.errorCategories_id = 'Chưa chọn danh mục'
+    valid = false
   }
 
-  return valid;
+  return valid
 }
 
-const addProducts = () => {
+const addProducts = async () => {
+  isLoader.value = true
   if (validate()) {
-    product.fetchAdd(products);
+    await product.fetchAdd(products)
+    showAlert.value = true
+    message.value = 'thêm mới thành công'
+    alertType.value = 'success'
+    products.name = ''
+    products.price = ''
+    products.image_path.splice(0, products.image_path.length)
+    products.description = ''
+    products.product_status_id = ''
+    products.categories_id = ''
+    products.quantity = ''
   }
-};
+  isLoader.value = false
+}
+
+watch(error, (val) => {
+  if (val) {
+    setTimeout(() => {
+      error.errorCategories_id = ''
+      error.errorDescription = ''
+      error.errorImage_path = ''
+      error.errorName = ''
+      error.errorPrice = ''
+      error.errorProduct_status_id = ''
+      error.errorQuantity = ''
+    }, 4000)
+  }
+})
+
+watch(showAlert, (val) => {
+  if (val) {
+    setTimeout(() => {
+      showAlert.value = false
+    }, 5000)
+  }
+})
 </script>
 <template>
-  <main class="app-content">
+  <main class="app-content" v-if="!isLoader">
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -133,7 +173,12 @@ const addProducts = () => {
             <form class="row">
               <div class="form-group col-md-3">
                 <label class="control-label">Tên sản phẩm</label>
-                <input class="form-control" type="text" v-model="products.name"  @input="error.errorName = ''" />
+                <input
+                  class="form-control"
+                  type="text"
+                  v-model="products.name"
+                  @input="error.errorName = ''"
+                />
                 <transition name="slide-fade">
                   <small
                     v-if="error.errorName"
@@ -143,7 +188,11 @@ const addProducts = () => {
                 </transition>
               </div>
               <div class="form-group col-md-3">
-                <label for="exampleSelect1" class="control-label">Tình trạng</label>
+                <label
+                  for="exampleSelect1"
+                  class="control-label"
+                  >Tình trạng</label
+                >
                 <select
                   class="form-control"
                   id="exampleSelect1"
@@ -168,9 +217,22 @@ const addProducts = () => {
                 </transition>
               </div>
               <div class="form-group col-md-3">
-                <label for="exampleSelect1" class="control-label">Danh mục</label>
-                <select class="form-control" v-model="products.categories_id"  @input="error.errorCategories_id = ''">
-                  <option disabled value="">Chọn vài trò</option>
+                <label
+                  for="exampleSelect1"
+                  class="control-label"
+                  >Danh mục</label
+                >
+                <select
+                  class="form-control"
+                  v-model="products.categories_id"
+                  @input="error.errorCategories_id = ''"
+                >
+                  <option
+                    disabled
+                    value=""
+                  >
+                    Chọn danh mục sản phẩm
+                  </option>
                   <option
                     v-for="category in getCategory"
                     :key="category.id"
@@ -189,7 +251,13 @@ const addProducts = () => {
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Giá bán</label>
-                <input class="form-control" type="number" v-model="products.price"  style="-moz-appearance: textfield; -webkit-appearance: textfield; appearance: textfield;" @input="error.errorPrice = ''" />
+                <input
+                  class="form-control"
+                  type="number"
+                  v-model="products.price"
+                  style="-moz-appearance: textfield; -webkit-appearance: textfield; appearance: textfield"
+                  @input="error.errorPrice = ''"
+                />
                 <transition name="slide-fade">
                   <small
                     v-if="error.errorPrice"
@@ -200,7 +268,12 @@ const addProducts = () => {
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Số lượng</label>
-                <input class="form-control" type="number" v-model="products.quantity"  @input="error.errorQuantity = ''" />
+                <input
+                  class="form-control"
+                  type="number"
+                  v-model="products.quantity"
+                  @input="error.errorQuantity = ''"
+                />
                 <transition name="slide-fade">
                   <small
                     v-if="error.errorQuantity"
@@ -212,13 +285,19 @@ const addProducts = () => {
               <div class="form-group col-md-12">
                 <label class="control-label">Ảnh sản phẩm</label>
                 <div id="boxchoice">
-                  <div v-if="selectedImages.length > 0" class="flex gap-5">
+                  <div
+                    v-if="selectedImages.length > 0"
+                    class="flex gap-5"
+                  >
                     <div
                       v-for="(image, index) in selectedImages"
                       :key="index"
                       class="relative"
                     >
-                      <img :src="image" height="100" />
+                      <img
+                        :src="image"
+                        height="100"
+                      />
                       <base-button
                         class="btn-remove p-0 m-0"
                         @click.stop.prevent="removeImage(index)"
@@ -236,14 +315,18 @@ const addProducts = () => {
                     multiple
                     @input="error.errorImage_path = ''"
                   />
-                  <label for="choicefile" class="Choicefile">Chọn ảnh</label>
-                  <transition name="slide-fade">
-                  <small
-                    v-if="error.errorImage_path"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorImage_path }}</small
+                  <label
+                    for="choicefile"
+                    class="Choicefile"
+                    >Chọn ảnh</label
                   >
-                </transition>
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorImage_path"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorImage_path }}</small
+                    >
+                  </transition>
                 </div>
               </div>
               <div class="form-group col-md-12">
@@ -265,22 +348,40 @@ const addProducts = () => {
               </div>
             </form>
           </div>
-          <base-button class="btn btn-save mr-3" type="button" @click="addProducts"
+          <base-button
+            class="btn btn-save mr-3"
+            type="button"
+            @click="addProducts"
             >Lưu lại</base-button
           >
-           <router-link
-                class="btn btn-cancel"
-                to="/admin/product-management"
-           >Hủy bỏ</router-link>
+          <router-link
+            class="btn btn-cancel"
+            to="/admin/product-management"
+            >Hủy bỏ</router-link
+          >
         </div>
       </div>
     </div>
+
+    <div v-show="showAlert">
+      <div
+        class="alert text-[14px] px-[20px] w-auto fixed top-[100px] z-[9999] left-[50%] translate-x-[-50%] text-center"
+        :class="alertType ? 'alert-' + alertType : ''"
+        role="alert"
+      >
+        {{ message }}
+      </div>
+    </div>
+  </main>
+
+  <main class="app-content flex items-center justify-center" v-else>
+    <base-load />
   </main>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/admin/admin.scss";
-@import "@/assets/styles/admin/add/add.scss";
+@import '@/assets/styles/admin/admin.scss';
+@import '@/assets/styles/admin/add/add.scss';
 .btn-remove {
   position: absolute;
   width: 30px;

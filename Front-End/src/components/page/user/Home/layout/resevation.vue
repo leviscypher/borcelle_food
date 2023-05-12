@@ -2,10 +2,9 @@
   <div class="affic mt-40">
     <div class="reservation grid grid-cols-2 defaul-width-wd mx-auto">
       <div class="reservation-item my-auto">
-        <h1 class="reservation-title title title-sm text-white my-10">Reservation A Table</h1>
+        <h1 class="reservation-title title title-sm text-white my-10">Đặt bàn ngày</h1>
         <p class="reservation-description description text-white my-10">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Quis ipsum suspendisse.
+          hãy điền thơi gian và lên lịch gửi cho chúng tôi để thưởng thức các món ăn tuyệt vời tại của hàng chúng tôi.
         </p>
         <div class="reservation-form w-full bg-white rounded-full my-10">
           <ul class="flex items-center justify-center py-4">
@@ -22,7 +21,7 @@
               />
             </li>
             <li>
-              <button class="bf-btn-primary mx-4">Reserve Now</button>
+              <button class="bf-btn-primary mx-4">Đặt ngay</button>
             </li>
           </ul>
         </div>

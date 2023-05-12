@@ -7,10 +7,9 @@ const modules = [Autoplay]
 
 <template lang="">
   <div class="services defaul-width-wd">
-    <h1 class="services-title title title-sm">What Restant Services</h1>
+    <h1 class="services-title title title-sm">Các dịch vụ hỗ trợ</h1>
     <p class="services-description description">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua.
+      Cửa hàng chúng tôi bao gồm các dịch vụ hỗ trợ với các khách hàng mua hàng qua website.
     </p>
 
     <swiper
@@ -31,10 +30,10 @@ const modules = [Autoplay]
               src="@/assets/image/service1.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Fresh Healthy Food</h3>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Tăng miễn phí thực phẩm salad tươi</h3>
             <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
+              Thưc phầm tươi sống là thực phẩm chưa qua bảo quản, chưa bị hư hỏng điều này có nghĩ là nó rất tốt cho sức
+              khỏe.
             </p>
           </a>
         </div>
@@ -47,10 +46,9 @@ const modules = [Autoplay]
               src="@/assets/image/service2.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Discount Voucher</h3>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Giao hàng tận nhà</h3>
             <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
+              Chúng tôi có dịch vụ giao hàng tận nhà một cách nhanh chóng nhất.
             </p>
           </a>
         </div>
@@ -63,11 +61,8 @@ const modules = [Autoplay]
               src="@/assets/image/service3.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Free Fast Home Delivery</h3>
-            <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
-            </p>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Phiếu giảm giá</h3>
+            <p class="services-list-description description">Tặng miễn phí các phiếu giảm giá để mua hàng.</p>
           </a>
         </div>
       </swiper-slide>
@@ -79,10 +74,10 @@ const modules = [Autoplay]
               src="@/assets/image/service1.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Free Fast Home Delivery</h3>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Tăng miễn phí thực phẩm salad tươi</h3>
             <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
+              Thưc phầm tươi sống là thực phẩm chưa qua bảo quản, chưa bị hư hỏng điều này có nghĩ là nó rất tốt cho sức
+              khỏe.
             </p>
           </a>
         </div>
@@ -95,10 +90,9 @@ const modules = [Autoplay]
               src="@/assets/image/service2.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Free Fast Home Delivery</h3>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Giao hàng tận nhà</h3>
             <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
+              Chúng tôi có dịch vụ giao hàng tận nhà một cách nhanh chóng nhất.
             </p>
           </a>
         </div>
@@ -111,10 +105,9 @@ const modules = [Autoplay]
               src="@/assets/image/service3.png"
               alt=""
             />
-            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Free Fast Home Delivery</h3>
+            <h3 class="services-list-title text-4xl font-bold mb-4 mt-4">Phiếu giảm giá</h3>
             <p class="services-list-description description">
-              Fresh food is food which has not been preserved and has not spoiled yet. Fo vegetables and fruits, this
-              means.
+              Tặng miễn phí các phiếu giảm giá để mua hàng.
             </p>
           </a>
         </div>

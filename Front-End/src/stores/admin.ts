@@ -291,14 +291,8 @@ export const useProduct = defineStore('product', {
     },
     async fetchEdit(id: any) {
       try {
-        // await axios
-        //   .get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
-        //   .then((res) => {
-        //     this.editproducts = res.data.data
-        //   })
         const data = await axios.get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
         this.editproducts = data.data
-        
       } catch (error) {
         return
       }
@@ -328,36 +322,46 @@ export const useProduct = defineStore('product', {
 export const useOrder = defineStore('order', {
   state: () => ({
     orders: [],
-    editorder: [],
+    orderDetail: []
+
   }),
   getters: {
     getOrder(state) {
       return state.orders
     },
-    getEditOrder(state) {
-      return state.editorder
-    },
+    
+    getOrderDetail(state) {
+      return state.orderDetail
+    }
+  
   },
   actions: {
-    async fetchOrder() {
+    async fetchOrder(status = 0, page = 1) {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all', constants.routeApis.TOKENADMIN)
-        this.orders = data.data.data
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all/' + status + '/?page='+  page, constants.routeApis.TOKENADMIN)
+        this.orders = data.data
       } catch (error) {
         return
       }
     },
-    async fetchAdd(orders: any) {
+
+    async fetchOrderDetail(id:number) {
       try {
-        await axios.post(
-          'http://127.0.0.1:8000/api/admin/user-info/update',
-          orders,
-          constants.routeApis.TOKEN_LOGOUT_ADMIN
-        )
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/detail/' + id , constants.routeApis.TOKENADMIN)
+        this.orderDetail = data.data
       } catch (error) {
         return
       }
     },
+
+    async updateStatus(order_id:number, status:any) {
+      try {
+        const data = await axios.post('http://127.0.0.1:8000/api/admin/order/update-status/' + order_id, status, constants.routeApis.TOKENADMIN)
+        this.orderDetail = data.data
+      } catch (error) {
+        return
+      }
+    }
   },
 })
 

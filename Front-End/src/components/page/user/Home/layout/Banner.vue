@@ -16,20 +16,19 @@ const modules = [Autoplay, Navigation]
           alt=""
         />
 
-        <h1 class="banner-content-title title">Get Restant Food by Ordering Online</h1>
+        <h1 class="banner-content-title title">Nhận Đồ Ăn bằng cách đặt hàng trực tuyến</h1>
 
         <p class="bannaer__content-description description">
-          A restaurant sometimes known as a diner is a place where cooked food is sold to the public, and where people
-          sit down to eat it. It is also a place where people go to enjoy the time and to eat a meal.
+          Nhà hàng đôi khi được gọi là quán ăn là nơi bán thức ăn đã nấu chín cho công chúng và là nơi mọi người ngồi ăn. Đó cũng là nơi mọi người đến để tận hưởng thời gian và ăn một bữa ăn.
         </p>
 
         <div class="banner-content-search">
           <input
             type="text"
-            placeholder="Enter food name"
+            placeholder="Tìm kiếm tên món ăn..."
             class="mr-4"
           />
-          <button class="bf-btn-primary mr-4">Search Now</button>
+          <button class="bf-btn-primary mr-4">Tìm kiếm ngay</button>
         </div>
 
         <img
