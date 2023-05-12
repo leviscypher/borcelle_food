@@ -14,6 +14,15 @@ const products = reactive({
   product_status_id: "",
   categories_id: "",
 });
+const error = reactive({
+  errorName: "",
+  errorImage_path: "",
+  errorPrice: "",
+  errorQuantity: "",
+  errorDescription: "",
+  errorProduct_status_id: "",
+  errorCategories_id: "",
+});
 
 const selectedImages = ref([]);
 
@@ -51,8 +60,67 @@ const removeImage = (index: any) => {
   selectedImages.value.splice(index, 1);
 };
 
+const validate = () => {
+  let valid = true;
+
+  error.errorName = "";
+  error.errorImage_path = "";
+  error.errorPrice = "";
+  error.errorQuantity = "";
+  error.errorDescription = "";
+  error.errorProduct_status_id = "";
+  error.errorCategories_id = "";
+
+  if (!products.name.trim()) {
+    error.errorName = "Chưa nhập tên sản phẩm";
+    valid = false;
+  }
+
+  if (!products.image_path.length) {
+    error.errorImage_path = "chưa thêm ảnh mới";
+    valid = false;
+  } else {
+    for (let i = 0; i < products.image_path.length; i++) {
+      const file = products.image_path[i];
+      if (!file.type.startsWith("image/")) {
+        error.errorImage_path += `Hình ảnh ${i + 1} không phải là tệp ảnh hợp lệ\n`;
+        valid = false;
+      }
+    }
+  }
+
+  if (!products.price.trim() || isNaN(products.price)) {
+    error.errorPrice = "Chưa nhập giá trị hợp lệ";
+    valid = false;
+  }
+
+  if (!products.quantity.trim() || isNaN(products.quantity)) {
+    error.errorQuantity = "Chưa nhập số lượng hợp lệ";
+    valid = false;
+  }
+
+  if (!products.description.trim()) {
+    error.errorDescription = "Chưa nhập mô tả";
+    valid = false;
+  }
+
+  if (!products.product_status_id.trim()) {
+    error.errorProduct_status_id = "Chưa chọng trạng thái";
+    valid = false;
+  }
+
+  if (!products.categories_id.trim()) {
+    error.errorCategories_id = "Chưa chọn danh mục";
+    valid = false;
+  }
+
+  return valid;
+}
+
 const addProducts = () => {
-  product.fetchAdd(products);
+  if (validate()) {
+    product.fetchAdd(products);
+  }
 };
 </script>
 <template>
@@ -65,7 +133,14 @@ const addProducts = () => {
             <form class="row">
               <div class="form-group col-md-3">
                 <label class="control-label">Tên sản phẩm</label>
-                <input class="form-control" type="text" v-model="products.name" />
+                <input class="form-control" type="text" v-model="products.name"  @input="error.errorName = ''" />
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorName"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorName }}</small
+                  >
+                </transition>
               </div>
               <div class="form-group col-md-3">
                 <label for="exampleSelect1" class="control-label">Tình trạng</label>
@@ -73,6 +148,7 @@ const addProducts = () => {
                   class="form-control"
                   id="exampleSelect1"
                   v-model="products.product_status_id"
+                  @input="error.errorProduct_status_id = ''"
                 >
                   <option value="">-- Chọn tình trạng --</option>
                   <option
@@ -83,10 +159,17 @@ const addProducts = () => {
                     {{ productstatus.status }}
                   </option>
                 </select>
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorProduct_status_id"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorProduct_status_id }}</small
+                  >
+                </transition>
               </div>
               <div class="form-group col-md-3">
                 <label for="exampleSelect1" class="control-label">Danh mục</label>
-                <select class="form-control" v-model="products.categories_id">
+                <select class="form-control" v-model="products.categories_id"  @input="error.errorCategories_id = ''">
                   <option disabled value="">Chọn vài trò</option>
                   <option
                     v-for="category in getCategory"
@@ -96,14 +179,35 @@ const addProducts = () => {
                     {{ category.name }}
                   </option>
                 </select>
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorCategories_id"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorCategories_id }}</small
+                  >
+                </transition>
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Giá bán</label>
-                <input class="form-control" type="number" v-model="products.price" />
+                <input class="form-control" type="number" v-model="products.price"  style="-moz-appearance: textfield; -webkit-appearance: textfield; appearance: textfield;" @input="error.errorPrice = ''" />
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorPrice"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorPrice }}</small
+                  >
+                </transition>
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Số lượng</label>
-                <input class="form-control" type="number" v-model="products.quantity" />
+                <input class="form-control" type="number" v-model="products.quantity"  @input="error.errorQuantity = ''" />
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorQuantity"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorQuantity }}</small
+                  >
+                </transition>
               </div>
               <div class="form-group col-md-12">
                 <label class="control-label">Ảnh sản phẩm</label>
@@ -130,8 +234,16 @@ const addProducts = () => {
                     class="d-none"
                     @change="onFileChange"
                     multiple
+                    @input="error.errorImage_path = ''"
                   />
                   <label for="choicefile" class="Choicefile">Chọn ảnh</label>
+                  <transition name="slide-fade">
+                  <small
+                    v-if="error.errorImage_path"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorImage_path }}</small
+                  >
+                </transition>
                 </div>
               </div>
               <div class="form-group col-md-12">
@@ -141,11 +253,19 @@ const addProducts = () => {
                   name="mota"
                   id="mota"
                   v-model="products.description"
+                  @input="error.errorDescription = ''"
                 ></textarea>
+                <transition name="slide-fade">
+                  <small
+                    v-if="error.errorDescription"
+                    class="inline-block text-[red] text-[13px]"
+                    >{{ error.errorDescription }}</small
+                  >
+                </transition>
               </div>
             </form>
           </div>
-          <base-button class="btn btn-save" type="button" @click="addProducts"
+          <base-button class="btn btn-save mr-3" type="button" @click="addProducts"
             >Lưu lại</base-button
           >
            <router-link

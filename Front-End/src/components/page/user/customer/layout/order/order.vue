@@ -1,6 +1,13 @@
 <script lang="ts" setup>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination } from 'swiper'
+import all from './status/all.vue'
+import waitingForPayment from './status/waitingForPayment.vue'
+import waitingForProgressing from './status/waitingForProgressing.vue'
+import waitingForShipping from './status/waitingForShipping.vue'
+import delivered from './status/delivered.vue'
+import cancelled from './status/cancelled.vue'
+
 import 'swiper/css'
 import 'swiper/css/pagination'
 const modules = [Pagination]
@@ -43,81 +50,27 @@ const tab = ['Tất cả đơn', 'Chờ thanh toán', 'Đang xử lý', 'Đang v
       :modules="modules"
     >
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <all />
       </swiper-slide>
 
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <waitingForPayment />
       </swiper-slide>
 
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <waitingForProgressing/>
       </swiper-slide>
 
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <waitingForShipping />
       </swiper-slide>
 
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <delivered/>
       </swiper-slide>
 
       <swiper-slide>
-        <div class="order-content w-full bg-[#fff] my-10">
-          <div class="text-center py-24">
-            <img
-              class="w-[180px]"
-              src="@/assets/image/empty-order.png"
-              alt=""
-            />
-            <nav>chưa có đơn hàng</nav>
-          </div>
-        </div>
+        <cancelled/>
       </swiper-slide>
     </swiper>
   </div>

@@ -30,6 +30,7 @@
     "pinia": "^2.0.23",
     "postcss-import": "^15.0.0",
     "swiper": "^9.1.0",
+    "validator": "^13.9.0",
     "vue": "^3.2.41",
     "vue-plugin-load-script": "^2.1.1",
     "vue-router": "^4.1.6"

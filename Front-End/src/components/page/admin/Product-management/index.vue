@@ -141,7 +141,6 @@ const deleteProduct = async (id: any) => {
             </td>
             <td>{{ product.quantity }}</td>
             <td>
-              {{ product.status_id }}
               <span
                 class="badge bg-success"
                 v-if="product.status_id == '1'"

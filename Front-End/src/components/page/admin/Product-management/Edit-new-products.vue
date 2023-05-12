@@ -1,72 +1,73 @@
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useProduct, useAdminStore } from "@/stores/admin";
+import { reactive, ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useProduct, useAdminStore } from '@/stores/admin'
 
-const product = useProduct();
-const category = useAdminStore();
-const route = useRoute();
+const product = useProduct()
+const category = useAdminStore()
+const route = useRoute()
 
 const products = reactive({
-  name: "",
+  name: '',
   image_path: [],
-  price: "",
-  quantity: "",
-  description: "",
-  status: "",
-  categories_id: "",
-});
+  price: '',
+  quantity: '',
+  description: '',
+  status: '',
+  categories_id: '',
+})
 
-const selectedImages = ref([]);
+const selectedImages = ref([])
 
 onMounted(async () => {
-  const id = route.params.id;
+  const id = route.params.id
   if (id) {
-    await product.fetchEdit(id);
-    await category.fetchCategory();
+    await Promise.all([product.fetchEdit(id), category.fetchCategory()])
     if (getProduct.value) {
-      products.name = getProduct.value.name;
-      products.price = getProduct.value.price;
-      products.quantity = getProduct.value.quantity;
-      products.description = getProduct.value.description;
-      products.categories_id = getProduct.value.categories_id;
-      products.image_path = getProduct.value.image_path;
-      images.value = getProduct.value.image_path;
+      products.name = getProduct.value.name
+      products.price = getProduct.value.price
+      products.quantity = getProduct.value.quantity
+      products.description = getProduct.value.description
+      products.categories_id = getProduct.value.categories_id
+      products.image_path = getProduct.value.image_path
+      selectedImages.value = getProduct.value.image_path
     }
   }
-});
+})
 
 const getCategory = computed(() => {
-  return category.getCategory;
-});
+  return category.getCategory
+})
 const getProduct = computed(() => {
-  return product.getEditproducts;
-});
+  return product.getEditproducts
+})
 
-  const onFileChange = (e: any) => {
-  if (selectedImages.value.length < 3 && e.target.files.length <= (3 - selectedImages.value.length)) {
+const onFileChange = (e: any) => {
+  if (selectedImages.value.length < 3 && e.target.files.length <= 3 - selectedImages.value.length) {
     for (let i = 0; i < e.target.files.length; i++) {
-      const file = e.target.files[i];
-      const reader = new FileReader();
+      const file = e.target.files[i]
+      const reader = new FileReader()
       reader.onload = (e) => {
-        selectedImages.value.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
-      products.image_path.push(file);
+        selectedImages.value.push(e.target.result)
+      }
+      reader.readAsDataURL(file)
+      products.image_path.push(file)
     }
   } else {
-    alert("ảnh tối đa là 3");
+    alert('ảnh tối đa là 3')
   }
-};
+}
+
+
 
 const removeImage = (index: any) => {
-  products.image_path.splice(index, 1);
-  selectedImages.value.splice(index, 1);
-};
+  products.image_path.splice(index, 1)
+  selectedImages.value.splice(index, 1)
+}
 
-const updateCategory = (id: any) => {
-  product.fetchUpdate(id, products);
-};
+const updateCategory = async (id: any) => {
+  await product.fetchUpdate(id, products)
+}
 </script>
 <template>
   <main class="app-content">
@@ -78,24 +79,50 @@ const updateCategory = (id: any) => {
             <form class="row">
               <div class="form-group col-md-3">
                 <label class="control-label">Tên sản phẩm</label>
-                <input class="form-control" type="text" v-model="products.name" />
+                <input
+                  class="form-control"
+                  type="text"
+                  v-model="products.name"
+                />
               </div>
               <div class="form-group col-md-3">
-                <label for="exampleSelect1" class="control-label"> Tình trạng </label>
+                <label
+                  for="exampleSelect1"
+                  class="control-label"
+                >
+                  Tình trạng
+                </label>
                 <select
                   class="form-control"
                   id="exampleSelect1"
                   v-model="products.status"
                 >
-                  <option value="" disabled>Chọn tình trạng</option>
+                  <option
+                    value=""
+                    disabled
+                  >
+                    Chọn tình trạng
+                  </option>
                   <option value="1">Còn hàng</option>
                   <option value="0">Hết hàng</option>
                 </select>
               </div>
               <div class="form-group col-md-3">
-                <label for="exampleSelect1" class="control-label">Danh mục</label>
-                <select class="form-control" v-model="products.categories_id">
-                  <option disabled value="">Chọn vài trò</option>
+                <label
+                  for="exampleSelect1"
+                  class="control-label"
+                  >Danh mục</label
+                >
+                <select
+                  class="form-control"
+                  v-model="products.categories_id"
+                >
+                  <option
+                    disabled
+                    value=""
+                  >
+                    Chọn vài trò
+                  </option>
                   <option
                     v-for="category in getCategory"
                     :key="category.id"
@@ -107,18 +134,36 @@ const updateCategory = (id: any) => {
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Giá bán</label>
-                <input class="form-control" type="number" v-model="products.price" />
+                <input
+                  class="form-control"
+                  type="number"
+                  v-model="products.price"
+                />
               </div>
               <div class="form-group col-md-3">
                 <label class="control-label">Số lượng</label>
-                <input class="form-control" type="number" v-model="products.quantity" />
+                <input
+                  class="form-control"
+                  type="number"
+                  v-model="products.quantity"
+                />
               </div>
               <div class="form-group col-md-12">
                 <label class="control-label">Ảnh sản phẩm</label>
                 <div id="boxchoice">
-                  <div v-if="images.length > 0" class="flex gap-5">
-                    <div v-for="(image, index) in images" :key="index" class="relative">
-                      <img :src="image" height="100" />
+                  <div
+                    v-if="selectedImages.length > 0"
+                    class="flex gap-5"
+                  >
+                    <div
+                      v-for="(image, index) in selectedImages"
+                      :key="index"
+                      class="relative"
+                    >
+                      <img
+                        :src="image"
+                        height="100"
+                      />
                       <base-button
                         class="btn-remove p-0 m-0"
                         @click.stop.prevent="removeImage(index)"
@@ -135,7 +180,11 @@ const updateCategory = (id: any) => {
                     @change="onFileChange"
                     multiple
                   />
-                  <label for="choicefile" class="Choicefile">Chọn ảnh</label>
+                  <label
+                    for="choicefile"
+                    class="Choicefile"
+                    >Chọn ảnh</label
+                  >
                 </div>
               </div>
               <div class="form-group col-md-12">
@@ -155,7 +204,9 @@ const updateCategory = (id: any) => {
             @click="updateCategory(getProduct.id)"
             >Lưu lại</base-button
           >
-          <router-link class="btn btn-cancel" to="/admin/product-management"
+          <router-link
+            class="btn btn-cancel"
+            to="/admin/product-management"
             >Hủy bỏ</router-link
           >
         </div>
@@ -165,8 +216,8 @@ const updateCategory = (id: any) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/admin/admin.scss";
-@import "@/assets/styles/admin/add/add.scss";
+@import '@/assets/styles/admin/admin.scss';
+@import '@/assets/styles/admin/add/add.scss';
 .btn-remove {
   position: absolute;
   width: 30px;

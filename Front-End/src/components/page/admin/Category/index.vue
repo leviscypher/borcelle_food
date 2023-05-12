@@ -129,13 +129,7 @@ const deleteCategory = async (id: any) => {
                     width="150"
                     class="text-center"
                   >
-                    Tên danh
-                  </th>
-                  <th
-                    width="150"
-                    class="text-center"
-                  >
-                    Ảnh
+                    Tên danh mục
                   </th>
                   <th
                     width="100"
@@ -163,12 +157,6 @@ const deleteCategory = async (id: any) => {
                   </td>
                   <td>{{ index + 1  }}</td>
                   <td>{{ category.name }}</td>
-                  <td>
-                    <img
-                      :src="category.image"
-                      width="100"
-                    />
-                  </td>
                   <td class="table-td-center flex justify-center">
                     <base-button
                       type="button"

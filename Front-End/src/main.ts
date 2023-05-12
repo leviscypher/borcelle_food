@@ -29,4 +29,5 @@ app.use(constants)
 app.use(BootstrapVueNext)
 app.use(createPinia())
 
+
 app.mount('#app')

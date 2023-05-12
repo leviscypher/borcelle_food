@@ -21,6 +21,7 @@ const error = reactive({
   errorPosition_id: '',
 })
 const isSuccess = ref('')
+const isloading = ref(true)
 const useAccounts = useAccountManagement()
 const usePositions = usePosition()
 const useRoles = useRole()
@@ -46,9 +47,8 @@ const getStatus = computed(() => {
 onMounted(async () => {
   const id = route.params.id
   if (id) {
-    await useAccounts.fetchEdit(id)
-    await usePositions.fetchPosition()
-    await useRoles.fetchRoles()
+    isloading.value = true
+    await Promise.all([useAccounts.fetchEdit(id), usePositions.fetchPosition(), useRoles.fetchRoles()])
     if (getEditAccounts.value) {
       accounts.username = getEditAccounts.value.username
       accounts.email = getEditAccounts.value.email
@@ -56,7 +56,8 @@ onMounted(async () => {
       accounts.password_confirmation = getEditAccounts.value.password_confirmation
       accounts.position_id = getEditAccounts.value.position_id
       accounts.role_id = getEditAccounts.value.role_id
-    }    
+    }
+    isloading.value = false
   }
 })
 const re =
@@ -98,6 +99,7 @@ const updateCategory = async (id: any) => {
     !error.errorPosition_id
   ) {
     try {
+      isloading.value = true
       await useAccounts.fetchUpdate(id, accounts)
       switch (getStatus.value) {
         case 200:
@@ -111,6 +113,8 @@ const updateCategory = async (id: any) => {
       }
     } catch (error) {
       isSuccess.value = null
+    } finally {
+      isloading.value = false
     }
   }
 }
@@ -123,145 +127,150 @@ const updateCategory = async (id: any) => {
           <h3 class="tile-title">Sửa tài khoản</h3>
           <div class="tile-body">
             <form class="row">
-              <div
-                v-if="isSuccess === '422'"
-                class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
-                role="alert"
-              >
-                Tài khoản đã tồn tại
+              <div v-if="isloading">
+                <base-load />
               </div>
-              <div
-                v-else-if="isSuccess === '200'"
-                class="alert alert-success text-[14px]"
-                role="alert"
-              >
-                Sửa tài khoản thành công
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Tên tài khoản</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.username"
-                  type="text"
-                  required
-                  @input="error.errorUsername = ''"
-                />
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorUsername"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorUsername }}</small
-                  >
-                </transition>
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Email</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.email"
-                  type="text"
-                  required
-                  @input="error.errorEmail = ''"
-                />
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorEmail"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorEmail }}</small
-                  >
-                </transition>
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Mật khẩu</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.password"
-                  type="password"
-                  required
-                  @input="error.errorPassword = ''"
-                />
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorPassword"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorPassword }}</small
-                  >
-                </transition>
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Nhập lại mật khẩu</label>
-                <input
-                  class="form-control"
-                  v-model="accounts.password_confirmation"
-                  type="password"
-                  required
-                  @input="error.errorPassword_confirmation = ''"
-                />
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorPassword_confirmation"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorPassword_confirmation }}</small
-                  >
-                </transition>
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Vài trò</label> <br />
-                <select
-                  class="form-control"
-                  v-model="accounts.role_id"
-                  @input="error.errorRole_id = ''"
+              <div v-else>
+                <div
+                  v-if="isSuccess === '422'"
+                  class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
+                  role="alert"
                 >
-                  <option
-                    disabled
-                    value=""
-                  >
-                    Chọn vài trò
-                  </option>
-                  <option
-                    v-for="role in getRole"
-                    :key="role.id"
-                    :value="role.id"
-                  >
-                    {{ role.name }}
-                  </option>
-                </select>
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorRole_id"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorRole_id }}</small
-                  >
-                </transition>
-              </div>
-              <div class="form-group col-md-4">
-                <label class="control-label">Chức vụ</label> <br />
-                <select
-                  class="form-control"
-                  v-model="accounts.position_id"
-                  @input="error.errorPosition_id = ''"
+                  Tài khoản đã tồn tại
+                </div>
+                <div
+                  v-else-if="isSuccess === '200'"
+                  class="alert alert-success text-[14px]"
+                  role="alert"
                 >
-                  <option
-                    disabled
-                    value=""
+                  Sửa tài khoản thành công
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Tên tài khoản</label>
+                  <input
+                    class="form-control"
+                    v-model="accounts.username"
+                    type="text"
+                    required
+                    @input="error.errorUsername = ''"
+                  />
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorUsername"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorUsername }}</small
+                    >
+                  </transition>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Email</label>
+                  <input
+                    class="form-control"
+                    v-model="accounts.email"
+                    type="text"
+                    required
+                    @input="error.errorEmail = ''"
+                  />
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorEmail"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorEmail }}</small
+                    >
+                  </transition>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Mật khẩu</label>
+                  <input
+                    class="form-control"
+                    v-model="accounts.password"
+                    type="password"
+                    required
+                    @input="error.errorPassword = ''"
+                  />
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorPassword"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorPassword }}</small
+                    >
+                  </transition>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Nhập lại mật khẩu</label>
+                  <input
+                    class="form-control"
+                    v-model="accounts.password_confirmation"
+                    type="password"
+                    required
+                    @input="error.errorPassword_confirmation = ''"
+                  />
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorPassword_confirmation"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorPassword_confirmation }}</small
+                    >
+                  </transition>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Vài trò</label> <br />
+                  <select
+                    class="form-control"
+                    v-model="accounts.role_id"
+                    @input="error.errorRole_id = ''"
                   >
-                    Chọn chức vụ
-                  </option>
-                  <option
-                    v-for="position in getPosition"
-                    :value="position.id"
-                    :key="position.id"
+                    <option
+                      disabled
+                      value=""
+                    >
+                      Chọn vài trò
+                    </option>
+                    <option
+                      v-for="role in getRole"
+                      :key="role.id"
+                      :value="role.id"
+                    >
+                      {{ role.name }}
+                    </option>
+                  </select>
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorRole_id"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorRole_id }}</small
+                    >
+                  </transition>
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="control-label">Chức vụ</label> <br />
+                  <select
+                    class="form-control"
+                    v-model="accounts.position_id"
+                    @input="error.errorPosition_id = ''"
                   >
-                    {{ position.name }}
-                  </option>
-                </select>
-                <transition name="slide-fade">
-                  <small
-                    v-if="error.errorPosition_id"
-                    class="inline-block text-[red] text-[13px]"
-                    >{{ error.errorPosition_id }}</small
-                  >
-                </transition>
+                    <option
+                      disabled
+                      value=""
+                    >
+                      Chọn chức vụ
+                    </option>
+                    <option
+                      v-for="position in getPosition"
+                      :value="position.id"
+                      :key="position.id"
+                    >
+                      {{ position.name }}
+                    </option>
+                  </select>
+                  <transition name="slide-fade">
+                    <small
+                      v-if="error.errorPosition_id"
+                      class="inline-block text-[red] text-[13px]"
+                      >{{ error.errorPosition_id }}</small
+                    >
+                  </transition>
+                </div>
               </div>
             </form>
           </div>

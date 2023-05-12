@@ -8,6 +8,7 @@ const useAdmin = useAdminStore()
 const nameCategory = reactive({
   name: '',
 })
+const isloading = ref(false)
 const isSuccess = ref('')
 const error = reactive({
   name: '',
@@ -30,11 +31,13 @@ onMounted(async () => {
     }
   }
 })
+
 const updateCategory = async (id: any) => {
   if (nameCategory.name === '') {
     error.name = 'Chưa nhập dữ liệu'
   } else {
     try {
+      isloading.value = true
       await useAdmin.fetchUpdate(id, nameCategory)
       switch (getStatus.value) {
         case 200:
@@ -46,6 +49,8 @@ const updateCategory = async (id: any) => {
       }
     } catch (error) {
       return
+    } finally {
+      isloading.value = false
     }
   }
 }
@@ -58,21 +63,34 @@ const updateCategory = async (id: any) => {
           <h3 class="tile-title">Sửa danh mục</h3>
           <div class="tile-body">
             <form class="row">
-              <div class="form-group col-md-4">
+              <div v-if="isloading">
+                <base-load></base-load>
+              </div>
+              <div v-else>
                 <div
+                  class="form-group col-md-4"
                   v-if="isSuccess === '422'"
-                  class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
-                  role="alert"
                 >
-                  Danh mục đã tồn tại
+                  <div
+                    class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
+                    role="alert"
+                  >
+                    Danh mục đã tồn tại
+                  </div>
                 </div>
                 <div
-                  v-else-if="isSuccess === '200'"
-                  class="alert alert-success text-[14px]"
-                  role="alert"
+                  class="form-group col-md-4"
+                  v-else-if="isSuccess === '201'"
                 >
-                  Sửa danh mục thành công
+                  <div
+                    class="alert alert-success text-[14px]"
+                    role="alert"
+                  >
+                    Sửa danh mục thành công
+                  </div>
                 </div>
+              </div>
+              <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
                 <input
                   class="form-control"
@@ -117,5 +135,11 @@ const updateCategory = async (id: any) => {
 [type='text']:focus:focus,
 [type='password']:focus {
   border: 1px solid var(--black);
+}
+.btn-remove {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 0;
 }
 </style>

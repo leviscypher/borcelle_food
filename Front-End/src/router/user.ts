@@ -50,13 +50,13 @@ export const user = [
     component: () => import('@/page/user/Test/index.vue'),
   },
   {
-    path: '/productdetail',
+    path: '/productdetail/:id',
     name: 'productDetail',
     meta: { layout: 'layoutuser' },
     component: () => import('@/page/user/ProductDetail/index.vue'),
   },
   {
-    path: '/customer/edit',
+    path: '/customer/edit/:id',
     name: 'customer',
     component: () => import('@/page/user/customer/index.vue'),
     meta: { layout: 'layoutuser' },
@@ -69,21 +69,35 @@ export const user = [
       },
 
       {
-        path: '/customer/order',
+        path: '/customer/order/:id',
         name: 'customer-order',
         component: () => import('@/components/page/user/customer/layout/order/order.vue'),
         meta: { layout: 'layoutuser' },
       },
+
       {
-        path: '/customer/address',
+        path: '/customer/order/detail/:id',
+        name: 'customer-order-detail',
+        component: () => import('@/components/page/user/customer/layout/order/detail.vue'),
+        meta: { layout: 'layoutuser' },
+      },
+
+      {
+        path: '/customer/address/:id',
         name: 'customer-address',
         component: () => import('@/components/page/user/customer/layout/address/address.vue'),
         meta: { layout: 'layoutuser' },
       },
       {
-        path: '/customer/address/create',
+        path: '/customer/address/create/:id',
         name: 'customer-address-create',
         component: () => import('@/components/page/user/customer/layout/address/create.vue'),
+        meta: { layout: 'layoutuser' },
+      },
+      {
+        path: '/customer/address/edit/:id',
+        name: 'customer-address-edit',
+        component: () => import('@/components/page/user/customer/layout/address/edit.vue'),
         meta: { layout: 'layoutuser' },
       },
       {
