@@ -104,9 +104,10 @@ Route::prefix('admin')->group(function () {
 
         // ORDER
         Route::prefix('order')->group(function () {
-            Route::get('all', [OrderController::class, 'index']);
+            Route::get('all/{status}', [OrderController::class, 'index']);
             Route::get('order-detail/{order_id}', [OrderController::class, 'orderDetail']);
             Route::post('update-status/{order_id}', [OrderController::class, 'updateStatus']);
+            Route::get('detail/{order_id}', [OrderController::class, 'orderDetail']);
         });
     });
 });

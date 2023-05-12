@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Response;
 
@@ -58,7 +59,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
         try {
             $product = $this->product->find($id);
@@ -66,12 +67,16 @@ class ProductsController extends Controller
                 return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
             }
             $data = $request->all();
-            $images = $request->file('image_path');
-            $image_path_new = $this->uploadImageDrive($images);
-            $image_path_old = json_decode($product->image_path);
-            $this->deleteImageDrive($image_path_old);
-            $data['image_path'] = json_encode($image_path_new);
-            $product->update($data);
+            if($request->file('image_path')) {
+                $images = $request->file('image_path');
+                $image_path_new = $this->uploadImageDrive($images);
+                $image_path_old = json_decode($product->image_path);
+                $this->deleteImageDrive($image_path_old);
+                $data['image_path'] = json_encode($image_path_new);
+                $product->update($data);
+            } else {
+                $product->update($data);
+            }
             return response()->json(['message' => $this->updateSuccess], Response::HTTP_OK);
         } catch (\Throwable $th) {
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
