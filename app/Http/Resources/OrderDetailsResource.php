@@ -28,6 +28,7 @@ class OrderDetailsResource extends JsonResource
             'order_date' => $this->order->created_at->format('d/m/Y, H:i'),
             'order_status' => $this->order->order_status->status,
             'order_status_id' => $this->order->status_id,
+            'reason' => $this->order->cancellation_reason,
             'delivery_fee' => $this->order->delivery_fee,
             'recipients_name' => $this->order->address->fullname,
             'address' =>  $this->order->address->delivery_address . ', ' . $this->order->address->ward->name . ' ' . $this->order->address->district->name . ' ' .   $this->order->address->city->name,

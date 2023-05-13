@@ -11,15 +11,19 @@ use App\Http\Resources\OrderDetailsResource;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use phpseclib3\Crypt\DES;
 
 class CustomerOrderController extends Controller
 {
 
-    public function index($user_id) {
-        $order = Order::where('user_id', $user_id)->get();
-        $orderResource = OrderResource::collection($order);
-        return response()->json($orderResource, Response::HTTP_OK);
+    public function index($user_id, $status_id) {
+        if ($status_id > 1) {
+            $orders = Order::where('user_id', $user_id)->where('status_id', $status_id)->orderBy('id', 'desc')->get();
+        } else {
+            $orders = Order::where('user_id', $user_id)->orderBy('id', 'desc')->get();
+        }
+        $orderResouce = OrderResource::collection($orders);
+        return response()->json($orderResouce, Response::HTTP_OK);
     }
 
     public function orderDetail($order_id) {
@@ -72,6 +76,14 @@ class CustomerOrderController extends Controller
         } catch (\Throwable $th) {
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_NOT_FOUND);
         }
+    }
+
+    public function cancelled(Request $request, $order_id) {
+        $order = Order::where('id', $order_id)->first();
+        $order->cancellation_reason = $request->reason;
+        $order->status_id = 6;
+        $order->save();
+        return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
     }
 
 }

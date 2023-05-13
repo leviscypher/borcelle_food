@@ -24,9 +24,9 @@ class OrderController extends Controller
     {
 
         if ($status > 1) {
-            $orders = $this->order->where('status_id', $status)->paginate($this->itemsPerPage);
+            $orders = $this->order->where('status_id', $status)->orderBy('id', 'desc')->paginate($this->itemsPerPage);
         } else {
-            $orders = $this->order->paginate($this->itemsPerPage);
+            $orders = $this->order->orderBy('id', 'desc')->paginate($this->itemsPerPage);
         }
         $orderResouce = OrderResource::collection($orders);
         $pagination = $this->getPagination($orderResouce, $orders);
@@ -63,6 +63,7 @@ class OrderController extends Controller
                 }
 
                 if($status[$item] === 'cancelled') {
+                    $order->cancellation_reason = $request->reason;
                     $order->status_id = 6;
                     $order->save();
                 }

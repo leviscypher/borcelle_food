@@ -15,7 +15,7 @@ class Order extends Model
 
     protected $table = 'order';
 
-    protected $fillable = ['product_status_id', 'user_id', 'address_id', 'delivery_fee'];
+    protected $fillable = ['product_status_id', 'user_id', 'address_id', 'delivery_fee', 'cancellation_reason'];
 
     /**
      * Get the address that owns the Order

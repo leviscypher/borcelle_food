@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('address_id');
             $table->integer('delivery_fee', 11)->default('8000');
+            $table->string('cancellation_reason', 255)->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('order_status');
             $table->foreign('address_id')->references('id')->on('address');

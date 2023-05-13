@@ -140,9 +140,10 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
     
 
     Route::prefix('order')->middleware('isActive')->group(function() {
-        Route::get('all/{user_id}', [CustomerOrderController::class, 'index']);
+        Route::get('all/{user_id}/{status_id}', [CustomerOrderController::class, 'index']);
         Route::get('detail/{order_id}', [CustomerOrderController::class, 'orderDetail']);
         Route::post('create/{user_id}', [CustomerOrderController::class, 'createOrder']);
+        Route::post('update-status/{order_id}', [CustomerOrderController::class, 'cancelled']);
     });
 });
 
