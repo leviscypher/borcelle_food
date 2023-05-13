@@ -16,6 +16,8 @@ const address = ref('')
 const delivery_fee = ref(0)
 const totalPrice = ref(0)
 const isLoading = ref(false)
+const reason = ref('')
+
 
 onMounted(async () => {
   isLoading.value = true
@@ -55,6 +57,7 @@ const changeStatusOrder = async () => {
   isLoading.value = true
   const statusOrder = {
     status: infoStatus.value,
+    reason: reason.value
   }
   await Promise.all([order.updateStatus(order_id.value, statusOrder), order.fetchOrder(3)])
   data.value = order.getOrder
@@ -153,6 +156,17 @@ const changeStatusOrder = async () => {
               :class="infoStatus === 'cancelled' ? 'text-danger' : 'text-info'"
             />
             <h4 class="mb-0 ml-4">{{ infoStatus === 'cancelled' ? 'xác nhận hủy đơn hàng' : 'xác nhận đơn hàng' }}</h4>
+          </div>
+          <div
+            v-if="infoStatus === 'cancelled'"
+            class="form-group my-[18px]"
+          >
+            <input
+              type="text"
+              placeholder="lý do hủy"
+              class="form-control"
+              v-model="reason"
+            />
           </div>
           <p
             class="text-2xl mt-6 ml-10"

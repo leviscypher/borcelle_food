@@ -295,7 +295,7 @@ export const useOrder = defineStore('order', {
   state: () => ({
     status: 0,
     allOrder: [],
-    orderDetail: []
+    orderDetail: [],
   }),
   getters: {
     getStatus(state) {
@@ -308,7 +308,7 @@ export const useOrder = defineStore('order', {
 
     getOrderDetail(state) {
       return state.orderDetail
-    }
+    },
   },
   actions: {
     async fetchCreate(user_id:number, dataOrder:any) {
@@ -320,9 +320,9 @@ export const useOrder = defineStore('order', {
       }
     },
 
-    async fetchAll(user_id:number) {
+    async fetchAll(user_id:number, status_id = 0) {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/customer/order/all/'+ user_id, constants.routeApis.TOKEN);
+        const data = await axios.get('http://127.0.0.1:8000/api/customer/order/all/'+ user_id + '/' + status_id, constants.routeApis.TOKEN);
         this.allOrder = data.data
       } catch (error) {
         return error
@@ -336,6 +336,15 @@ export const useOrder = defineStore('order', {
       } catch (error) {
         return error
       }
+    },
+
+    async updateStatus(order_id:number, reason:string) {
+      try {
+        await axios.post('http://127.0.0.1:8000/api/customer/order/update-status/' + order_id, reason, constants.routeApis.TOKEN)
+      } catch (error) {
+        return
+      }
     }
+    
   }
 })

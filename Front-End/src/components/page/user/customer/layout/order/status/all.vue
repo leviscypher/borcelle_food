@@ -1,7 +1,16 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useOrder } from '@/stores/user'
 import { useRoute } from 'vue-router'
+
+
+const props = defineProps<{
+  statusUpdate: {
+    type: Boolean
+  }
+}>()
+
+const emit = defineEmits(['cancelled'])
 
 const route = useRoute()
 const order = useOrder()
@@ -17,6 +26,19 @@ onMounted(async () => {
   await order.fetchAll(id)
   data.value = order.getAllOrder
 })
+
+const confirm = (order_id:number) => {
+  emit('cancelled', order_id)
+}
+
+watch(() => props.statusUpdate, async (newStatus) => {
+  if(newStatus) {
+    const id = route.params.id
+    await order.fetchAll(id)
+    data.value = order.getAllOrder
+  }
+})
+
 </script>
 
 <template>
@@ -64,7 +86,13 @@ onMounted(async () => {
           </button>
         </router-link>
 
-        <button class="border-none outline-none p-[8px] text-[10px] rounded-xl bg-danger text-white">hủy đơn</button>
+        <button
+          class="border-none outline-none p-[8px] text-[10px] rounded-xl bg-danger text-white"
+          v-if="item.status_id === 3"
+          @click="confirm(item.id)"
+        >
+          hủy đơn
+        </button>
       </div>
     </div>
   </div>

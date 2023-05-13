@@ -12,6 +12,8 @@ const address = ref('')
 const delivery_fee = ref(0)
 const totalPrice = ref(0)
 const isLoading = ref(false)
+const reason = ref('')
+
 
 onMounted(async () => {
   await order.fetchOrder(6)
@@ -27,6 +29,7 @@ const orderDetail = async (id: number) => {
   phone.value = detail.value[0].phone
   address.value = detail.value[0].address
   delivery_fee.value = detail.value[0].delivery_fee
+  reason.value = detail.value[0].reason
   for (let i in detail.value) {
     totalPrice.value += parseInt(detail.value[i].total)
   }
@@ -217,6 +220,11 @@ const formatPrice = (value: number) => {
             <div class="mt-10 flex gap-4">
               <h4>tổng tiền:</h4>
               <h4 class="text-danger">{{ formatPrice(totalPrice + delivery_fee) }}</h4>
+            </div>
+
+            <div class="flex">
+              <h4>Lý do hủy:</h4>
+              <h4 class="ml-4 flex-1 text-danger">{{ reason }}</h4>
             </div>
           </div>
         </div>

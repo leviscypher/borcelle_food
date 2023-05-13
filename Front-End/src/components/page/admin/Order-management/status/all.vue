@@ -16,6 +16,8 @@ const address = ref('')
 const delivery_fee = ref(0)
 const totalPrice = ref(0)
 const isLoading = ref(false)
+const statusId = ref(0)
+const reason = ref('')
 
 onMounted(async () => {
   isLoading.value = true
@@ -34,6 +36,7 @@ const changeStatusOrder = async () => {
   isLoading.value = true
   const statusOrder = {
     status: infoStatus.value,
+    reason: reason.value
   }
   await Promise.all([order.updateStatus(order_id.value, statusOrder), order.fetchOrder()])
   data.value = order.getOrder
@@ -49,6 +52,8 @@ const orderDetail = async (id: number) => {
   phone.value = detail.value[0].phone
   address.value = detail.value[0].address
   delivery_fee.value = detail.value[0].delivery_fee
+  statusId.value = detail.value[0].order_status_id
+  reason.value = detail.value[0].reason
   for (let i in detail.value) {
     totalPrice.value += parseInt(detail.value[i].total)
   }
@@ -60,7 +65,6 @@ const formatPrice = (value: number) => {
   let formattedValue = new Intl.NumberFormat('vi-VN').format(value)
   return `${formattedValue}${currencySymbol}`
 }
-
 </script>
 
 <template>
@@ -134,7 +138,7 @@ const formatPrice = (value: number) => {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             @click="updateStatus(item.id, item.status_id, 'cancelled')"
-            v-if="item.status_id === 1 || item.status_id === 3"
+            v-if="item.status_id === 3 || item.status_id === 4"
           >
             <font-awesome-icon :icon="['fas', 'trash']" />
           </button>
@@ -161,6 +165,17 @@ const formatPrice = (value: number) => {
               :class="infoStatus === 'cancelled' ? 'text-danger' : 'text-info'"
             />
             <h4 class="mb-0 ml-4">{{ infoStatus === 'cancelled' ? 'xác nhận hủy đơn hàng' : 'xác nhận đơn hàng' }}</h4>
+          </div>
+          <div
+            v-if="infoStatus === 'cancelled'"
+            class="form-group my-[18px]"
+          >
+            <input
+              type="text"
+              placeholder="lý do hủy"
+              class="form-control"
+              v-model="reason"
+            />
           </div>
           <p
             class="text-2xl mt-6 ml-10"
@@ -286,6 +301,14 @@ const formatPrice = (value: number) => {
             <div class="mt-10 flex gap-4">
               <h4>tổng tiền:</h4>
               <h4 class="text-danger">{{ formatPrice(totalPrice + delivery_fee) }}</h4>
+            </div>
+
+            <div
+              class="flex"
+              v-if="statusId === 6"
+            >
+              <h4>Lý do hủy:</h4>
+              <h4 class="ml-4 flex-1 text-danger">{{ reason }}</h4>
             </div>
           </div>
         </div>

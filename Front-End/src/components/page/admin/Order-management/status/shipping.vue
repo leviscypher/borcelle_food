@@ -16,6 +16,8 @@ const address = ref('')
 const delivery_fee = ref(0)
 const totalPrice = ref(0)
 const isLoading = ref(false)
+const reason = ref('')
+
 
 onMounted(async () => {
   isLoading.value = true
@@ -23,22 +25,6 @@ onMounted(async () => {
   data.value = order.getOrder
   isLoading.value = false
 })
-
-const updateStatus = (oid: number, st: number, info: string) => {
-  order_id.value = oid
-  status.value = st
-  infoStatus.value = info
-}
-
-const changeStatusOrder = async () => {
-  isLoading.value = true
-  const statusOrder = {
-    status: infoStatus.value,
-  }
-  await Promise.all([order.updateStatus(order_id.value, statusOrder), order.fetchOrder(4)])
-  data.value = order.getOrder
-  isLoading.value = false
-}
 
 const orderDetail = async (id: number) => {
   totalPrice.value = 0
@@ -60,10 +46,27 @@ const formatPrice = (value: number) => {
   let formattedValue = new Intl.NumberFormat('vi-VN').format(value)
   return `${formattedValue}${currencySymbol}`
 }
+
+const updateStatus = (oid: number, st: number, info: string) => {
+  order_id.value = oid
+  status.value = st
+  infoStatus.value = info
+}
+
+const changeStatusOrder = async () => {
+  isLoading.value = true
+  const statusOrder = {
+    status: infoStatus.value,
+    reason: reason.value
+  }
+  await Promise.all([order.updateStatus(order_id.value, statusOrder), order.fetchOrder(4)])
+  data.value = order.getOrder
+  isLoading.value = false
+}
 </script>
 
 <template>
-  <h1 class="my-[30px]">Đơn chờ thanh toán:</h1>
+  <h1 class="my-[30px]">Tất cả đơn hàng:</h1>
   <table id="sampleTable">
     <thead>
       <tr>
@@ -81,7 +84,7 @@ const formatPrice = (value: number) => {
         <th class="text-center">Số điện thoại</th>
         <th class="text-center">Địa chỉ</th>
         <th class="text-center">Tình trạng</th>
-        <th class="text-center">Chi tiết</th>
+        <th class="text-center">Chức năng</th>
       </tr>
     </thead>
     <tbody>
@@ -114,12 +117,21 @@ const formatPrice = (value: number) => {
           </button>
 
           <button
-            class="border-none outline-none focus:outline-none py-[4px] px-[8px] rounded-lg bg-info text-white hover"
+            class="border-none outline-none focus:outline-none py-[4px] px-[8px] rounded-lg bg-info text-white"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal-detail"
             @click="orderDetail(item.id)"
           >
             <font-awesome-icon :icon="['fas', 'circle-info']" />
+          </button>
+
+          <button
+            class="border-none outline-none focus:outline-none py-[4px] px-[8px] rounded-lg text-[#f5a7a0]"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            @click="updateStatus(item.id, item.status_id, 'cancelled')"
+          >
+            <font-awesome-icon :icon="['fas', 'trash']" />
           </button>
         </td>
       </tr>
@@ -140,11 +152,34 @@ const formatPrice = (value: number) => {
           <div class="flex items-center">
             <font-awesome-icon
               icon="fa-sharp fa-light fa-triangle-exclamation"
-              class="text-3xl text-info"
+              class="text-3xl"
+              :class="infoStatus === 'cancelled' ? 'text-danger' : 'text-info'"
             />
-            <h4 class="mb-0 ml-4">xác nhận đơn hàng</h4>
+            <h4 class="mb-0 ml-4">{{ infoStatus === 'cancelled' ? 'xác nhận hủy đơn hàng' : 'xác nhận đơn hàng' }}</h4>
           </div>
-          <p class="text-2xl mt-6 ml-10">xác nhận hoàn thành đơn hàng</p>
+          <div
+            v-if="infoStatus === 'cancelled'"
+            class="form-group my-[18px]"
+          >
+            <input
+              type="text"
+              placeholder="lý do hủy"
+              class="form-control"
+              v-model="reason"
+            />
+          </div>
+          <p
+            class="text-2xl mt-6 ml-10"
+            v-if="status === 4 && infoStatus === 'delivered'"
+          >
+            hoàn thành đơn hàng
+          </p>
+          <p
+            class="text-2xl mt-6 ml-10"
+            v-if="infoStatus === 'cancelled'"
+          >
+            xác nhận hủy đơn hàng này
+          </p>
           <div class="flex justify-end mt-8">
             <button
               class="btn-info border-none px-[18px] py-[10px] mr-[10px] rounded-xl text-xl hover focus:outline-none"
@@ -153,6 +188,7 @@ const formatPrice = (value: number) => {
             >
               Xác nhận
             </button>
+
             <button
               class="btn-primary border-none px-[18px] py-[10px] mr-[10px] rounded-xl text-xl hover focus:outline-none"
               data-bs-dismiss="modal"

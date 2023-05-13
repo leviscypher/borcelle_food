@@ -336,9 +336,9 @@ export const useOrder = defineStore('order', {
   
   },
   actions: {
-    async fetchOrder(status = 0, page = 1) {
+    async fetchOrder(status = 0) {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all/' + status + '/?page='+  page, constants.routeApis.TOKENADMIN)
+        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all/' + status, constants.routeApis.TOKENADMIN)
         this.orders = data.data
       } catch (error) {
         return
@@ -356,8 +356,7 @@ export const useOrder = defineStore('order', {
 
     async updateStatus(order_id:number, status:any) {
       try {
-        const data = await axios.post('http://127.0.0.1:8000/api/admin/order/update-status/' + order_id, status, constants.routeApis.TOKENADMIN)
-        this.orderDetail = data.data
+        await axios.post('http://127.0.0.1:8000/api/admin/order/update-status/' + order_id, status, constants.routeApis.TOKENADMIN)
       } catch (error) {
         return
       }
