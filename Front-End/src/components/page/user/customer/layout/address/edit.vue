@@ -15,6 +15,11 @@ const addressData = reactive({
   ward_id: 0,
 })
 
+const errorAddress = reactive({
+  fullname: '',
+  phone: '',
+})
+
 const showAlert = ref(false)
 const message = ref('')
 const alertType = ref('')
@@ -40,7 +45,6 @@ onMounted(async () => {
   addressData.district_id = address.getAddressEdit.district_id
   addressData.ward_id = address.getAddressEdit.ward_id
 
- 
   city.value = address.getCity
   district.value = address.getDistrict
   await address.fetchWard(addressData.district_id)
@@ -71,11 +75,44 @@ watch(showAlert, (val) => {
 })
 
 const updateData = async () => {
-  await address.fetchUpdate(address.value, addressData)
-  showAlert.value = true
-  message.value = 'cập nhật thành công'
-  alertType.value = 'success'
+  if (validate()) {
+    await address.fetchUpdate(address.value, addressData)
+    showAlert.value = true
+    message.value = 'cập nhật thành công'
+    alertType.value = 'success'
+  }
 }
+
+const validate = () => {
+  let valid = true
+  if (!addressData.fullname) {
+    errorAddress.fullname = 'Họ và tên không được để trông'
+    valid = false
+  }
+
+  if (!addressData.phone) {
+    errorAddress.phone = 'Số điện thoại không được để trống'
+    valid = false
+  } else if (!phoneVn(addressData.phone)) {
+    errorAddress.phone = 'Số điện thoại không hợp lệ'
+    valid = false
+  }
+
+  return valid
+}
+
+const phoneVn = (phone: number) => {
+  const vietnamesePhoneNumberRegex = /^(0|\+84)\d{9,10}$/
+  return vietnamesePhoneNumberRegex.test(phone.toString())
+}
+
+watch(errorAddress, (val) => {
+  if (val) {
+    setTimeout(() => {
+      ;(errorAddress.fullname = ''), (errorAddress.phone = '')
+    }, 3000)
+  }
+})
 </script>
 
 <template lang="">
@@ -97,7 +134,15 @@ const updateData = async () => {
                 placeholder="nhập tên"
                 maxlength="255"
                 v-model="addressData.fullname"
+                @input="errorAddress.fullname"
               />
+              <transition name="slide-fade">
+                <small
+                  v-if="errorAddress.fullname"
+                  class="inline-block text-[red] text-[13px]"
+                  >{{ errorAddress.fullname }}</small
+                >
+              </transition>
             </div>
           </div>
 
@@ -130,7 +175,15 @@ const updateData = async () => {
                 placeholder="nhập số điện thoại"
                 maxlength="10"
                 v-model="addressData.phone"
+                @input="errorAddress.phone"
               />
+              <transition name="slide-fade">
+                <small
+                  v-if="errorAddress.phone"
+                  class="inline-block text-[red] text-[13px]"
+                  >{{ errorAddress.phone }}</small
+                >
+              </transition>
             </div>
           </div>
 

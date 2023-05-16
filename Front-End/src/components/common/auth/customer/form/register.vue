@@ -60,8 +60,8 @@ const register = async (e: any) => {
     try {
       await useAuth.fetchRegister(dataAuth)
       switch (getStatus.value) {
-        case 201:
-          isSuccess.value = '201'
+        case 200:
+          isSuccess.value = '200'
           break
         case 422:
           isSuccess.value = '422'
@@ -94,7 +94,7 @@ const togglePassword = () => {
       Tên tài khoản và email đã được đăng ký
     </div>
     <div
-      v-else-if="isSuccess === '201'"
+      v-else-if="isSuccess === '200'"
       class="alert alert-success text-[14px]"
       role="alert"
     >

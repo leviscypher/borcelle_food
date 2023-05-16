@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useAdminStore } from '@/stores/admin'
+
 const useAdmin = useAdminStore()
-const isSuccess = ref('')
+
 const isloading = ref(false)
+
+const showAlert = ref(false)
+const message = ref('')
+const alertType = ref('')
+
 const categorys = reactive({
   name: '',
-  // image: '',
 })
 const error = reactive({
   name: '',
@@ -16,29 +21,47 @@ const addCategory = async () => {
   if (categorys.name === '') {
     error.name = 'Chưa nhập dữ liệu'
   } else {
-    try {
-      isloading.value = true
-      await useAdmin.fetchAdd(categorys)
-      switch (getStatus.value) {
-        case 201:
-          isSuccess.value = '201'
-          break
-        case 404:
-          isSuccess.value = '422'
-          break
-        default:
-          break
-      }
-    } catch (error) {
-      isSuccess.value = null
-    } finally {
-      isloading.value = false
+    isloading.value = true
+    await useAdmin.fetchAdd(categorys)
+    const status = useAdmin.getStatus
+    
+    categorys.name = ''
+    isloading.value = false
+
+    switch (status) {
+      case 201: 
+        showAlert.value = true
+        message.value = 'thêm mới thành công'
+        alertType.value = 'success'
+        break;
+
+      case 422:
+        showAlert.value = true
+        message.value = 'danh mục này đã tồn tại'
+        alertType.value = 'danger'
+        break;
+
+      default:
+        showAlert.value = true
+        message.value = 'đã có lỗi xảy ra vui lòng thử lại sau'
+        alertType.value = 'danger'
     }
   }
 }
+
+watch(showAlert, (val) => {
+  if (val) {
+    setTimeout(() => {
+      showAlert.value = false
+    }, 5000)
+  }
+})
 </script>
 <template>
-  <main class="app-content mt-0 pt-0">
+  <main
+    class="app-content mt-0 pt-0"
+    v-if="!isloading"
+  >
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
@@ -46,33 +69,6 @@ const addCategory = async () => {
 
           <div class="tile-body">
             <form class="row">
-              <div v-if="isloading">
-                <base-load></base-load>
-              </div>
-              <div v-else>
-                <div
-                  class="form-group col-md-4"
-                  v-if="isSuccess === '422'"
-                >
-                  <div
-                    class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
-                    role="alert"
-                  >
-                    Danh mục đã tồn tại
-                  </div>
-                </div>
-                <div
-                  class="form-group col-md-4"
-                  v-else-if="isSuccess === '201'"
-                >
-                  <div
-                    class="alert alert-success text-[14px]"
-                    role="alert"
-                  >
-                    Thêm danh mục thành công
-                  </div>
-                </div>
-              </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
                 <input
@@ -110,6 +106,23 @@ const addCategory = async () => {
       </div>
     </div>
   </main>
+
+  <div
+    class="w-100% flex justify-center py-[100px] bg-white"
+    v-else
+  >
+    <base-load></base-load>
+  </div>
+
+  <div v-show="showAlert" class="w-full">
+    <div
+      class="alert text-[14px] px-[20px] w-auto fixed top-[100px] z-[9999] left-[60%] translate-x-[-50%] text-center"
+      :class="alertType ? 'bg-' + alertType : ''"
+      role="alert"
+    >
+      {{ message }}
+    </div>
+  </div>
 </template>
 <style lang="scss" scoped>
 @import '@/assets/styles/admin/admin.scss';

@@ -49,9 +49,19 @@ const searchCategory = async (category_id: Number) => {
   products.getProducts
   isLoading.value = false
 }
+
+const getAll = async () => {
+  isLoading.value = true
+  await Promise.all([products.fetchProducts()])
+  getProduct
+  isLoading.value = false
+}
 </script>
 <template>
-  <div v-if="!isLoading" class="bg-[#f3f4f6]">
+  <div
+    v-if="!isLoading"
+    class="bg-[#f3f4f6]"
+  >
     <base-banner :title="title" />
     <form class="w-[800px] z-10 mt-[60px] mx-auto mb-[40px]">
       <div class="flex">
@@ -80,16 +90,15 @@ const searchCategory = async (category_id: Number) => {
 
           <div
             id="dropdown"
-            class="w-full bg-[#82b440] absolute bottom-0 left-0 translate-y-[105%] rounded-md"
+            class="w-[400px] h-[200px] bg-[#f4907c] absolute bottom-0 left-0 translate-y-[105%] rounded-md overflow-y-scroll pb-[40px]"
             :class="dropdown ? '' : 'hidden'"
           >
-            <ul
-              class="list-none pl-0 text-2xl"
-              v-for="category in getCategories"
-              :key="category.id"
-            >
+            <ul class="list-none pl-0 text-2xl">
+              <li class="p-[14px] duration-500 rounded-md hover:bg-[#ffbe00] text-white" @click="getAll">Tất cả</li>
               <li
-                class="py-[8px] duration-500 rounded-md hover:bg-[#ffbe00] text-white"
+                v-for="category in getCategories"
+                :key="category.id"
+                class="p-[14px] duration-500 rounded-md hover:bg-[#ffbe00] text-white"
                 @click="searchCategory(category.id)"
               >
                 {{ category.name }}
@@ -120,9 +129,7 @@ const searchCategory = async (category_id: Number) => {
     <div v-if="getProduct.data.length">
       <div class="pb-[20px] pl-[100px] pr-[100px]">
         <div class="order bg-[#fff] rounded-2xl">
-          <base-collections
-            :products="getProduct.data"
-          />
+          <base-collections :products="getProduct.data" />
         </div>
 
         <pagination

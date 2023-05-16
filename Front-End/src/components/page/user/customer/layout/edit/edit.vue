@@ -1,36 +1,42 @@
 <script lang="ts" setup>
-import { ref, onMounted, reactive, computed } from 'vue'
+import { ref, onMounted, reactive, computed, watch } from 'vue'
 import { useUserInfo } from '@/stores/user'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 
-const fileInput = ref(null)
 const isLoading = ref(false)
 const userInfoData = reactive({
   fullname: '',
   nickname: '',
   phone: '',
   birthday: '',
-  avatar: null,
-  permanent_address: '',
   gender_id: 3,
+})
+
+const error = reactive({
+  nickname: '',
+  phone: '',
+  birthday: ''
 })
 
 const userInfo = useUserInfo()
 
+const showAlert = ref(false)
+const message = ref('')
+const alertType = ref('')
+
+const user_id = ref(route.params.id)
+
 onMounted(async () => {
   isLoading.value = true
-  const id = route.params.id
-  await Promise.all([userInfo.fetchUserInfo(id)])
+  await userInfo.fetchUserInfo(user_id.value)
   if (getUserInfo.value) {
     userInfoData.fullname = getUserInfo.value.fullname
     userInfoData.nickname = getUserInfo.value.nickname
     userInfoData.phone = getUserInfo.value.phone
     userInfoData.birthday = getUserInfo.value.birthday
     userInfoData.gender_id = getUserInfo.value.gender_id
-    // userInfoData.avatar = getUserInfo.value.avatar
     userInfoData.permanent_address = getUserInfo.value.permanent_address
-    userInfoData.user_id = getUserInfo.value.user_id
   }
   isLoading.value = false
 })
@@ -38,36 +44,63 @@ const getUserInfo = computed(() => {
   return userInfo.getUserInfo
 })
 
-const file = (e: any) => {
-  const file = e.target.files[0]
-  const reader = new FileReader()
-  reader.readAsDataURL(file)
-  reader.onload = () => {
-    const binaryString = atob(reader.result.split(',')[1])
-    const binaryData = new Uint8Array(binaryString.length)
-    for (let i = 0; i < binaryString.length; i++) {
-      binaryData[i] = binaryString.charCodeAt(i)
-    }
-    const blob = new Blob([binaryData], { type: 'image/png' })
-    userInfoData.avatar = blob
+const addUserInfo = async () => {
+  if (validate()) {
+    const formData = new FormData()
+    formData.append('fullname', userInfoData.fullname)
+    formData.append('nickname', userInfoData.nickname ? userInfoData.nickname : '')
+    formData.append('phone', userInfoData.phone)
+    formData.append('birthday', userInfoData.birthday)
+    formData.append('gender_id', userInfoData.gender_id ?userInfoData.gender_id:3)
+    await userInfo.fetchAdd(user_id.value, formData)
+    showAlert.value = true
+    message.value = 'cập nhật thành công'
+    alertType.value = 'success'
   }
 }
 
-const addUserInfo = async () => {
-  const formData = new FormData()
-  formData.append('fullname', userInfoData.fullname)
-  formData.append('nickname', userInfoData.nickname)
-  formData.append('phone', userInfoData.phone)
-  formData.append('birthday', userInfoData.birthday)
-  formData.append('avatar', userInfoData.avatar)
-  formData.append('permanent_address', userInfoData.permanent_address)
-  formData.append('gender_id', userInfoData.gender_id)
-  await userInfo.fetchAdd(getUserInfo.value.user_id, formData)
+const validate = () => {
+  let valid = true
+  if (!userInfoData.fullname) {
+    error.fullname = 'Họ và tên không được để trông'
+    valid = false
+  }
+
+  if (!userInfoData.phone) {
+    error.phone = 'Số điện thoại không được để trống'
+    valid = false
+  } else if (!phoneVn(userInfoData.phone)) {
+    error.phone = 'Số điện thoại không hợp lệ'
+    valid = false
+  }
+
+  if (!userInfoData.birthday) {
+    error.birthday = 'Ngày sinh không để trống'
+    valid = false
+  }
+
+  return valid
 }
+
+const phoneVn = (phone: number) => {
+  const vietnamesePhoneNumberRegex = /^(0|\+84)\d{9,10}$/
+  return vietnamesePhoneNumberRegex.test(phone.toString())
+}
+
+watch(error, (val) => {
+  if (val) {
+    setTimeout(() => {
+      ;(error.fullname = ''), (error.phone = '')
+    }, 3000)
+  }
+})
 </script>
 
 <template>
-  <div class="grid grid-cols-2 bg-[#fff]" v-if="!isLoading">
+  <div
+    class="grid grid-cols-2 bg-[#fff]"
+    v-if="!isLoading"
+  >
     <div class="left">
       <h4 class="ml-8 my-10">Thông tin cá nhân</h4>
       <form @submit.prevent>
@@ -83,7 +116,15 @@ const addUserInfo = async () => {
               type="search"
               class="form-control"
               v-model="userInfoData.fullname"
+              @input="error.fullname"
             />
+            <transition name="slide-fade">
+              <small
+                v-if="error.fullname"
+                class="inline-block text-[red] text-[13px]"
+                >{{ error.fullname }}</small
+              >
+            </transition>
           </div>
         </div>
 
@@ -115,7 +156,15 @@ const addUserInfo = async () => {
               type="date"
               class="form-control"
               v-model="userInfoData.birthday"
+              @input="error.birthday"
             />
+            <transition name="slide-fade">
+              <small
+                v-if="error.fullname"
+                class="inline-block text-[red] text-[13px]"
+                >{{ error.fullname }}</small
+              >
+            </transition>
           </div>
         </div>
 
@@ -131,50 +180,15 @@ const addUserInfo = async () => {
               type="search"
               class="form-control"
               v-model="userInfoData.phone"
+              @input="error.phone"
             />
-          </div>
-        </div>
-
-        <!-- address -->
-        <div class="form-group flex items-center">
-          <label
-            for=""
-            class="w-[var(--label-width)] ml-8 font-light text-[1.4rem]"
-            >địa chỉ</label
-          >
-          <div class="flex-1">
-            <input
-              type="search"
-              class="form-control"
-              v-model="userInfoData.permanent_address"
-            />
-          </div>
-        </div>
-
-        <!-- avatar -->
-        <div class="form-group flex items-center">
-          <label
-            for=""
-            class="w-[var(--label-width)] ml-8 font-light text-[1.4rem]"
-            >avatar</label
-          >
-          <div class="form-upload">
-            <span class="form-title">avatar</span>
-            <p class="form-paragraph">Tệp phải là hình ảnh</p>
-            <label
-              for="file-input"
-              class="drop-container"
-            >
-              <span class="drop-title">Thả tập tin ở đây</span>
-              hoặc
-              <input
-                type="file"
-                ref="fileInput"
-                accept="image/*"
-                id="file-input"
-                @change="file"
-              />
-            </label>
+            <transition name="slide-fade">
+              <small
+                v-if="error.phone"
+                class="inline-block text-[red] text-[13px]"
+                >{{ error.phone }}</small
+              >
+            </transition>
           </div>
         </div>
 
@@ -314,8 +328,21 @@ const addUserInfo = async () => {
     </div>
   </div>
 
-  <div v-else class="w-full bg-white h-[400px] flex items-center justify-center">
-    <base-load/>
+  <div
+    v-else
+    class="w-full bg-white h-[400px] flex items-center justify-center"
+  >
+    <base-load />
+  </div>
+
+  <div v-show="showAlert">
+    <div
+      class="alert text-[14px] px-[20px] w-auto fixed top-[100px] z-[9999] left-[50%] translate-x-[-50%] text-center"
+      :class="alertType ? 'alert-' + alertType : ''"
+      role="alert"
+    >
+      {{ message }}
+    </div>
   </div>
 </template>
 

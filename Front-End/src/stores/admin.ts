@@ -6,7 +6,7 @@ export const useAdminStore = defineStore('admin', {
   state: () => ({
     categorys: [],
     editCategorys: [],
-    status: [],
+    status: 0,
   }),
   getters: {
     getCategory(state) {
@@ -22,56 +22,52 @@ export const useAdminStore = defineStore('admin', {
   actions: {
     async fetchCategory() {
       try {
-        await axios
-          .get('http://127.0.0.1:8000/api/admin/categories/all', constants.routeApis.TOKENADMIN)
-          .then((res) => {
-            this.categorys = res.data
-          })
+        const res = await axios.get('http://127.0.0.1:8000/api/admin/categories/all', constants.routeApis.TOKENADMIN)
+        this.categorys = res.data
       } catch (error) {
-        return
+        this.status = error.response.status
       }
     },
     async fetchAdd(categorys: any) {
       try {
-        await axios
-          .post('http://127.0.0.1:8000/api/admin/categories/create', categorys, constants.routeApis.TOKEN_LOGOUT_ADMIN)
-          .then((res) => {
-            this.status = res.status
-          })
-          .catch((res) => {
-            this.status = res.response.status
-          })
+        const res = await axios.post(
+          'http://127.0.0.1:8000/api/admin/categories/create',
+          categorys,
+          constants.routeApis.TOKEN_LOGOUT_ADMIN
+        )
+        this.status = res.status
       } catch (error) {
-        return
+        this.status = error.response.status
       }
     },
     async fetchEdit(id: any) {
       try {
-        await axios
-          .get(`http://127.0.0.1:8000/api/admin/categories/edit/${id}`, constants.routeApis.TOKENADMIN)
-          .then((res) => {
-            this.editCategorys = res.data
-          })
+        const res = await axios.get(
+          `http://127.0.0.1:8000/api/admin/categories/edit/${id}`,
+          constants.routeApis.TOKENADMIN
+        )
+        this.editCategorys = res.data
       } catch (error) {
         return
       }
     },
     async fetchUpdate(id: any, data: any) {
       try {
-        await axios.post(
+        const res = await axios.post(
           `http://127.0.0.1:8000/api/admin/categories/update/${id}`,
           data,
           constants.routeApis.TOKENADMIN
         )
+        this.status = res.status 
       } catch (error) {
-        return
+          this.status = error.response.status   
       }
     },
     async fetchDelete(id: any) {
       try {
         await axios.delete(`http://127.0.0.1:8000/api/admin/categories/delete/${id}`, constants.routeApis.TOKENADMIN)
       } catch (error) {
-        return
+        this.status = error.response.status
       }
     },
   },
@@ -291,7 +287,10 @@ export const useProduct = defineStore('product', {
     },
     async fetchEdit(id: any) {
       try {
-        const data = await axios.get(`http://127.0.0.1:8000/api/admin/product/edit/${id}`, constants.routeApis.TOKENADMIN)
+        const data = await axios.get(
+          `http://127.0.0.1:8000/api/admin/product/edit/${id}`,
+          constants.routeApis.TOKENADMIN
+        )
         this.editproducts = data.data
       } catch (error) {
         return
@@ -322,45 +321,53 @@ export const useProduct = defineStore('product', {
 export const useOrder = defineStore('order', {
   state: () => ({
     orders: [],
-    orderDetail: []
-
+    orderDetail: [],
   }),
   getters: {
     getOrder(state) {
       return state.orders
     },
-    
+
     getOrderDetail(state) {
       return state.orderDetail
-    }
-  
+    },
   },
   actions: {
     async fetchOrder(status = 0) {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/all/' + status, constants.routeApis.TOKENADMIN)
+        const data = await axios.get(
+          'http://127.0.0.1:8000/api/admin/order/all/' + status,
+          constants.routeApis.TOKENADMIN
+        )
         this.orders = data.data
       } catch (error) {
         return
       }
     },
 
-    async fetchOrderDetail(id:number) {
+    async fetchOrderDetail(id: number) {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/admin/order/detail/' + id , constants.routeApis.TOKENADMIN)
+        const data = await axios.get(
+          'http://127.0.0.1:8000/api/admin/order/detail/' + id,
+          constants.routeApis.TOKENADMIN
+        )
         this.orderDetail = data.data
       } catch (error) {
         return
       }
     },
 
-    async updateStatus(order_id:number, status:any) {
+    async updateStatus(order_id: number, status: any) {
       try {
-        await axios.post('http://127.0.0.1:8000/api/admin/order/update-status/' + order_id, status, constants.routeApis.TOKENADMIN)
+        await axios.post(
+          'http://127.0.0.1:8000/api/admin/order/update-status/' + order_id,
+          status,
+          constants.routeApis.TOKENADMIN
+        )
       } catch (error) {
         return
       }
-    }
+    },
   },
 })
 
@@ -403,7 +410,7 @@ export const useUserInfo = defineStore('user-info', {
             this.status = res.status
           })
           .catch((res) => {
-            this.status = res.response.status            
+            this.status = res.response.status
           })
       } catch (error) {
         return
@@ -414,7 +421,7 @@ export const useUserInfo = defineStore('user-info', {
         await axios
           .get(`http://127.0.0.1:8000/api/admin/user-info/edit/${id}`, constants.routeApis.TOKENADMIN)
           .then((res) => {
-            this.editUserInfo = res.data            
+            this.editUserInfo = res.data
           })
       } catch (error) {
         return
@@ -430,15 +437,15 @@ export const useUser = defineStore('user', {
   getters: {
     getStatus(state) {
       return state.status
-    }
+    },
   },
   actions: {
     async fetchUser() {
       try {
-        const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKENADMIN);
-        console.log(data.status);
+        const data = await axios.get('http://127.0.0.1:8000/api/user-login', constants.routeApis.TOKENADMIN)
+        console.log(data.status)
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error.response.data)
       }
     },
   },

@@ -79,7 +79,7 @@ const validate = () => {
   if (!userInfo.phone.trim()) {
     errorUserInfo.errorUserInfoPhone = 'Số điện thoại không được để trống'
     valid = false
-  } else if (!validator.isMobilePhone(userInfo.phone, 'vi-VN')) {
+  } else if (!phoneVn(userInfo.phone)) {
     errorUserInfo.errorUserInfoPhone = 'Số điện thoại không hợp lệ'
     valid = false
   }
@@ -119,6 +119,11 @@ const addPosition = () => {
   }
 }
 
+const phoneVn = (phone:number) => {
+  const vietnamesePhoneNumberRegex = /^(0|\+84)\d{9,10}$/
+  return vietnamesePhoneNumberRegex.test(phone.toString());
+}
+
 const deletePosition = (id: any) => {
   position.fetchDelete(id)
   position.fetchPosition()
@@ -146,7 +151,7 @@ const removeImage = () => {
 const addUserinfo = async () => {
   if (validate()) {
     isloading.value = true
-    await userInfos.fetchAdd(userInfo.user_id, userInfo)
+    await userInfos.fetchAdd(userInfo.user_id, userInfo)  
     try {
       switch (getStatus.value) {
         case 200:

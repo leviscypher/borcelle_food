@@ -6,13 +6,18 @@ import { useRoute } from 'vue-router'
 const addressData = reactive({
   fullname: '',
   company: '',
-  phone: 0,
+  phone: '',
   delivery_address: '',
   address_type: 0,
   isActive: 0,
   city_id: 2,
   district_id: 0,
   ward_id: 0,
+})
+
+const errorAddress = reactive({
+  fullname: '',
+  phone: '',
 })
 
 const showAlert = ref(false)
@@ -55,6 +60,28 @@ const checkCity = async (event: any) => {
   }
 }
 
+const validate = () => {
+  let valid = true
+  if (!addressData.fullname) {
+    errorAddress.fullname = 'Họ và tên không được để trông'
+    valid = false
+  }
+
+  if (!addressData.phone) {
+    errorAddress.phone = 'Số điện thoại không được để trống'
+    valid = false
+  } else if (!phoneVn(addressData.phone)) {
+    errorAddress.phone = 'Số điện thoại không hợp lệ'
+    valid = false
+  }
+
+  return valid
+}
+
+const phoneVn = (phone: number) => {
+  const vietnamesePhoneNumberRegex = /^(0|\+84)\d{9,10}$/
+  return vietnamesePhoneNumberRegex.test(phone.toString())
+}
 
 watch(showAlert, (val) => {
   if (val) {
@@ -64,11 +91,21 @@ watch(showAlert, (val) => {
   }
 })
 
+watch(errorAddress, (val) => {
+  if (val) {
+    setTimeout(() => {
+      ;(errorAddress.fullname = ''), (errorAddress.phone = '')
+    }, 3000)
+  }
+})
+
 const addData = async () => {
-  await address.fetchCreate(user_id.value, addressData)
-  showAlert.value = true
-  message.value = 'Thêm thành công'
-  alertType.value = 'success'
+  if (validate()) {
+    await address.fetchCreate(user_id.value, addressData)
+    showAlert.value = true
+    message.value = 'Thêm thành công'
+    alertType.value = 'success'
+  }
 }
 </script>
 
@@ -91,7 +128,15 @@ const addData = async () => {
                 placeholder="nhập tên"
                 maxlength="255"
                 v-model="addressData.fullname"
+                @input="errorAddress.fullname"
               />
+              <transition name="slide-fade">
+                <small
+                  v-if="errorAddress.fullname"
+                  class="inline-block text-[red] text-[13px]"
+                  >{{ errorAddress.fullname }}</small
+                >
+              </transition>
             </div>
           </div>
 
@@ -119,12 +164,20 @@ const addData = async () => {
             >
             <div class="flex-1">
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 placeholder="nhập số điện thoại"
                 maxlength="10"
                 v-model="addressData.phone"
+                @input="errorAddress.phone"
               />
+              <transition name="slide-fade">
+                <small
+                  v-if="errorAddress.phone"
+                  class="inline-block text-[red] text-[13px]"
+                  >{{ errorAddress.phone }}</small
+                >
+              </transition>
             </div>
           </div>
 

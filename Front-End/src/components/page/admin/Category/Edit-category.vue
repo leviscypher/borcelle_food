@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, computed, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAdminStore } from '@/stores/admin'
 
@@ -9,87 +9,73 @@ const nameCategory = reactive({
   name: '',
 })
 const isloading = ref(false)
-const isSuccess = ref('')
+
+const showAlert = ref(false)
+const message = ref('')
+const alertType = ref('')
+
+const categoryId = ref(0)
+
 const error = reactive({
   name: '',
 })
 
-const getEditCategorys = computed(() => {
-  return useAdmin.getEditCategorys
-})
-
-const getStatus = computed(() => {
-  return useAdmin.getStatus
-})
 
 onMounted(async () => {
-  const id = route.params.id
-  if (id) {
-    await useAdmin.fetchEdit(id)
-    if (getEditCategorys.value) {
-      nameCategory.name = getEditCategorys.value.name
-    }
+  categoryId.value = route.params.id
+  if (categoryId.value) {
+    await useAdmin.fetchEdit(categoryId.value)
+    nameCategory.name = useAdmin.getEditCategorys.name
   }
 })
 
-const updateCategory = async (id: any) => {
+const updateCategory = async () => {
   if (nameCategory.name === '') {
     error.name = 'Chưa nhập dữ liệu'
   } else {
-    try {
-      isloading.value = true
-      await useAdmin.fetchUpdate(id, nameCategory)
-      switch (getStatus.value) {
-        case 200:
-          isSuccess.value = '200'
-          break
-        case 422:
-          isSuccess.value = '422'
-          break
-      }
-    } catch (error) {
-      return
-    } finally {
-      isloading.value = false
+    isloading.value = true
+    await useAdmin.fetchUpdate(categoryId.value, nameCategory)
+    const status = useAdmin.getStatus
+    
+    nameCategory.name = ''
+    isloading.value = false
+
+    switch (status) {
+      case 200:
+        await useAdmin.fetchEdit(categoryId.value)
+        nameCategory.name = useAdmin.getEditCategorys.name
+        showAlert.value = true
+        message.value = 'cập nhật thành công'
+        alertType.value = 'success'
+        break
+      default:
+        showAlert.value = true
+        message.value = 'đã có lỗi xảy ra vui lòng thử lại sau'
+        alertType.value = 'danger'
     }
   }
 }
+
+watch(showAlert, (val) => {
+  if (val) {
+    setTimeout(() => {
+      showAlert.value = false
+    }, 5000)
+  }
+})
 </script>
 <template>
-  <main class="app-content mt-0 pt-0">
+  <main
+    class="app-content mt-0 pt-0"
+    v-if="!isloading"
+  >
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
           <h3 class="tile-title">Sửa danh mục</h3>
+
           <div class="tile-body">
             <form class="row">
-              <div v-if="isloading">
-                <base-load></base-load>
-              </div>
-              <div v-else>
-                <div
-                  class="form-group col-md-4"
-                  v-if="isSuccess === '422'"
-                >
-                  <div
-                    class="alert-danger p-[10px] rounded-[0.357rem] text-center text-[14px]"
-                    role="alert"
-                  >
-                    Danh mục đã tồn tại
-                  </div>
-                </div>
-                <div
-                  class="form-group col-md-4"
-                  v-else-if="isSuccess === '201'"
-                >
-                  <div
-                    class="alert alert-success text-[14px]"
-                    role="alert"
-                  >
-                    Sửa danh mục thành công
-                  </div>
-                </div>
-              </div>
               <div class="form-group col-md-4">
                 <label class="control-label">Tên danh mục mới</label>
                 <input
@@ -110,16 +96,16 @@ const updateCategory = async (id: any) => {
             </form>
           </div>
           <div class="flex gap-[15px]">
-            <base-button
+            <button
               class="btn btn-save"
               type="button"
-              @click="updateCategory(getEditCategorys.id)"
+              @click="updateCategory"
             >
               Lưu lại
-            </base-button>
+            </button>
             <router-link
               class="btn btn-cancel"
-              to="/admin/category"
+              to="/admin/category/"
               >Hủy bỏ</router-link
             >
           </div>
@@ -127,6 +113,26 @@ const updateCategory = async (id: any) => {
       </div>
     </div>
   </main>
+
+  <div
+    class="w-100% flex justify-center py-[100px] bg-white"
+    v-else
+  >
+    <base-load></base-load>
+  </div>
+
+  <div
+    v-show="showAlert"
+    class="w-full"
+  >
+    <div
+      class="alert text-[14px] px-[20px] w-auto fixed top-[100px] z-[9999] left-[60%] translate-x-[-50%] text-center"
+      :class="alertType ? 'bg-' + alertType : ''"
+      role="alert"
+    >
+      {{ message }}
+    </div>
+  </div>
 </template>
 <style lang="scss" scoped>
 @import '@/assets/styles/admin/admin.scss';

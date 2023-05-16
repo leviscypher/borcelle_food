@@ -17,7 +17,7 @@ const changeLoginForm = () => {
 
 onMounted(async () => {
   if (localStorage.getItem('token')) {
-    await user.fetchUser();
+    await user.fetchUser()
     userData.value = user.getUser.username
     userId.value = user.getUser.id
   }
@@ -28,7 +28,7 @@ const logout = async () => {
     await axios.post('http://127.0.0.1:8000/api/logout', {}, constants.routeApis.TOKEN).then((res) => {
       localStorage.removeItem('token')
       userData.value = ''
-      location.href='/'
+      location.href = '/'
     })
   } catch (error) {
     alert(error)
@@ -104,7 +104,7 @@ watch(getCartNumber, (newValue) => {
         <router-link
           to="/cart"
           class="header-cart-link"
-        > 
+        >
           <font-awesome-icon icon="fa-solid fa-cart-shopping" />
           <span class="header-cart-number bg-[var(--pale-yellow)]">{{ getCartNumber }}</span>
         </router-link>

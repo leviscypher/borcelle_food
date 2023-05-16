@@ -24,7 +24,7 @@ onMounted(async () => {
     recipients_name.value = data.value[0].recipients_name
     phone.value = data.value[0].phone
     address.value = data.value[0].address
-    delivery_fee.value = data.value[0].delivery_fee
+    delivery_fee.value = parseInt(data.value[0].delivery_fee)
     for (let i in data.value) {
       totalPrice.value += parseInt(data.value[i].total)
     }
