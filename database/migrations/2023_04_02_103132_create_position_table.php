@@ -21,8 +21,10 @@ return new class extends Migration
         });
 
         DB::table('position')->insert([
-            ['name' => 'admin'],
-            ['name' => 'customer'],
+            ['name' => 'quản trị viên'],
+            ['name' => 'nhân viên bán hàng'],
+            ['name' => 'thu ngân'],
+            ['name' => 'kế toán'],
         ]);
     }
 
