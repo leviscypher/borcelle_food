@@ -15,6 +15,11 @@ class Product extends Model
         'name', 'price', 'image_path', 'description', 'categories_id', 'quantity', 'product_status_id'
     ];
 
+    public static function createProduct($data)
+    {
+        return self::create($data);
+    }
+
     public function setImagesAttribute($value)
     {
         $this->attributes['images'] = json_encode($value);

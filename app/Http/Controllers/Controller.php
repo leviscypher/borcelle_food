@@ -14,7 +14,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public $itemsPerPage = 10;
+    public $itemsPerPage = 12;
     public $addSuccess = 'thêm thành công.';
     public $updateSuccess = "cập nhật thành công.";
     public $deleteSuccess = "xóa thành công.";

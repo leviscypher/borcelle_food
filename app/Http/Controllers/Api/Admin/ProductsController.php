@@ -38,7 +38,7 @@ class ProductsController extends Controller
             $data = $request->all();
             $image_path = $this->uploadImageDrive($request->image_path);
             $data['image_path'] = json_encode($image_path);
-            $this->product->create($data);
+            $this->product->createProduct($data);
             return response()->json($this->message($this->addSuccess), Response::HTTP_CREATED);
        } catch (\Throwable $th) {
             return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
