@@ -62,8 +62,8 @@ const onFileChange = (e: any) => {
 }
 
 const removeImage = (index: any) => {
-  products.image_path.splice(index, 1)
-  selectedImages.value.splice(index, 1)
+  products.image_path.splice(index, 3)
+  selectedImages.value.splice(index, 3)
 }
 
 const validate = () => {
@@ -133,6 +133,7 @@ const addProducts = async () => {
     products.name = ''
     products.price = ''
     products.image_path.splice(0, products.image_path.length)
+    removeImage(0)
     products.description = ''
     products.product_status_id = ''
     products.categories_id = ''
