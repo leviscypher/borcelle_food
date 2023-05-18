@@ -42,7 +42,7 @@ Route::post('register', [AuthController::class, 'register']);
 // 
 Route::post('check-email', [AuthController::class, 'checkEmail']);
 Route::post('check-token', [AuthController::class, 'checkToken']);
-Route::post('change-password', [AuthController::class, 'changePassword']);
+Route::post('change-password/{user_id}', [AuthController::class, 'changePassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-login', [AuthController::class, 'userLogin']);
@@ -139,7 +139,7 @@ Route::middleware('auth:sanctum')->prefix('customer')->group(function () {
     Route::get('get/ward/{district_id}', [MapController::class, 'getWards']);
     
 
-    Route::prefix('order')->middleware('isActive')->group(function() {
+    Route::prefix('order')->group(function() {
         Route::get('all/{user_id}/{status_id}', [CustomerOrderController::class, 'index']);
         Route::get('detail/{order_id}', [CustomerOrderController::class, 'orderDetail']);
         Route::post('create/{user_id}', [CustomerOrderController::class, 'createOrder']);

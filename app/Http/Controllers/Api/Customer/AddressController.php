@@ -50,8 +50,8 @@ class AddressController extends Controller
     {
         $user = User::find($user_id);
         $data = [
-            'name' => $user->user_info[0]->fullname,
-            'phone' => $user->user_info[0]->phone,
+            'name' => $user->user_info->fullname,
+            'phone' => $user->user_info->phone,
         ];
         return response()->json($data, Response::HTTP_OK);
     }

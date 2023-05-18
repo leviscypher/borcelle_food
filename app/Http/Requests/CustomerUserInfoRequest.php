@@ -28,7 +28,6 @@ class CustomerUserInfoRequest extends FormRequest
             'phone' => ['required', 'unique:user_info,phone,' . $this->user_id . ',user_id', 'numeric', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/'],
             'email' => 'email|unique:user_info,email,' . $this->user_id . ',user_id',
             'birthday' => ['required', 'date'],
-            'avatar' => 'mimes:png,jpg,jpeg,gif,svg|max:2048',
         ];
     }
 
@@ -43,8 +42,6 @@ class CustomerUserInfoRequest extends FormRequest
             'email.unique' => 'email này đã được sử dụng',
             'birthday.required' => 'không được để trống',
             'birthday.date' => 'nhập ngày tháng năm sinh',
-            'avatar.mimes' => 'định dạng ảnh gồm (png, jpg, jpeg, gif, svg)',
-            'avatar.max' => 'ảnh quá lớn (không vượt quá 2048KB)',
             'email.unique' => 'email này đã tồn tại',
             'email.email' => 'email không đúng',
         ];

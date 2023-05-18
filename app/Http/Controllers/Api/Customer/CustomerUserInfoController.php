@@ -7,8 +7,7 @@ use App\Models\UserInfo;
 use App\Http\Requests\CustomerUserInfoRequest;
 use Illuminate\Http\Response;
 use App\Http\Resources\UserInfoResource;
-
-
+use App\Models\User;
 
 class CustomerUserInfoController extends Controller
 {
@@ -24,7 +23,8 @@ class CustomerUserInfoController extends Controller
         try {
             $userInfo = $this->userInfo->where('user_id', $user_id)->first();
             if (!$userInfo) {
-                return response()->json($this->message($this->doesNotExist), Response::HTTP_NOT_FOUND);
+                $user = User::where('id', $user_id)->first();
+                return response()->json(['email'=> $user->email], Response::HTTP_OK);
             }
             $userInfoResouce = new UserInfoResource($userInfo);
             return response()->json($userInfoResouce, Response::HTTP_OK);
@@ -35,7 +35,7 @@ class CustomerUserInfoController extends Controller
 
     public function update(CustomerUserInfoRequest $request, $user_id)
     {
-        try {
+        // try {
             $userInfoUpdate = $this->userInfo->find($user_id);
             $userInfo = UserInfo::updateOrCreate(
                 ['user_id' => $user_id], 
@@ -50,19 +50,6 @@ class CustomerUserInfoController extends Controller
                 ],
             );
 
-            if ($request->avatar && $request->avatar != null) {
-                $avatar = $this->uploadImageDrive($request->avatar);
-                $oldAvatar = $userInfo->getOriginal('avatar');
-                $userInfo->avatar = json_encode($avatar);
-                $userInfo->save();
-                $this->deleteImageDrive(json_decode($oldAvatar));
-
-            } 
-            
-            if($request->avatar == null) {
-                $userInfo->avatar = $userInfoUpdate->avatar;
-                $userInfo->save();
-            }
 
             if ($userInfo->wasRecentlyCreated) {
                 $user = $userInfo->user;
@@ -72,8 +59,8 @@ class CustomerUserInfoController extends Controller
             } else {
                 return response()->json($this->message($this->updateSuccess), Response::HTTP_OK);
             }
-        } catch (\Throwable $th) {
-            return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json($this->message($this->anUnspecifiedError), Response::HTTP_INTERNAL_SERVER_ERROR);
+        // }
     }
 }

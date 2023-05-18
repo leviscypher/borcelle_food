@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminUserInfoRequest;
-use App\Http\Resources\UserInfoResource;
+use App\Http\Resources\UserInfoAdminResource as UserInfoResource;
+use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Http\Response;
 
@@ -22,7 +23,10 @@ class UserInfoController extends Controller
 
     public function index()
     {
-        $userInfo = $this->userInfo->paginate($this->itemsPerPage);
+        $userInfo = User::where('role_id', 1)
+                        ->with('user_info')
+                        ->paginate($this->itemsPerPage);
+
         $userInfoResouce = userInfoResource::collection($userInfo);
         $pagination = $this->getPagination($userInfoResouce, $userInfo);
         return response()->json($pagination, Response::HTTP_OK);

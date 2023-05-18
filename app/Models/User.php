@@ -44,11 +44,11 @@ class User extends Authenticatable
     /**
      * Get all of the comments for the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function user_info(): HasMany
+    public function user_info()
     {
-        return $this->hasMany('App\Models\UserInfo', 'user_id', 'id');
+        return $this->HasOne('App\Models\UserInfo', 'user_id', 'id');
     }
 
     /**

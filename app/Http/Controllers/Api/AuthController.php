@@ -49,7 +49,7 @@ class AuthController extends Controller
                 $user = User::where('username', $request->username)->first();
                 $token = $user->createToken('token')->plainTextToken;
                 $cookie = cookie('token', $token, 604800);
-                return response()->json(['token' => $token, 'message' => 'đăng nhập thành công!'], Response::HTTP_OK)->withCookie($cookie);
+                return response()->json(['token' => $token,'role_id' => $user->role_id ,'message' => 'đăng nhập thành công!'], Response::HTTP_OK)->withCookie($cookie);
             }
             return response()->json(['errors' => 'sai tên đăng nhập hoặc mật khẩu!'], Response::HTTP_UNAUTHORIZED);
         } catch (\Throwable $th) {
@@ -102,18 +102,17 @@ class AuthController extends Controller
 
     public function checkToken(CheckTokenRequest $request)
     {
-        $token = PasswordReset::Where('token', $request->token)->first();
+        $token = PasswordReset::where('token', $request->token)->first();
         if ($token && $token->expires_at > Carbon::now()) {
             session()->put('user_id_password_reset', $token->user_id);
-            return response()->json(true, Response::HTTP_OK);
+            return response()->json(session()->get('user_id_password_reset'), Response::HTTP_OK);
         } else {
             return response()->json(['message' => 'mã xác minh đã hết thời hạn sử dụng.'], Response::HTTP_UNAUTHORIZED);
         }
     }
 
-    public function changePassword(changePasswordRequest $request)
+    public function changePassword(changePasswordRequest $request, $user_id)
     {
-        $user_id = session()->get('user_id_password_reset');
         $user = User::where('id', $user_id)->first();
 
         if ($user) {
