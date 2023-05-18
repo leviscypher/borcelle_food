@@ -26,7 +26,7 @@ const orderDetail = async (id: number) => {
   recipients_name.value = detail.value[0].recipients_name
   phone.value = detail.value[0].phone
   address.value = detail.value[0].address
-  delivery_fee.value = detail.value[0].delivery_fee
+  delivery_fee.value = parseInt(detail.value[0].delivery_fee)
   for (let i in detail.value) {
     totalPrice.value += parseInt(detail.value[i].total)
   }
