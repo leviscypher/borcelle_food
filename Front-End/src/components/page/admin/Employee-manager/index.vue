@@ -13,7 +13,6 @@ onMounted(async () => {
 const getUserInfo = computed(() => {
   return userInfos.getUserInfo
 })
-
 </script>
 <template>
   <base-title>Quản lý nhân viên</base-title>
@@ -30,7 +29,7 @@ const getUserInfo = computed(() => {
                   title="Thêm"
                 >
                   <i class="bx bx-plus"></i>
-                  Tạo mới nhân viên</router-link
+                  Thêm mới</router-link
                 >
               </div>
               <div class="col-sm-2">

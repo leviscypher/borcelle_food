@@ -60,7 +60,7 @@ const logout = async () => {
       <li>
         <router-link to="/admin/employee-management">
           <i class="app-menu__icon bx bx-id-card"></i>
-          <span class="link_name"> Quản lý nhân viên</span>
+          <span class="link_name">Thông tin nhân viên</span>
         </router-link>
       </li>
       <li>
