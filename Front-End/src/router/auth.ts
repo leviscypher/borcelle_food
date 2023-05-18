@@ -13,10 +13,9 @@ export const auth = [
         meta: { layout: 'layoutuser' },
     },
     {
-        path: '/auth/create-new-password',
+        path: '/auth/create-new-password/:id',
         name: 'create-new-password',
         component: () => import("@/components/common/auth/customer/form/create-new-password.vue"),
         meta: { layout: 'layoutuser' },
     },
-
 ]

@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const useAuth = useAuthStore()
 const dataAuth = reactive({
@@ -11,6 +15,7 @@ const dataAuth = reactive({
 const error = reactive({
   errorUsername: '',
   errorPassword: '',
+  checkUser: '',
 })
 
 const emit = defineEmits(['changeFormRegister'])
@@ -24,30 +29,56 @@ const showPassword = ref(false)
 const minLength = 8
 
 const passwordLength = computed(() => dataAuth.password.length >= minLength)
-const getError = computed(() => useAuth.getError)
+const statusLogin = ref(0)
+const routeUrl = ref('')
 
 const login = async (e: any) => {
   e.preventDefault()
-  if (dataAuth.username == '' && dataAuth.password == '') {
-    error.errorUsername = 'Chưa nhập tên tài khoản'
-    error.errorPassword = 'Chưa nhập mật khẩu'
-  } else if (!passwordLength.value) {
-    error.errorPassword = `Mật khẩu tối thiểu ${minLength} kí tự`
-  } else if (getError.value === 401) {
-    error.errorUsername = 'Tài khoản hoặc mật khẩu chưa chính xác'
-    error.errorPassword = 'Tài khoản hoặc mật khẩu chưa chính xác'
-  } else {
-    try {
-     await useAuth.fetchLogin(dataAuth)
-      window.location.href= "/"
-    } catch (error) {
-      return
+  if (validate()) {
+    await useAuth.fetchLogin(dataAuth)
+    statusLogin.value = useAuth.getStatus
+    if (statusLogin.value === 200) {
+      window.location.href = route.path
+    }
+
+    if (statusLogin.value === 401) {
+      error.checkUser = 'Tài khoản hoặc mật khẩu chưa chính xác'
     }
   }
 }
 
+const validate = () => {
+  let valid = true
+  if (dataAuth.username === '') {
+    error.errorUsername = 'Chưa nhập tên tài khoản'
+    valid = false
+  }
+  if (dataAuth.password === '') {
+    error.errorPassword = 'Chưa nhập mật khẩu'
+    valid = false
+  }
+
+  if (!passwordLength.value) {
+    error.errorPassword = `Mật khẩu tối thiểu ${minLength} kí tự`
+    valid = false
+  }
+  return valid
+}
+
 const togglePassword = () => {
   showPassword.value = !showPassword.value
+}
+
+watch(error, (val) => {
+  if (val) {
+    setTimeout(() => {
+      ;(error.checkUser = ''), (error.username = ''), (error.password = '')
+    }, 3000)
+  }
+})
+
+const forgotUrrl = () => {
+  window.location.href='/auth/forgot-password'
 }
 </script>
 
@@ -57,12 +88,19 @@ const togglePassword = () => {
     class="flex justify-center flex-col w-3/4 mx-auto"
     @submit.prevent
   >
+    <transition name="slide-fade">
+      <small
+        v-if="error.checkUser"
+        class="inline-block text-[red] text-[13px]"
+        >{{ error.checkUser }}</small
+      >
+    </transition>
     <div class="form-group">
       <input
         type="text"
         placeholder="Tên tài khoản"
         v-model="dataAuth.username"
-        @input="error.errorUsername = ''"
+        @input="error.errorUsername"
         class="form-input w-full text-[1.6rem] py-3 outline-none relative pl-2 pr-2 border-none bg-transparent"
       />
       <transition name="slide-fade">
@@ -79,7 +117,7 @@ const togglePassword = () => {
         v-bind:type="showPassword ? 'text' : 'password'"
         placeholder="Mật khẩu"
         v-model="dataAuth.password"
-        @input="error.errorPassword = ''"
+        @input="error.errorPassword"
         class="form-input w-full text-[1.6rem] py-3 outline-none border-none relative pl-2 pr-2"
       />
       <span
@@ -105,12 +143,7 @@ const togglePassword = () => {
       </button>
 
       <div class="form-group mt-16">
-        <router-link
-          to="/auth/forgot-password"
-          @click="handleCloseForm"
-          class="form-fogot text-[1.4rem]"
-          >Quên mật khẩu?</router-link
-        >
+        <a class="form-fogot text-[1.4rem]" @click="forgotUrrl">Quên mật khẩu?</a>
         <p class="mt-2">
           Chưa có tài khoản?
           <a

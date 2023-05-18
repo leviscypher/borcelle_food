@@ -40,7 +40,7 @@ const logout = async () => {
     </div>
     <ul class="nav-links">
       <li>
-        <router-link to="/admin/home">
+        <router-link to="/admin">
           <i class="bx bx-tachometer"></i>
           <span class="link_name">Bản điều khiển</span>
         </router-link>

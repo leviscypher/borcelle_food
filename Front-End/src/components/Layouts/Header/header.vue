@@ -15,11 +15,17 @@ const changeLoginForm = () => {
   isOpen.value = !isOpen.value
 }
 
+const userLogin = ref({})
+const isLoader = ref(false)
+
 onMounted(async () => {
   if (localStorage.getItem('token')) {
+    isLoader.value = true
     await user.fetchUser()
-    userData.value = user.getUser.username
-    userId.value = user.getUser.id
+    userLogin.value = user.getUser
+    userData.value = userLogin.value.username
+    userId.value = userLogin.value.id
+    isLoader.value = false
   }
 })
 
@@ -109,7 +115,8 @@ watch(getCartNumber, (newValue) => {
           <span class="header-cart-number bg-[var(--pale-yellow)]">{{ getCartNumber }}</span>
         </router-link>
       </div>
-      <div class="header-user">
+
+      <div class="header-user" v-if="!isLoader">
         <div v-if="userData">
           <nav class="header-nav p-0">
             <ul class="header-nav__list list-none p-0">
@@ -149,9 +156,14 @@ watch(getCartNumber, (newValue) => {
           >Đăng nhập</base-button
         >
       </div>
+
+      <div v-else>
+        <base-load/>
+      </div>
+
     </div>
   </div>
-  <div v-if="isOpen">
+  <div v-show="isOpen">
     <customer-form @close="changeLoginForm" />
   </div>
 </template>

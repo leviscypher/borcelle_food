@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const isSuccess = ref('')
@@ -22,6 +22,22 @@ const error = reactive({
   errorEmail: '',
   errorPassword: '',
   errorPassword_confirmation: '',
+})
+
+watch(error, (val) => {
+  if (val) {
+    setTimeout(() => {
+      ;(error.errorUsername = ''), (error.errorEmail = ''), (error.password = ''), (error.errorPassword_confirmation = '')
+    }, 3000)
+  }
+})
+
+watch(isSuccess, (val) => {
+  if (val) {
+    setTimeout(() => {
+      isSuccess.value = ''
+    }, 3000)
+  }
 })
 
 const getStatus = computed(() => {

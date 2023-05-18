@@ -7,7 +7,7 @@ export const admin = [
     meta: { layout: 'layoutadmin' },
   },
   {
-    path: '/admin/home',
+    path: '/admin',
     name: 'home-admin',
     component: () => import('@/page/admin/Home/index.vue'),
     meta: { layout: 'layoutadmin', requiresAuth: true },
@@ -15,7 +15,7 @@ export const admin = [
       {
         path: '',
         name: 'dashboard',
-        component: () => import('@/page/admin/Dashboard/index.vue'),
+        component: () => import('@/page/admin/dashboard/index.vue'),
         meta: { layout: 'layoutadmin', requiresAuth: true },
       },
       {

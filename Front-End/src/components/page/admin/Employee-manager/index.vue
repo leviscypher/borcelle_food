@@ -135,7 +135,7 @@ const getUserInfo = computed(() => {
                     />
                   </td>
                   <td>{{ userinfo.permanent_address }}</td>
-                  <td>{{ userinfo.birthday }}</td>
+                  <td class="w-[10%]">{{ userinfo.birthday }}</td>
                   <td>{{ userinfo.gender }}</td>
                   <td>{{ userinfo.phone }}</td>
                   <td>{{ userinfo.position_name }}</td>

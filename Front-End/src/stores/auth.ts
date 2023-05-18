@@ -1,69 +1,93 @@
-
 import { defineStore } from 'pinia'
-import axios from "axios"
-export const useAuthStore = defineStore("auth", {
-    state: () => ({
-        status: [],
-        error: [],
-        token: [],
-        tokenAdmin: [],
-    }),
-    getters: {
-        getError(state) {
-            return state.error
-        },
-        getStatus(state) {
-            return state.status
-        },
+import axios from 'axios'
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    status: 0,
+    error: [],
+    token: [],
+    tokenAdmin: [],
+    user_id: null
+  }),
+  getters: {
+    getError(state) {
+      return state.error
     },
-    actions: {
-        async fetchLogin(dataLogin: any) {
-            try {
-                await axios.post('http://127.0.0.1:8000/api/login', dataLogin)
-                    .then((res) => {
-                        this.token = res.data.token
-                        localStorage.setItem('token', this.token)
-                    })
-                    .catch((error) => {
-                        this.error = error.response.status
-                    })
-            }
-            catch (error) {
-                return;
+    getStatus(state) {
+      return state.status
+    },
 
-            }
-        },
-        async fetchLoginAdmin(dataLogin: any) {
-            try {
-                await axios.post('http://127.0.0.1:8000/api/login', dataLogin)
-                    .then((res) => {
-                        this.tokenAdmin = res.data.token
-                        localStorage.setItem('token-admin', this.tokenAdmin)
-                        
-                    })
-                    .catch((error) => {
-                        // this.error = error.response.status
-                    })
-            }
-            catch (error) {
-                return;
-
-            }
-        },
-        async fetchRegister(dataRegister: any) {
-            try {
-                await axios.post('http://127.0.0.1:8000/api/register', dataRegister)
-                    .then((res) => {
-                        this.status = res.status
-                    })
-                    .catch((error) => {
-                        this.status = error.response.status
-                    })
-            }
-            catch (error) {
-                return;
-
-            }
+    getId(state) {
+      return state.user_id
+    }
+  },
+  actions: {
+    async fetchLogin(dataLogin: any) {
+      try {
+        await axios
+          .post('http://127.0.0.1:8000/api/login', dataLogin)
+          .then((res) => {
+            this.token = res.data.token
+            localStorage.setItem('token', this.token)
+            this.status = res.status
+          })
+          .catch((error) => {
+            this.status = error.response.status
+          })
+      } catch (error) {
+        return
+      }
+    },
+    async fetchLoginAdmin(dataLogin: any) {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/login', dataLogin)
+        if(res.data.role_id === 1) {
+            localStorage.setItem('token-admin', res.data.token)
         }
+      } catch (error) {
+        return
+      }
     },
+    async fetchRegister(dataRegister: any) {
+      try {
+        await axios
+          .post('http://127.0.0.1:8000/api/register', dataRegister)
+          .then((res) => {
+            this.status = res.status
+          })
+          .catch((error) => {
+            this.status = error.response.status
+          })
+      } catch (error) {
+        return
+      }
+    },
+
+    async sendEmail(email:any) {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/check-email', email)
+        this.status = res.status
+      } catch (error) {
+        this.status = error.response.status
+      }
+    },
+
+    async checkToken(token:number) {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/check-token', token)
+        this.user_id = res.data
+        this.status = res.status
+      } catch (error) {
+        this.status = error.response.status
+      }
+    },
+
+    async changePassword(user_id:number,password:any) {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/change-password/' + user_id, password)
+        this.status = res.status
+      } catch (error) {
+        this.status = error.response.status
+      }
+    }
+  }
 })
