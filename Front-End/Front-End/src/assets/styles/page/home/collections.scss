@@ -1,0 +1,141 @@
+.collections-list {
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0px 0px 20px 0px #dddddd82;
+  box-shadow: 0px 0px 20px 0px #dddddd82;
+  border-radius: 10px 10px 0px 0px;
+  overflow: hidden;
+  &:hover {
+    .collections-list-start {
+      bottom: 0;
+      opacity: 1;
+      visibility: visible;
+    }
+    .collection-list--add-cart {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  background-color: #fff;
+}
+.collections-list-img {
+  position: relative;
+}
+.collections-list-price {
+  color: var(--p-m-color);
+}
+.collections-list-number {
+  input {
+    height: 25px;
+    width: 50px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    border: 0;
+    color: #ffbf00;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+}
+.collections-list-start {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 128px;
+  text-align: center;
+  padding: 18px 15px 8px 15px;
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease-in-out;
+  li {
+    color: var(--pale-yellow);
+    font-size: 1.4rem;
+    margin-right: 2px;
+    display: block;
+  }
+}
+.collection-list--add-cart {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease-in-out;
+  cursor: pointer;
+  a {
+    text-decoration: none;
+    color: var(--pale-yellow);
+    font-size: 1.6rem;
+    transition: all 0.4s ease-in-out;
+    i {
+      margin-right: 10px;
+      color: var(--pale-yellow);
+    }
+  }
+  &:hover {
+    background-color: var(--dark);
+    a {
+      color: var(--white);
+    }
+  }
+}
+.page-link {
+  font-size: 18px !important;
+}
+
+.collections {
+  &-icon {
+    padding-top: 20px;
+    filter: grayscale(1);
+  }
+
+  &-btn {
+    &:hover .order-icon {
+      filter: none;
+    }
+
+    &:hover .order-text {
+      color: var(--bright-orange) !important;
+    }
+  }
+
+  &-text {
+    font-size: 18px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+  // &-search {
+  //   width: 324px;
+  //   height: 43px;
+  //   border: none;
+  //   outline: none;
+  //   border-radius: 10px 0px 0px 10px !important;
+  //   font-size: 15px !important;
+  //   padding-left: 15px !important;
+  // }
+  // &-btn-seacrch {
+  //   border-radius: 0px 10px 10px 0px;
+  // }
+}
+.active {
+  color: var(--bright-orange);
+  filter: none;
+}
+
+.collection-out-of-stock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.6rem;
+  color: var(--pale-yellow);
+  background-color: #fff;
+  padding: 6px 12px;
+}

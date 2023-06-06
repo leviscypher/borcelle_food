@@ -1,0 +1,47 @@
+
+.cart {
+  &-delete {
+    color: var(--dark);
+    transition: linear .3s;
+
+    &:hover {
+      color: var(--pale-yellow);
+    }
+  }
+
+  &-total-tilte {
+    color: var(--dark);
+    font-size: 35px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--black);
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  &-total {
+    color: var(--dark);
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+  }
+
+  &-pay {
+    font-family: "Playfair Display", serif;
+    text-transform: capitalize;
+    margin-top: 20px;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 190, 0);
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 15px 60px;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+

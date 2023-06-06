@@ -1,0 +1,45 @@
+.services {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.services-description {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+}
+
+.services-list a {
+  text-decoration: none;
+}
+
+.services-list {
+  transition: all 0.5s ease-in-out;
+}
+
+.services-list a h3 {
+  color: var(--dark);
+}
+
+.services-list:hover {
+  background-color: var(--pale-yellow);
+  color: var(--white);
+}
+
+.services-list:hover a h3,
+.services-list:hover a p {
+  color: var(--white);
+}
+
+.swiper-slide-next .services-list {
+  background-color: var(--pale-yellow);
+}
+
+.swiper-slide-next .services-list a h3 {
+  color: var(--white);
+}
+
+.swiper-slide-next .services-list a p {
+  color: var(--white);
+}

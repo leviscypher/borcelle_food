@@ -1,0 +1,32 @@
+.form-input {
+    border: none;
+    border-bottom: 1px solid #000 !important;
+}
+
+.form-fogot {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-register-link {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+[type='text'] {
+    &:focus {
+        &:focus {
+            border: 1px solid #ccc;
+            background-color: transparent !important;
+            box-shadow: none;
+        }
+    }
+}
+
+[type='password'] {
+    &:focus {
+        border: 1px solid #ccc;
+        background-color: transparent !important;
+        box-shadow: none;
+    }
+}

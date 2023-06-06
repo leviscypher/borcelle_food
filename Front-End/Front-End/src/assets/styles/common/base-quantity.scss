@@ -1,0 +1,53 @@
+.quantity {
+  &-reduce,
+  &-increase {
+    width: 35px;
+    height: 35px;
+    color: var(--white);
+    background-color: #ffbe00;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 0;
+    vertical-align: middle;
+    -webkit-transition: 0.5s all ease;
+    transition: 0.5s all ease;
+    border-radius: 10px;
+    top: 0;
+    padding: 0;
+    &:hover{
+      background-color: var(--khaki);
+    }
+  }
+
+  &-bulk {
+    height: 25px;
+    width: 50px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    color: #ffbe00;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+  
+  &-bulk::-webkit-inner-spin-button,
+  &-bulk::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.disable {
+  opacity: 0.4;
+  cursor: no-drop;
+  
+  &-dec , &-inc {
+    pointer-events: none;
+  }
+}
+
+// pointer-events-none opacity-[0.5] cursor-no-drop

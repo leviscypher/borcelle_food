@@ -1,0 +1,72 @@
+$color_1: #fff;
+$color_2: white;
+
+.Choicefile {
+    display: block;
+    background: #14142B;
+    border: 1px solid #fff;
+    font-size: 15px;
+    color: $color_1;
+    width: 150px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px 0px;
+    border-radius: 5px;
+    font-weight: 500;
+    &:hover {
+        text-decoration: none;
+        color: $color_2;
+    }
+}
+
+#uploadfile {
+    display: none;
+}
+
+.removeimg {
+    display: none;
+    height: 25px;
+    position: absolute;
+    background-repeat: no-repeat;
+    top: 5px;
+    left: 5px;
+    background-size: 25px;
+    width: 25px;
+    border-radius: 50%;
+
+    &::before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        content: '';
+        border: 1px solid red;
+        background: red;
+        text-align: center;
+        display: block;
+        margin-top: 11px;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        content: '';
+        background: red;
+        border: 1px solid red;
+        text-align: center;
+        display: block;
+        transform: rotate(-45deg);
+        margin-top: -2px;
+    }
+}
+
+#thumbbox {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+button.btn.btn-save,
+.btn.btn-cancel {
+    width: 103px;
+    height: 30px;
+    font-size: 12px;
+}
