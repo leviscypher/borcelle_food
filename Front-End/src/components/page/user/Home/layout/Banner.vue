@@ -22,14 +22,14 @@ const modules = [Autoplay, Navigation]
           Nhà hàng đôi khi được gọi là quán ăn là nơi bán thức ăn đã nấu chín cho công chúng và là nơi mọi người ngồi ăn. Đó cũng là nơi mọi người đến để tận hưởng thời gian và ăn một bữa ăn.
         </p>
 
-        <div class="banner-content-search">
+        <!-- <div class="banner-content-search">
           <input
             type="text"
             placeholder="Tìm kiếm tên món ăn..."
             class="mr-4"
           />
           <button class="bf-btn-primary mr-4">Tìm kiếm ngay</button>
-        </div>
+        </div> -->
 
         <img
           src="@/assets/image/shape1.png"
