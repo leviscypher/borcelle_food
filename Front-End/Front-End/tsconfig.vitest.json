@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.app.json",
-  "exclude": [],
-  "compilerOptions": {
-    "lib": ["dom", "es2015", "es2018.promise"],
-    "types": ["node", "jsdom", "vite/client"]
-  }
-}
